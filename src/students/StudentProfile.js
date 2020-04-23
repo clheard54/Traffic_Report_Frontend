@@ -1,5 +1,5 @@
 import React from 'react'
-import TrafficForm from '../components/TrafficForm'
+import AssignmentsContainer from '../components/AssignmentsContainer'
 import { api } from '../services/api'
 
 export default class StudentProfile extends React.Component{
@@ -7,8 +7,7 @@ export default class StudentProfile extends React.Component{
     render(){
         return (
             <div>
-                {/* <AssignmentsContainer/> */}
-                <TrafficForm/>
+                <AssignmentsContainer/>
                 //link to personal data chart
             </div>
         )

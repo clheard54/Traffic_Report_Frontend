@@ -1,7 +1,8 @@
 import React, {Fragment} from 'react'
 import { api } from '../services/api'
+import { connect } from 'react-redux'
 
-export default class Assignments extends React.Component{
+class Assignments extends React.Component{
     state = {
         showForm: false,
         assignments: []

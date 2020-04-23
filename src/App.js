@@ -4,10 +4,9 @@ import './App.css';
 import './assets/bootstrap.css'
 import '@popperjs/core'
 import store from "./redux/store";
-import { Provider } from "react-redux";
 import { connect } from "react-redux";
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
-import { setStudentUser, setTeacherUser } from "../redux";
+import { setStudentUser, setTeacherUser } from "./redux";
 import { api } from './services/api'
 import NavBar from './containers/NavBar'
 import StudentProfile from './students/StudentProfile'
@@ -84,10 +83,9 @@ createStudent = (event) => {
 
   render(){
     return (
-      <Provider store={store}>
         <div className="App">
         <Router>
-          <header className="App-header">
+          <header>
             <Link to='/'><h1>Traffic Controller</h1></Link>
             <NavBar className='navbar' logout={this.logout} user={this.props.current_user}/>
           </header>
@@ -124,11 +122,9 @@ createStudent = (event) => {
             </Router>
           <br></br>
         </div>
-      </Provider>
     )
   }
 }
-
 
 const mapDispatchToProps = dispatch => {
   return {

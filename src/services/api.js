@@ -119,7 +119,7 @@ export const api = {
   },
   posts: {
     postResponse,
-    postQuestion.,
+    postQuestion,
     postAssignment
   }
 };
