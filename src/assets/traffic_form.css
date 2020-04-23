@@ -97,7 +97,7 @@ main, .light-container, .light-label, .light-label:before, .light-label:after {
 
 /**** YELLOW Radio button code ****/
 #radio-2 + .light-label {
-    background: #FBBC05;
+    background: rgb(248, 200, 54);
     animation-delay: 0s;
 }
 #radio-2 + .light-label:before {

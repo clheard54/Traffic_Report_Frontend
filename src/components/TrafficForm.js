@@ -13,7 +13,7 @@ export default class TrafficForm extends React.Component{
 
 	handleSubmit = (event) => {
 		event.preventDefault();
-		newResponse = {
+		let newResponse = {
 			answer: event.target.color.value,
 			datatype: 'color',
 			day: new Date().toLocaleDateString(),
