@@ -11,12 +11,12 @@ const AuthHOC = WrappedComponent => {
             responseCollected: false
         }
 
-        componentDidMount() {
-            this.checkLogin
+        componentDidMount(){
+            this.checkLogin()
         }
 
         checkLogin = () => {
-            if (!localStorage.getItem(token)){
+            if (!localStorage.getItem('token')){
                 this.setState({
                     authorized: false,
                     responseCollected: true
@@ -45,7 +45,7 @@ const AuthHOC = WrappedComponent => {
         }
 
         isRejected = () => {
-            !this.state.authorized && this.state.responseCollected
+            return !this.state.authorized && this.state.responseCollected
         }
 
         render(){

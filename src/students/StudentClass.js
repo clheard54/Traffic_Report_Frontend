@@ -3,6 +3,7 @@ import { api } from '../services/api'
 import TodaysData from '../data_charts/TodaysData'
 import AssignmentsContainer from '../components/AssignmentsContainer'
 import IndividualData from '../data_charts/IndividualData'
+import TrafficForm from '../components/TrafficForm'
 
 export default class StudentClass extends React.Component{
 

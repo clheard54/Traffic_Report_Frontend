@@ -1,8 +1,9 @@
 import React from 'react'
 import AssignmentsContainer from '../components/AssignmentsContainer'
 import { api } from '../services/api'
+import AuthHOC from "../HOCs/AuthHOC";
 
-export default class StudentProfile extends React.Component{
+class StudentProfile extends React.Component{
 
     render(){
         return (
@@ -13,3 +14,5 @@ export default class StudentProfile extends React.Component{
         )
     }
 }
+
+export default AuthHOC(StudentProfile)

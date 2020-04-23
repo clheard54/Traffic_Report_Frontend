@@ -14,6 +14,8 @@ import Login from './containers/Login'
 import TodaysData from './data_charts/TodaysData'
 import TrafficForm from './components/TrafficForm';
 import Signup from './components/Signup';
+import UserHome from './containers/UserHome';
+import ClassPage from './containers/ClassPage';
 
 class App extends React.Component{
   constructor(){
@@ -23,27 +25,33 @@ class App extends React.Component{
     }
   }
 
-  /*
+  componentDidMount() {
+    const token = localStorage.getItem("token");
+    if (token) {
+      // make a request to the backend and find our user
+      api.auth.getCurrentUser().then(user => {
+        user.admin ? this.props.onSetTeacherUser(user) : this.props.onSetStudentUser(user)
+      });
+    }
+  }
+  
+
   login = data => {
     console.log(data)
     if (!!data.user){
-    const updatedState = { user: {id: data.user.id,  username: data.user.username}};
+    // const updatedState = { user: {id: data.user.id,  username: data.user.username}}
+      data.user.admin ? this.props.onSetTeacherUser(data.user) : this.props.onSetStudentUser(data.user)
     localStorage.setItem("token", data.jwt);
-    this.setState({ 
-      auth: updatedState
-    });
   }
   };
   
   logout = () => {
     localStorage.removeItem("token");
     this.setState({
-      auth: { user: {} },
-      errors: null,
-      events: []
+      errors: null
     });
+    this.props.onSetStudentUser({})
   };
-  */
 
   createTeacher = (event) => {
   let newTeacher = {
@@ -102,8 +110,8 @@ createStudent = (event) => {
 
             <Route 
             exact 
-            path="/student_profile" 
-            render={props => <StudentProfile {...props}  user={this.props.current_user}/>}
+            path="/profile" 
+            render={props => <UserHome {...props}  user={this.props.current_user}/>}
             />
 {/* 
             <Route 
@@ -113,8 +121,8 @@ createStudent = (event) => {
       
             <Route
               exact
-              path="/"
-              render={props => <Login {...props}/>}
+              path="/courses/:id"
+              render={props => <ClassPage {...props}/>}
             />     
             <TodaysData/>
             <TrafficForm/>

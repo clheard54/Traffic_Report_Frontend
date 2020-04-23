@@ -9,7 +9,7 @@ const courseReducer = (state = {}, action) => {
         case 'CURRENT_COURSE':
             return {
                 ...state,
-                current_course: action.payload
+                current_course_id: action.payload
             }
         default:
             return state

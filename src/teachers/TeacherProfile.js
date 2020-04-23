@@ -1,8 +1,12 @@
 import React from 'react'
 import { api } from '../services/api'
 import TodaysData from '../data_charts/TodaysData'
+import AuthHOC from "../HOCs/AuthHOC";
+import WeekAvgs from '../data_charts/WeekAvgs'
+import WeekTotal from '../data_charts/WeekTotal'
+import AssignmentsContainer from '../components/AssignmentsContainer'
 
-export default class TeacherHome extends React.Component{
+class TeacherProfile extends React.Component{
 
     render(){
         return (
@@ -16,3 +20,5 @@ export default class TeacherHome extends React.Component{
         )
     }
 }
+
+export default AuthHOC(TeacherProfile)

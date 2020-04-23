@@ -104,6 +104,11 @@ const getStudents = (course) => {
     // probably sort based on course of interest
 }
 
+const getCourses = (user) => {
+  return fetch(`${API_ROOT}/courses`)
+  .then(resp => resp.json())
+}
+
 
 export const api = {
   auth: {
@@ -115,7 +120,8 @@ export const api = {
   getRequests: {
     getResponses,
     getStudents,
-    getAssignments
+    getAssignments,
+    getCourses
   },
   posts: {
     postResponse,
