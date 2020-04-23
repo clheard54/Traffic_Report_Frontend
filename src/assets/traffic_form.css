@@ -1,0 +1,125 @@
+/* html, body { background: white; } */
+@keyframes checked-radio-3 {
+    0% {
+        top: -10vw;
+        transform: scale(0);
+    }
+    100% {
+        top: 0;
+        transform: scale(1);
+    }
+}
+@keyframes unchecked-radio-3 {
+    0% {
+        bottom: 0;
+        transform: scale(1);
+    }
+    100% {
+        bottom: -10vw;
+        transform: scale(0);
+    }
+}
+
+*, *:before, *:after {
+    margin: auto;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+}
+
+main, .light-container, .light-label, .light-label:before, .light-label:after {
+    position: relative;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.light-container {
+    border: 2px, solid, black;
+    width: 60%;
+    height: 100%;
+    animation: fade 1s;
+}
+.light-label {
+    display: inline-block;
+    width: 10vw;
+    height: 10vw;
+    border-radius: 50%;
+    transition: all .2s ease-in-out;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-duration: 1.6s;
+    animation-name: dot-anim;
+}
+.radio:checked + .light-label {
+    animation-play-state: paused;
+}
+.light-label:before {
+    content: "";
+    position: absolute;
+    width: 5vw;
+    height: 5vw;
+    background: white;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.117647) 0 0 .8vw 0, rgba(0, 0, 0, 0.239216) 0 .8vw .8vw 0;
+    transition: all .2s;
+}
+.light-label:hover:before {
+    box-shadow: rgba(0, 0, 0, 0.0784314) 0 0 1vw 0, rgba(0, 0, 0, 0.239216) 0 1vw 1vw 0;
+}
+.light-label:after {
+    content: "";
+    position: absolute;
+    width: 10vw;
+    height: 10vw;
+    background: rgba(255, 255, 255, .5);
+    border-radius: 50%;
+    transform: scale(0);
+}
+.radio:checked + .light-label:after {
+    background: transparent;
+    transition: all .5s;
+    transform: scale(1);
+}
+/**** RED Radio button code ****/
+#radio-1 + .light-label {
+    background: #EA4335;
+    animation-delay: 0s;
+}
+#radio-1 + .light-label:before {
+    transform: scale(0);
+}
+#radio-1:checked + .light-label:before {
+    transform: scale(1);
+    transition: all .4s;
+}
+
+/**** YELLOW Radio button code ****/
+#radio-2 + .light-label {
+    background: #FBBC05;
+    animation-delay: 0s;
+}
+#radio-2 + .light-label:before {
+    transform: scale(0);
+}
+#radio-2:checked + .light-label:before {
+    transform: scale(1);
+    transition: all .4s;
+}
+
+/**** GREEN Radio button code ****/
+#radio-3 + .light-label {
+    background: #34A853;
+    animation-delay: 0s;
+}
+#radio-3 + .light-label:before {
+    transform: scale(0);
+}
+#radio-3:checked + .light-label:before {
+    transform: scale(1);
+    transition: all .4s;
+}
+[type="radio"] {
+    display: none;
+}          
