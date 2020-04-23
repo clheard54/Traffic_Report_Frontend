@@ -7,7 +7,7 @@ export default class StudentProfile extends React.Component{
     render(){
         return (
             <div>
-                <AssignmentsContainer/>
+                {/* <AssignmentsContainer/> */}
                 <TrafficForm/>
                 //link to personal data chart
             </div>

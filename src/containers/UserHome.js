@@ -1,0 +1,1 @@
+//depending on who is logged in, conditionally render either the StudentProfile page or the TeacherProfile page

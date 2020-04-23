@@ -1,6 +1,7 @@
 import React from 'react'
+import { api } from '../services/api'
 
-export default class Home extends React.Component{
+export default class Login extends React.Component{
     constructor(){
         super();
         this.state = {
@@ -18,13 +19,21 @@ export default class Home extends React.Component{
     handleSubmit = (event) => {
         event.preventDefault()
         //LOGIN METHOD
+        api.auth.login(this.state).then(res => {
+            if (!res.errors){
+                this.props.onLogin(res);
+                this.props.history.push('/profile')
+            } else {
+                this.setState({errors: true})
+                this.props.history.push('/login')
+            }
+        })
     }
 
     render(){
         return(
             <div className='container'>
                 <form onSubmit={this.handleSubmit}>
-                <div className="form-group"></div>
                     <label>Username:  </label>
                     <input type="text" name="username" value={this.state.username} onChange={this.handleChange}></input><br></br>
                     <label>Password:  </label>

@@ -1,5 +1,6 @@
 import React from 'react'
 import {api} from '../services/api'
+import { addStudent } from "../redux";
 
 export default class Signup extends React.Component {
 
@@ -42,3 +43,4 @@ render(){
   }
 
 }
+
