@@ -48,14 +48,28 @@ const createStudent = data => {
   }).then(res => res.json());
 };
 
-const postResponse = () => {
-  let newResponse = {
-    [event.target.name]: event.target.value
-  }
+const postResponse = (newResponse) => {
+  // let newResponse = {
+  //   [event.target.name]: event.target.value
+  // }
   fetch(`${API_ROOT}/responses`, {
     method: 'POST',
     headers: headers(),
     body: JSON.stringify(newResponse)
+  })
+  .then(resp => resp.json())
+  .then(data => 
+    console.log(data))
+}
+
+const postQuestion = (newQuestion) => {
+  // let newQuestion = {
+  //   [event.target.name]: event.target.value
+  // }
+  fetch(`${API_ROOT}/questions`, {
+    method: 'POST',
+    headers: headers(),
+    body: JSON.stringify(newQuestion)
   })
   .then(resp => resp.json())
   .then(data => 
@@ -88,5 +102,9 @@ export const api = {
   getRequests: {
     getResponses,
     getStudents
+  },
+  posts: {
+    postResponse,
+    postQuestion
   }
 };

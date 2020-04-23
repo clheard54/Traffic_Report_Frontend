@@ -13,7 +13,13 @@ export default class TrafficForm extends React.Component{
 
 	handleSubmit = (event) => {
 		event.preventDefault();
-		console.log(event)
+		newResponse = {
+			answer: event.target.color.value,
+			datatype: 'color',
+			day: new Date().toLocaleDateString(),
+			courses_student_id: '' //PULL FROM STATE!
+		}
+		// api.posts.postResponse(newResponse)
 	}
 
 	render(){
