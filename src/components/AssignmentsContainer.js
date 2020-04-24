@@ -18,9 +18,11 @@ class Assignments extends React.Component{
     }
 
     renderAssignments = () => {
-        return this.state.assignments.map(hw => {
-           return <li>{hw.details}</li>
-        })
+        if (this.state.assignments.length > 0){
+            return this.state.assignments.map(hw => {
+            return <li>{hw.details}</li>
+            })
+        }
     }
 
     handleSubmit = (event) => {
@@ -56,7 +58,7 @@ class Assignments extends React.Component{
         return (
             <Fragment>
             {this.props.current_user.admin ? <button onClick={() => this.setState({showForm: true})}>Add Question</button> : null}
-            {this.state.showForm ? <div>{this.showForm()}</div> : null}}
+            {this.state.showForm ? <div>{this.showForm()}</div> : null}
             <h3>Assignments/Announcements</h3>
             <div>
                 <ul>{this.renderAssignments()}</ul>
@@ -70,8 +72,8 @@ class Assignments extends React.Component{
 
 const mapStateToProps = state => {
     return {
-      current_user: state.current_user,
-      current_course: state.current_course
+      current_user: state.students.current_user,
+      current_course: state.courses.current_course
     }
   }
   

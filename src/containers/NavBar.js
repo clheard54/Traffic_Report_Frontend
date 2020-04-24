@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import { api } from '../services/api'
 import { connect } from 'react-redux'
 import '../assets/bootstrap.css'
@@ -8,37 +8,52 @@ import '../assets/bootstrap.css'
 class NavBar extends React.Component{
     constructor(){
         super()
-        this.state= {
+        this.state = {
             courses: []
         }
     }
 
-    componentDidMount(){
-        const user = this.props.current_user
-        api.getRequests.getCourses(user).then(data => {
+    componentWillReceiveProps() {
+        console.log("props thing running")
+        let userCourses = []
+        api.getRequests.getCourses(this.props.current_user)
+        .then(data => {
             if (data.length > 0){
-            this.setState({
-                courses: data.filter(course => course.students.includes(user))
-          })
-        }
+                data.forEach(course => {
+                    let students = course.students.map(student => student.id)
+                    if (students.includes(this.props.current_user.id)) {
+                        userCourses.push(course)}
+                })
+                console.log(userCourses)
+                this.setState({
+                    courses: userCourses
+                })
+            } else {
+                console.log("no courses")
+            }
         })
     }
+
+    getResponses = () => {
+        // grab relevant responses from the backend and post them to the store
+    }
+
 
     render(){
         return (
             <nav className="navbar navbar-light bg-light">
-            <h3 className="navbar-brand">Traffic Controller</h3>
+            <Link to='/'><h2 className="navbar-brand">Traffic Controller</h2></Link>
+            
             <div className="navbar-expand" id="navbarNavDropdown">
                 <ul className="navbar-nav">
-                {!!localStorage.getItem('token') ?
+                {this.props.current_user.id ?
                 <li className="nav-item dropdown">
                     <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Course List
-                    {/* RENDER DYNAMICALLY BY QUERYING BACKEND? */}
                     </a>
                     <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     {this.state.courses.map(course => {
-                        return (<a className="dropdown-item" href={`/courses/${course.id}`}>{course.title}</a> )
+                        return (<a className="dropdown-item" href={`/courses/${course.id}`} onClick={this.getResponses}>{course.title}</a> )
                     })}
                     {/* <a className="dropdown-item" href="#">Geometry</a>
                     <a className="dropdown-item" href="www.google.com">Algebra II</a>
@@ -49,9 +64,9 @@ class NavBar extends React.Component{
                 </li>}
 
                 <li className="nav-item">
-                    <a className="nav-link" href="www.google.com">Home</a>
+                    <a className="nav-link" href="/">Home</a>
                 </li>
-                {!!localStorage.getItem("token") ?
+                {this.props.current_user.id ?
                 <li className="nav-item">
                     <a onClick={this.props.logout}className="nav-link" href="/logout">Logout</a>
                 </li> :
@@ -72,7 +87,7 @@ class NavBar extends React.Component{
 
 const mapStateToProps = state => {
     return {
-      current_user: state.current_user,
+      current_user: state.students.current_user,
     }
   }
   

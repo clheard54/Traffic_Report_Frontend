@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import './App.css';
 // import './assets/traffic_form.css'
 import './assets/bootstrap.css'
 import '@popperjs/core'
-import store from "./redux/store";
+// import store from "./redux/store";
 import { connect } from "react-redux";
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
-import { setStudentUser, setTeacherUser } from "./redux";
+import {BrowserRouter as Router, Route, Redirect} from 'react-router-dom'
+import { fetchCourses, setStudentUser, setTeacherUser } from "./redux";
+import { store } from './redux/store'
 import { api } from './services/api'
+import LandingPage from './containers/LandingPage'
 import NavBar from './containers/NavBar'
-import StudentProfile from './students/StudentProfile'
 import Login from './containers/Login'
-import TodaysData from './data_charts/TodaysData'
-import TrafficForm from './components/TrafficForm';
 import Signup from './components/Signup';
 import UserHome from './containers/UserHome';
 import ClassPage from './containers/ClassPage';
@@ -37,11 +36,12 @@ class App extends React.Component{
   
 
   login = data => {
-    console.log(data)
-    if (!!data.user){
+    console.log(data.user)
+    if (!!data.user.id){
     // const updatedState = { user: {id: data.user.id,  username: data.user.username}}
       data.user.admin ? this.props.onSetTeacherUser(data.user) : this.props.onSetStudentUser(data.user)
     localStorage.setItem("token", data.jwt);
+    fetchCourses(data.user)(store.dispatch)
   }
   };
   
@@ -94,10 +94,19 @@ createStudent = (event) => {
         <div className="App">
         <Router>
           <header>
-            <Link to='/'><h1>Traffic Controller</h1></Link>
+            <div className="traffic-top">
+              <span className="dot" id='red-dot'></span>
+              <span className="dot" id='yellow-dot'></span>
+              <span className="dot" id='green-dot'></span>
+            </div>
             <NavBar className='navbar' logout={this.logout} user={this.props.current_user}/>
+            <div className="traffic-bottom"></div>
           </header>
           <div className = "main">
+            {localStorage.getItem('token') ? <Redirect to='/profile'/> :
+            null}
+            {/* <h2>Welcome{localStorage.getItem('token') ? `, ${this.props.current_user.username}!` : '!' }</h2> */}
+
             <Route
               exact
               path="/login"
@@ -113,19 +122,17 @@ createStudent = (event) => {
             path="/profile" 
             render={props => <UserHome {...props}  user={this.props.current_user}/>}
             />
-{/* 
+ 
             <Route 
               exact
-              path='/admin_profile' 
-              render={props => <TeacherHome {...props} user={this.props.current_user} />} />   */}
+              path='/' 
+              render={props => <LandingPage {...props}/>} /> 
       
             <Route
               exact
               path="/courses/:id"
               render={props => <ClassPage {...props}/>}
             />     
-            <TodaysData/>
-            <TrafficForm/>
             </div>
             </Router>
           <br></br>
@@ -136,14 +143,14 @@ createStudent = (event) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSetTeacherUser: (teacher) => dispatch(setTeacherUser(teacher)),
-    onSetStudentUser: (student) => dispatch(setStudentUser(student))
+    onSetTeacherUser: (teacher) => dispatch({type: 'SET_TEACHER_USER', payload: teacher}),
+    onSetStudentUser: student => dispatch({type: 'SET_STUDENT_USER', payload: student})
   }
 }
 
 const mapStateToProps = state => {
   return {
-    current_user: state.current_user
+    current_user: state.students.current_user
   }
 }
 

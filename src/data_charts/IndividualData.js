@@ -3,7 +3,7 @@ import CanvasJSReact from '../assets/canvasjs.react';
 import '@popperjs/core'
 import { connect } from 'react-redux';
 //var CanvasJSReact = require('./canvasjs.react');
-var CanvasJS = CanvasJSReact.CanvasJS;
+// var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class IndividualData extends Component {	

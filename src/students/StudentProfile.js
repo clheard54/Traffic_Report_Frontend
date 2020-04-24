@@ -8,6 +8,7 @@ class StudentProfile extends React.Component{
     render(){
         return (
             <div>
+            <h2>You're a Student</h2>
                 <AssignmentsContainer/>
                 //link to personal data chart
             </div>

@@ -5,12 +5,14 @@ import AssignmentsContainer from '../components/AssignmentsContainer'
 import TriageChart from '../data_charts/TriageChart'
 import WeekAvgs from '../data_charts/WeekAvgs'
 import WeekTotal from '../data_charts/WeekTotal'
+import { connect } from 'react-redux'
 
-export default class TeacherClass extends React.Component{
+class TeacherClass extends React.Component{
 
     render(){
         return (
           <div>
+            <h3>{this.props.current_course.title}</h3>
             <div>
               <AssignmentsContainer/>
               <TodaysData />
@@ -25,3 +27,11 @@ export default class TeacherClass extends React.Component{
         )
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        current_course: state.students.current_course
+    }
+}
+
+export default connect(mapStateToProps)(TeacherClass)

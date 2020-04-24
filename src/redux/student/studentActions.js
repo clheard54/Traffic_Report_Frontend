@@ -11,3 +11,5 @@ export const setStudentUser = student => {
         payload: {current_user: student, admin: false}
     }
 }
+
+

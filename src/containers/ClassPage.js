@@ -1,5 +1,5 @@
 import React from 'react'
-import { api } from '../services/api'
+// import { api } from '../services/api'
 import TeacherClass from '../teachers/TeacherClass'
 import StudentClass from '../students/StudentClass'
 import { connect } from 'react-redux'

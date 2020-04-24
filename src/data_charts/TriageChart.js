@@ -4,7 +4,7 @@ export default class TriageChart extends React.Component{
     render(){
         return (
           <div>
-            <table style="width:100%">
+            <table style={{width:"100%"}}>
                 <tr>
                     <th>HAVE NOT ANSWERED: </th>
                     <td>Bill Gates</td>

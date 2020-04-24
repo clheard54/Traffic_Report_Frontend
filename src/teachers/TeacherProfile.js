@@ -11,11 +11,12 @@ class TeacherProfile extends React.Component{
     render(){
         return (
             <div>
+                <h2>Hello Teacher</h2>
                 <AssignmentsContainer/>
                 <WeekAvgs/>
                 <WeekTotal/>
                 <TodaysData />
-                {/*link to personal data chart*/}
+                {null/*link to personal data chart*/}
             </div>
         )
     }

@@ -1,9 +1,9 @@
-const initialState = {
-    teachers: []
-    //teacher = {name, username, password}
-  };
-  
-  const teacherReducer = (state = initialState, action) => {
+const INITIAL_STATE = {
+  current_user: {},
+  current_course: {}
+}
+
+  const teacherReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
       case 'ADD_TEACHER':
         return {
