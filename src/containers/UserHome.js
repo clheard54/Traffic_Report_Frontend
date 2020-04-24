@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 // import { api } from '../services/api'
 import TeacherProfile from '../teachers/TeacherProfile'
 import StudentProfile from '../students/StudentProfile'
@@ -8,20 +8,15 @@ import AuthHOC from "../HOCs/AuthHOC";
 
 
 class UserHome extends React.Component{
-    state = {
-        current_user: this.props.current_user
-    }
+
 //depending on who is logged in, conditionally render either the StudentProfile page or the TeacherProfile page
-    componentDidMount(){
-        console.log(this.props)
-    }
 
     render(){
         return (
-          <div>
-            <h2>Welcome, {this.state.current_user.name}</h2>
-            <div>{this.state.current_user.admin ? <TeacherProfile/> : <StudentProfile/>}</div>
-          </div>
+          <Fragment>
+            <h2>Welcome {this.props.current_user ? `, ${this.props.current_user.username}!` : "!"}</h2>
+            <div>{this.props.current_user.admin ? <TeacherProfile/> : <StudentProfile/>}</div>
+          </Fragment>
         )
     }
 }

@@ -1,7 +1,9 @@
 import React from 'react'
 import { api } from '../services/api'
+import { userLogin } from  "../redux"
+import { connect } from 'react-redux';
 
-export default class Login extends React.Component{
+class Login extends React.Component{
     constructor(){
         super();
         this.state = {
@@ -21,27 +23,21 @@ export default class Login extends React.Component{
 
     handleSubmit = (event) => {
         event.preventDefault()
-        //LOGIN METHOD
-        api.auth.login(this.state).then(res => {
-            if (!res.errors){
-                this.props.onLogin(res);
-                console.log('go to profile')
-                this.props.history.push('/profile')
-            } else {
-                this.setState({errors: true})
-                // this.props.history.push('/login')
-            }
-        })
+        this.props.onSetUser(this.state)
+        event.target.username.value = ''
+        event.target.password.value = ''
+        // fetchCourses(data.user)(store.dispatch)
     }
 
     render(){
         return(
             <div className='container' style={{'borderStyle': 'solid', 'borderWidth': '7px', 'borderColor': '#ffc107','padding': '50px 20px'}}>
                 <form onSubmit={this.handleSubmit}>
+                {!!this.props.error ? <p style={{'color': 'red'}}>{this.props.error}. Please try again.</p> : null}
                     <h3 className="font-weight-bolder">Log In:</h3><br></br>
-                    <label>Username:  </label>
+                    <label>Username: </label>
                     <input type="text" name="username" value={this.state.username} onChange={this.handleChange}></input><br></br>
-                    <label>Password:  </label>
+                    <label>Password:</label>
                     <input type="password" name="password" value={this.state.password} onChange={this.handleChange}></input>
                     <br></br>
                     <br></br>
@@ -51,3 +47,18 @@ export default class Login extends React.Component{
         )
     }
 }
+
+
+const mapStateToProps = state => {
+    return {
+        error: state.auths.error
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onSetUser: (user) => userLogin(user)(dispatch),
+    } 
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

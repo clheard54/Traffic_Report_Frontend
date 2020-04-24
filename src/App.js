@@ -1,12 +1,10 @@
 import React, { Fragment } from 'react';
 import './App.css';
-// import './assets/traffic_form.css'
 import './assets/bootstrap.css'
 import '@popperjs/core'
-// import store from "./redux/store";
 import { connect } from "react-redux";
 import {BrowserRouter as Router, Route, Redirect} from 'react-router-dom'
-import { fetchCourses, setStudentUser, setTeacherUser } from "./redux";
+import { fetchCourses } from "./redux";
 import { store } from './redux/store'
 import { api } from './services/api'
 import LandingPage from './containers/LandingPage'
@@ -34,24 +32,13 @@ class App extends React.Component{
     }
   }
   
-
-  login = data => {
-    console.log(data.user)
-    if (!!data.user.id){
-    // const updatedState = { user: {id: data.user.id,  username: data.user.username}}
-      data.user.admin ? this.props.onSetTeacherUser(data.user) : this.props.onSetStudentUser(data.user)
-    localStorage.setItem("token", data.jwt);
-    fetchCourses(data.user)(store.dispatch)
-  }
-  };
-  
-  logout = () => {
-    localStorage.removeItem("token");
-    this.setState({
-      errors: null
-    });
-    this.props.onSetStudentUser({})
-  };
+  // logout = () => {
+  //   localStorage.removeItem("token");
+  //   this.setState({
+  //     errors: null
+  //   });
+  //   this.props.onSetStudentUser({})
+  // };
 
   createTeacher = (event) => {
   let newTeacher = {
@@ -83,6 +70,7 @@ createStudent = (event) => {
         this.login(res);
         this.props.onSetStudentUser(res)
         this.setState({errors: false})
+        this.props.fetchCourses(res)
     } else {
         this.setState({errors: true})
     }
@@ -105,12 +93,11 @@ createStudent = (event) => {
           <div className = "main">
             {localStorage.getItem('token') ? <Redirect to='/profile'/> :
             null}
-            {/* <h2>Welcome{localStorage.getItem('token') ? `, ${this.props.current_user.username}!` : '!' }</h2> */}
 
             <Route
               exact
               path="/login"
-              render={props => <Login {...props} onLogin={this.login} />}/>
+              render={props => <Login {...props} />}/>
 
             <Route
               exact
@@ -144,7 +131,8 @@ createStudent = (event) => {
 const mapDispatchToProps = dispatch => {
   return {
     onSetTeacherUser: (teacher) => dispatch({type: 'SET_TEACHER_USER', payload: teacher}),
-    onSetStudentUser: student => dispatch({type: 'SET_STUDENT_USER', payload: student})
+    onSetStudentUser: student => dispatch({type: 'SET_STUDENT_USER', payload: student}),
+    fetchCourses: user => dispatch(fetchCourses(user))
   }
 }
 

@@ -13,7 +13,8 @@ const INITIAL_STATE = {
         case 'SET_TEACHER_USER':
           return {
               ...state,
-              current_user: action.payload
+              current_user: action.payload,
+              error: null
           }
       default:
         return state;

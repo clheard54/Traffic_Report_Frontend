@@ -7,6 +7,10 @@ export default class LandingPage extends React.Component{
     handleClick = () => {
         this.props.history.push('/signup')
         }
+      
+    componentDidMount(){
+      console.log(this.props)
+    }
 
   render(){
     return (
@@ -23,7 +27,7 @@ export default class LandingPage extends React.Component{
                 </div>
                 {/* <div className="col-sm-1"></div> */}
                 <div className ="col-md-4">
-                <Login onLogin={this.props.onLogin} />
+                <Login {...this.props} />
                 <br></br>
                 <span style={{'fontSize': '110%'}} >No Account?  </span>
                 <button className='btn btn-outline-success btn-sm font-weight-bolder' onClick={this.handleClick}>Create One Here</button>

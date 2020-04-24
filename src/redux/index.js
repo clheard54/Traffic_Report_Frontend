@@ -2,6 +2,7 @@ export * from "./student/studentActions";
 export * from "./teacher/teacherActions";
 export * from "./response/responseActions";
 export * from "./course/courseActions"
+export * from './auth/authActions'
 
 /* Ultimately, the state should know:
     - Who is logged in (current_user)

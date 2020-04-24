@@ -1,6 +1,7 @@
 const INITIAL_STATE = {
-    current_user: {},
-    current_course: {}
+    current_course: {},
+    courses: [],
+    loading: false
 }
 
 
@@ -37,3 +38,5 @@ const courseReducer = (state = INITIAL_STATE, action) => {
             return state
     }
 }
+
+export default courseReducer

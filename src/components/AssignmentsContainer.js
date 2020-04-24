@@ -59,7 +59,7 @@ class Assignments extends React.Component{
             <Fragment>
             {this.props.current_user.admin ? <button onClick={() => this.setState({showForm: true})}>Add Question</button> : null}
             {this.state.showForm ? <div>{this.showForm()}</div> : null}
-            <h3>Assignments/Announcements</h3>
+            <h5>Assignments/Announcements</h5>
             <div>
                 <ul>{this.renderAssignments()}</ul>
             </div>

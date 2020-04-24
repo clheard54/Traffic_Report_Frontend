@@ -19,7 +19,8 @@ handleSubmit = (event) => {
 render(){
     
     return (  
-      <div className='container' style={{'borderStyle': 'solid', 'borderWidth': '7px', 'borderColor': '#ffc107','padding': '50px 20px', 'width': '60%'}}>
+      <div className='container' style={{'borderStyle': 'solid', 'borderWidth': '7px', 'borderColor': '#ffc107','padding': '20px 20px', 'width': '60%'}}>
+        <div className='container border-top-0 border-bottom-0' style={{'borderStyle': 'solid', 'borderWidth': '12px', 'borderColor': '#dc3545', 'padding':'30px 0'}}>
         {/* CHECK FOR ERRORS ? <h3>Error! This username has already been taken. Please try again.</h3> : <h3>Enter the information below to create an account.</h3>} */}
         <form id="event-form" onSubmit={this.handleSubmit}>
           <h3 className="font-weight-bolder">Create an Account:</h3><br></br>
@@ -41,6 +42,7 @@ render(){
             <br></br>
             <input className="btn btn-success" type="submit" ></input>
         </form>
+        </div>
       </div>
     )
   }

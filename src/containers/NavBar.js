@@ -2,6 +2,7 @@ import React, {Fragment} from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import { api } from '../services/api'
 import { connect } from 'react-redux'
+import { userLogout } from '../redux'
 import '../assets/bootstrap.css'
 
 
@@ -14,7 +15,6 @@ class NavBar extends React.Component{
     }
 
     componentWillReceiveProps() {
-        console.log("props thing running")
         let userCourses = []
         api.getRequests.getCourses(this.props.current_user)
         .then(data => {
@@ -34,8 +34,9 @@ class NavBar extends React.Component{
         })
     }
 
-    getResponses = () => {
-        // grab relevant responses from the backend and post them to the store
+    handleLogout = () => {
+        this.props.userLogout();
+        this.props.history.push('/')
     }
 
 
@@ -53,7 +54,7 @@ class NavBar extends React.Component{
                     </a>
                     <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     {this.state.courses.map(course => {
-                        return (<a className="dropdown-item" href={`/courses/${course.id}`} onClick={this.getResponses}>{course.title}</a> )
+                        return (<a key={course.id} className="dropdown-item" href={`/courses/${course.id}`} onClick={this.getResponses}>{course.title}</a> )
                     })}
                     {/* <a className="dropdown-item" href="#">Geometry</a>
                     <a className="dropdown-item" href="www.google.com">Algebra II</a>
@@ -68,7 +69,7 @@ class NavBar extends React.Component{
                 </li>
                 {this.props.current_user.id ?
                 <li className="nav-item">
-                    <a onClick={this.props.logout}className="nav-link" href="/logout">Logout</a>
+                    <a onClick={this.handleLogout}className="nav-link" href="/logout">Logout</a>
                 </li> :
                 <Fragment>
                     <li>
@@ -88,7 +89,14 @@ class NavBar extends React.Component{
 const mapStateToProps = state => {
     return {
       current_user: state.students.current_user,
+      courses: state.courses.courses
     }
   }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        userLogout: () => dispatch(userLogout())
+    }
+}
   
-export default connect(mapStateToProps)(NavBar);
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

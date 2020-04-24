@@ -8,7 +8,7 @@ export const addStudent = student => {
 export const setStudentUser = student => {
     return {
         type: 'SET_STUDENT_USER',
-        payload: {current_user: student, admin: false}
+        payload: {...student, admin: false}
     }
 }
 
