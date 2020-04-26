@@ -4,16 +4,15 @@ import TeacherClass from '../teachers/TeacherClass'
 import StudentClass from '../students/StudentClass'
 import { connect } from 'react-redux'
 import AuthHOC from "../HOCs/AuthHOC";
-import {currentCourse} from '../redux'
+import {currentCourse, setCurrentCourse} from '../redux'
 
 class ClassPage extends React.Component{
 //conditionally render either Teacher View or Student view for a class
 
 //find current_course based on url :id param and update store with it
     componentDidMount(){
-        // const id = this.props.match.params.id
-        // const set_course = this.props.courses.find(id)
         console.log(this.props)
+        this.props.setCurrentCourse(this.props.history.location.state.course)
     }
 
     // showClass = () => {
@@ -24,7 +23,7 @@ class ClassPage extends React.Component{
     render(){
         return (
             // <div>{this.showClass()}</div>
-            <StudentClass/>
+            <StudentClass current_course={this.props.history.location.state.course}/>
         )
     }
 }
@@ -39,7 +38,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-      setCurrentCourse: (course) => dispatch(currentCourse(course))
+      setCourse: (course) => dispatch(currentCourse(course)),
+      setCurrentCourse: course => setCurrentCourse(course)(dispatch)
     }
 }
 

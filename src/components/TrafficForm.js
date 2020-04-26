@@ -25,7 +25,8 @@ class TrafficForm extends React.Component{
 
 	render(){
 		return (
-			<div className='light-container border border-secondary'>
+			<div className='light-container' style={{'border': '2px solid black', 'margin': 'auto'}}>
+			<h4>Traffic Check:</h4>
 			How do you feel about the material covered in class today?<br></br>
 					Red: STOP, I am so confused.<br></br>
 					Yellow: Meh, I kind of know what's going on, but I'm not sure I really understand this.<br></br>

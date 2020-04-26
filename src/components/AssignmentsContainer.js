@@ -67,7 +67,7 @@ class AssignmentsContainer extends React.Component{
             <Fragment>
             <h5>Assignments/Announcements</h5>
             <div>
-                <ul>{this.renderAssignments()}</ul>
+                <ul style={{'textAlign': 'left'}}>{this.renderAssignments()}</ul>
             </div>
             {this.props.current_user.admin ? <button onClick={() => this.setState({showForm: true})}>Add Question</button> : null}
             {this.state.showForm ? <div>{this.showForm()}</div> : null}

@@ -72,9 +72,6 @@ const postResponse = (newResponse) => {
 }
 
 const postQuestion = (newQuestion) => {
-  // let newQuestion = {
-  //   [event.target.name]: event.target.value
-  // }
   return fetch(`${API_ROOT}/questions`, {
     method: 'POST',
     headers: headers(),

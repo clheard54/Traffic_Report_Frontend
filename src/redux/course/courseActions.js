@@ -10,7 +10,7 @@ export const addCourse = course => {
 export const currentCourse = course => {
     return {
         type: "CURRENT_COURSE",
-        payload: {...course}
+        payload: course
     }
 }
 
@@ -65,6 +65,11 @@ export const setUserCourses = (user) => {
     };
   }
 
+  export const setCurrentCourse = (course) => {
+    return dispatch => {
+      dispatch(currentCourse(course))
+            } 
+    }
 
 /*
 export const fetchCourses = (user) => {

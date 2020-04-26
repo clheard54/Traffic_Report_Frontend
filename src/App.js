@@ -81,7 +81,7 @@ createStudent = (event) => {
         <div className="App">
         <Router>
           <header>
-            <div className="traffic-top">
+            <div className="traffic-top" style={{'margin': '0'}}>
               <span className="dot" id='red-dot'></span>
               <span className="dot" id='yellow-dot'></span>
               <span className="dot" id='green-dot'></span>

@@ -31,14 +31,13 @@ class NavBar extends React.Component{
         })
     }
 
-
     handleLogout = () => {
         this.props.userLogout();
     }
 
-    // setCourse = (course) => {
-    //     this.props.setCurrentCourse(course)
-    // }
+    setCourse = (course) => {
+        this.props.setCurrentCourse(course)
+    }
 
     render(){
         return (
@@ -57,13 +56,17 @@ class NavBar extends React.Component{
                         return (<a key={course.id} className="dropdown-item" name={{...course}} href={`/courses/${course.id}`}>{course.title}</a> )
                     }) : "No courses yet entered"} */}
                     {this.state.courses ? this.state.courses.map(course => {
-                        return (<Link className="dropdown-item" to={{pathname: `/courses/${course.id}`,
-                            user_courses: {...this.state.courses}
+                        return (<Link className="dropdown-item" onClick={course => this.setCourse} to={{pathname: `/courses/${course.id}`,
+                            state: {course}
                         }}>{course.title}</Link>)}) : "No courses yet entered"}
                     </div>
                 </li> : <li className="nav-item active">
                     <a className="nav-link" href="https://flatironschool.com/">School Website <span className="sr-only">(current)</span></a>
                 </li>}
+                {this.props.current_user.id ?
+                <li className="nav-item">
+                    <a className="nav-link" href="/profile">Profile</a>
+                </li> : null }
 
                 <li className="nav-item">
                     <a className="nav-link" href="/">Home</a>
