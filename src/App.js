@@ -4,7 +4,6 @@ import './assets/bootstrap.css'
 import '@popperjs/core'
 import { connect } from "react-redux";
 import {BrowserRouter as Router, Route, Redirect} from 'react-router-dom'
-import { fetchCourses } from "./redux";
 import { store } from './redux/store'
 import { api } from './services/api'
 import LandingPage from './containers/LandingPage'
@@ -13,6 +12,7 @@ import Login from './containers/Login'
 import Signup from './components/Signup';
 import UserHome from './containers/UserHome';
 import ClassPage from './containers/ClassPage';
+import TrafficForm from './components/TrafficForm';
 
 class App extends React.Component{
   constructor(){
@@ -70,7 +70,6 @@ createStudent = (event) => {
         this.login(res);
         this.props.onSetStudentUser(res)
         this.setState({errors: false})
-        this.props.fetchCourses(res)
     } else {
         this.setState({errors: true})
     }
@@ -91,8 +90,6 @@ createStudent = (event) => {
             <div className="traffic-bottom"></div>
           </header>
           <div className = "main">
-            {localStorage.getItem('token') ? <Redirect to='/profile'/> :
-            null}
 
             <Route
               exact
@@ -118,8 +115,16 @@ createStudent = (event) => {
             <Route
               exact
               path="/courses/:id"
-              render={props => <ClassPage {...props}/>}
-            />     
+              render={props => <ClassPage {...props} course={this.props.current_course}/>}
+            />    
+
+            <Route 
+              exact
+              path='/traffic' 
+              render={props => <TrafficForm {...props}/>}
+
+              />
+
             </div>
             </Router>
           <br></br>
@@ -132,13 +137,14 @@ const mapDispatchToProps = dispatch => {
   return {
     onSetTeacherUser: (teacher) => dispatch({type: 'SET_TEACHER_USER', payload: teacher}),
     onSetStudentUser: student => dispatch({type: 'SET_STUDENT_USER', payload: student}),
-    fetchCourses: user => dispatch(fetchCourses(user))
+    // fetchCourses: user => dispatch(fetchCourses(user))
   }
 }
 
 const mapStateToProps = state => {
   return {
-    current_user: state.students.current_user
+    current_user: state.students.current_user,
+    current_course: state.courses.current_course
   }
 }
 

@@ -30,7 +30,7 @@ class TeacherClass extends React.Component{
 
 const mapStateToProps = state => {
     return {
-        current_course: state.students.current_course
+        current_course: state.courses.current_course
     }
 }
 

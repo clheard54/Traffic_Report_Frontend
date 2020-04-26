@@ -11,32 +11,36 @@ class ClassPage extends React.Component{
 
 //find current_course based on url :id param and update store with it
     componentDidMount(){
-        const id = this.props.match.params.id
-        const set_course = this.props.courses.find(id)
-        console.log(set_course)
-        this.props.setCurrentCourse(set_course)
+        // const id = this.props.match.params.id
+        // const set_course = this.props.courses.find(id)
+        console.log(this.props)
     }
+
+    // showClass = () => {
+    //    return this.props.current_user.admin ? <TeacherClass/> : <StudentClass/>
+    // }
 
 
     render(){
         return (
-            <div>{this.props.current_user.admin ? <TeacherClass/> : <StudentClass/>}</div>
+            // <div>{this.showClass()}</div>
+            <StudentClass/>
         )
     }
 }
 
 const mapStateToProps = state => {
     return {
-        current_user: state.current_user,
-        current_course: state.current_course,
-        courses: state.courses
+        current_user: state.students.current_user,
+        current_course: state.courses.current_course,
+        courses: state.courses.courses
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-      setCurrentCourse: (id) => dispatch(currentCourse(id))
+      setCurrentCourse: (course) => dispatch(currentCourse(course))
     }
 }
 
-export default AuthHOC(connect(mapStateToProps, mapDispatchToProps)(ClassPage))
+export default connect(mapStateToProps, mapDispatchToProps)(ClassPage)

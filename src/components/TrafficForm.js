@@ -1,23 +1,24 @@
 import React from 'react'
 import '../assets/traffic_form.css'
+import { connect } from 'react-redux'
 
-export default class TrafficForm extends React.Component{
+class TrafficForm extends React.Component{
 	constructor(){
 		super();
 		this.state = {
 			answer: '',
 			datatype: 'light',
-			courses_student_id: ''
 		}
 	}
 
+	
 	handleSubmit = (event) => {
 		event.preventDefault();
 		let newResponse = {
 			answer: event.target.color.value,
 			datatype: 'color',
 			day: new Date().toLocaleDateString(),
-			courses_student_id: '' //PULL FROM STATE!
+			courses_student_id: '' //PULL FROM STORE!
 		}
 		// api.posts.postResponse(newResponse)
 	}
@@ -45,5 +46,10 @@ export default class TrafficForm extends React.Component{
 	}
 }
 
-
+const mapStateToProps = state => {
+	return {
+		current_user: state.students.current_user
+	}
+}
 	
+export default connect(mapStateToProps)(TrafficForm)

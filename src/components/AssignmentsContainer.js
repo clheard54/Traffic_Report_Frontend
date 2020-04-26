@@ -2,25 +2,33 @@ import React, {Fragment} from 'react'
 import { api } from '../services/api'
 import { connect } from 'react-redux'
 
-class Assignments extends React.Component{
+class AssignmentsContainer extends React.Component{
     state = {
         showForm: false,
         assignments: []
     }
 
     componentDidMount(){
+        let classHW = []
         api.getRequests.getAssignments()
             .then(data => {
-                this.setState({
-                    assignments: data
-                })
+                if (!this.props.current_course.id){
+                    classHW = data
+                } else {
+                    if (data.length > 0){
+                    classHW = data.filter(hw => hw.course_id == this.props.current_course.id)
+                }
+            }
+            this.setState({
+                assignments: classHW
+            })
          })
     }
 
     renderAssignments = () => {
         if (this.state.assignments.length > 0){
             return this.state.assignments.map(hw => {
-            return <li>{hw.details}</li>
+            return <li key={hw.id}>{hw.details}</li>
             })
         }
     }
@@ -57,13 +65,12 @@ class Assignments extends React.Component{
     render(){
         return (
             <Fragment>
-            {this.props.current_user.admin ? <button onClick={() => this.setState({showForm: true})}>Add Question</button> : null}
-            {this.state.showForm ? <div>{this.showForm()}</div> : null}
             <h5>Assignments/Announcements</h5>
             <div>
                 <ul>{this.renderAssignments()}</ul>
             </div>
-
+            {this.props.current_user.admin ? <button onClick={() => this.setState({showForm: true})}>Add Question</button> : null}
+            {this.state.showForm ? <div>{this.showForm()}</div> : null}
             </Fragment>
         )
     }
@@ -77,4 +84,4 @@ const mapStateToProps = state => {
     }
   }
   
-  export default connect(mapStateToProps)(Assignments);
+  export default connect(mapStateToProps)(AssignmentsContainer);

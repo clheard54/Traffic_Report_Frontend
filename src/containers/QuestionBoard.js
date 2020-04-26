@@ -60,4 +60,4 @@ class QuestionBoard extends React.Component{
 
     };
 
-    export default AuthHOC(UserEvent);
+    export default QuestionBoard;

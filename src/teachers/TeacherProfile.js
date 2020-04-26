@@ -22,4 +22,4 @@ class TeacherProfile extends React.Component{
     }
 }
 
-export default AuthHOC(TeacherProfile)
+export default TeacherProfile

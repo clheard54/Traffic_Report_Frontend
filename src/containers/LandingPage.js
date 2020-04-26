@@ -16,7 +16,8 @@ export default class LandingPage extends React.Component{
     return (
         <Fragment>
           <h2>Welcome!</h2>
-          <p>Please Log In or Sign Up below.</p>
+          {!localStorage.getItem('token') ?
+          <p>Please Log In or Sign Up below.</p> : null }
             <br></br>
             <div className="container">
             <div className="row">
@@ -27,10 +28,19 @@ export default class LandingPage extends React.Component{
                 </div>
                 {/* <div className="col-sm-1"></div> */}
                 <div className ="col-md-4">
-                <Login {...this.props} />
+                {localStorage.getItem('token') ? 
+                <Fragment>
                 <br></br>
-                <span style={{'fontSize': '110%'}} >No Account?  </span>
-                <button className='btn btn-outline-success btn-sm font-weight-bolder' onClick={this.handleClick}>Create One Here</button>
+                <h3 style={{'color': '#ffc107'}}>You are Logged In!</h3>
+                <br></br>
+                <button className='btn btn-outline-success btn-lg font-weight-bolder' onClick={() => this.props.history.push('/profile')} >Go to Profile</button>
+                </Fragment> :
+                <Fragment>
+                  <Login {...this.props} />
+                  <br></br>
+                  <span style={{'fontSize': '110%'}} >No Account?  </span>
+                  <button className='btn btn-outline-success btn-sm font-weight-bolder' onClick={this.handleClick}>Create One Here</button>
+                </Fragment> }
                 </div>
                 <div className="col-sm-1"></div>
             </div>

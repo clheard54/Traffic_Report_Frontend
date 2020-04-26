@@ -1,10 +1,11 @@
+import { api } from "../../services/api";
+
 export const addResponse = response => {
     return {
         type: 'ADD_RESPONSE',
         payload: response
     }
 }
-
 
 export const fetchResponsesSuccess = (responses) => {
   return {
@@ -34,12 +35,10 @@ export const postResponseSuccess = (newResponse) => {
 };
 
 
-export const fetchResponses = () => {
+export const loadResponses = () => {
   return (dispatch) => {
     dispatch(fetchResponsesRequest());
-    fetch("http://localhost:3000/api/v1/responses")
-      .then((res) => res.json())
-      .then((data) => {
+    api.getRequests.getResponses().then((data) => {
         if (data.error) {
           dispatch(fetchResponsesFailure(data.error));
         } else {

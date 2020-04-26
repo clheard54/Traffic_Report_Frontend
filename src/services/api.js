@@ -28,7 +28,7 @@ const getCurrentUser = () => {
 
 const getAssignments = (/*CURRENT COURSE?*/) => {
   // then filter questions by course...
-  return fetch(`${API_ROOT}/questions`, {
+  return fetch(`${API_ROOT}/assignments`, {
     headers: headers()
   }).then(res => {
     return res.json();
@@ -92,8 +92,10 @@ const postAssignment = (newHW) => {
   .then(resp => resp.json())
 }
 
-const getResponses = (course) => {
-  return fetch(`${API_ROOT}/responses`)
+const getResponses = () => {
+  return fetch(`${API_ROOT}/responses`, {
+    headers: headers()
+  })
   .then(resp => resp.json())
     // probably sort based on course of interest
 }
@@ -105,7 +107,10 @@ const getStudents = (course) => {
 }
 
 const getCourses = (user) => {
-  return fetch(`${API_ROOT}/courses`)
+  console.log('api request for courses')
+  return fetch(`${API_ROOT}/courses`, {
+    headers: headers()
+  })
   .then(resp => resp.json())
 }
 

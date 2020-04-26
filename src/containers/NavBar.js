@@ -1,8 +1,8 @@
 import React, {Fragment} from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, Link, Redirect } from 'react-router-dom'
 import { api } from '../services/api'
 import { connect } from 'react-redux'
-import { userLogout } from '../redux'
+import { userLogout, currentCourse } from '../redux'
 import '../assets/bootstrap.css'
 
 
@@ -24,26 +24,26 @@ class NavBar extends React.Component{
                     if (students.includes(this.props.current_user.id)) {
                         userCourses.push(course)}
                 })
-                console.log(userCourses)
                 this.setState({
                     courses: userCourses
                 })
-            } else {
-                console.log("no courses")
-            }
+            } 
         })
     }
 
+
     handleLogout = () => {
         this.props.userLogout();
-        this.props.history.push('/')
     }
 
+    // setCourse = (course) => {
+    //     this.props.setCurrentCourse(course)
+    // }
 
     render(){
         return (
             <nav className="navbar navbar-light bg-light">
-            <Link to='/'><h2 className="navbar-brand">Traffic Controller</h2></Link>
+            <Link to={localStorage.getItem('token') ? '/profile' : '/'}><h2 className="navbar-brand">Traffic Controller</h2></Link>
             
             <div className="navbar-expand" id="navbarNavDropdown">
                 <ul className="navbar-nav">
@@ -53,12 +53,13 @@ class NavBar extends React.Component{
                     Course List
                     </a>
                     <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    {this.state.courses.map(course => {
-                        return (<a key={course.id} className="dropdown-item" href={`/courses/${course.id}`} onClick={this.getResponses}>{course.title}</a> )
-                    })}
-                    {/* <a className="dropdown-item" href="#">Geometry</a>
-                    <a className="dropdown-item" href="www.google.com">Algebra II</a>
-                    <a className="dropdown-item" href="www.google.com">PreCalculus</a> */}
+                    {/* {this.state.courses ? this.state.courses.map(course => {
+                        return (<a key={course.id} className="dropdown-item" name={{...course}} href={`/courses/${course.id}`}>{course.title}</a> )
+                    }) : "No courses yet entered"} */}
+                    {this.state.courses ? this.state.courses.map(course => {
+                        return (<Link className="dropdown-item" to={{pathname: `/courses/${course.id}`,
+                            user_courses: {...this.state.courses}
+                        }}>{course.title}</Link>)}) : "No courses yet entered"}
                     </div>
                 </li> : <li className="nav-item active">
                     <a className="nav-link" href="https://flatironschool.com/">School Website <span className="sr-only">(current)</span></a>
@@ -69,7 +70,7 @@ class NavBar extends React.Component{
                 </li>
                 {this.props.current_user.id ?
                 <li className="nav-item">
-                    <a onClick={this.handleLogout}className="nav-link" href="/logout">Logout</a>
+                    <a onClick={this.handleLogout}className="nav-link" href="/">Logout</a>
                 </li> :
                 <Fragment>
                     <li>
@@ -78,6 +79,9 @@ class NavBar extends React.Component{
                     <li>
                         <a className="nav-link" href="/signup">Create Account</a>
                     </li>
+                    <li className="nav-item">
+                    <a onClick={this.handleLogout}className="nav-link" href="/">Logout</a>
+                </li>
                 </Fragment> }
                 </ul>
             </div>
@@ -95,7 +99,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        userLogout: () => dispatch(userLogout())
+        userLogout: () => dispatch(userLogout()),
+        setCurrentCourse: course => dispatch(currentCourse(course)),
     }
 }
   

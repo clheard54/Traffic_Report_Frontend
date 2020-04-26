@@ -1,3 +1,5 @@
+import { api } from "../../services/api";
+
 export const addCourse = course => {
     return {
         type: 'ADD_COURSE',
@@ -8,7 +10,7 @@ export const addCourse = course => {
 export const currentCourse = course => {
     return {
         type: "CURRENT_COURSE",
-        payload: course
+        payload: {...course}
     }
 }
 
@@ -29,7 +31,7 @@ export const fetchCoursesFailure = (error) => {
 
 export const fetchCoursesRequest = () => {
   return {
-    type: 'FETCH_COURSES_REQUEST',
+    type: 'FETCH_COURSES_REQUEST'
   };
 };
 
@@ -40,7 +42,31 @@ export const postCourseSuccess = (newCourse) => {
   };
 };
 
+export const setUserCourses = (user) => {
+  return dispatch => {
+    dispatch(fetchCoursesRequest());
+    api.getRequests.getCourses(user).then(resp => {
+      if (resp.error){
+        dispatch(fetchCoursesFailure(resp.error))
+      } else {
+          if (resp.length > 0){
+            let userCourses = []
+            resp.forEach(course => {
+                let students = course.students.map(student => student.id)
+                if (students.includes(user.id)) {
+                    userCourses.push(course)}
+            });
+          dispatch(fetchCoursesSuccess(userCourses));
+          } else {
+            dispatch(fetchCoursesSuccess("No courses"))
+          }
+        };
+      });
+    };
+  }
 
+
+/*
 export const fetchCourses = (user) => {
   return (dispatch) => {
     dispatch(fetchCoursesRequest());
@@ -63,6 +89,7 @@ export const fetchCourses = (user) => {
       })
   };
 };
+*/
 
 export const postCourse = (newCourse) => {
   return (dispatch) => {

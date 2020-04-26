@@ -1,5 +1,7 @@
 const INITIAL_STATE = {
     current_user: null,
+    current_course: {},
+    user_courses: [],
     error: null
 }
 

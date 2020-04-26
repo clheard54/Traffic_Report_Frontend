@@ -1,5 +1,6 @@
 const INITIAL_STATE = {
     current_course: {},
+    user_courses: [],
     courses: [],
     loading: false
 }
@@ -15,7 +16,7 @@ const courseReducer = (state = INITIAL_STATE, action) => {
         case 'CURRENT_COURSE':
             return {
                 ...state,
-                current_course_id: action.payload
+                current_course: action.payload
             }
         case 'POST_COURSE':
         return {
@@ -31,8 +32,8 @@ const courseReducer = (state = INITIAL_STATE, action) => {
         case 'FETCH_COURSES_SUCCESS':
         return {
             ...state,
+            user_courses: [...action.payload],
             loading: false,
-            courses: action.payload,
         };
         default:
             return state

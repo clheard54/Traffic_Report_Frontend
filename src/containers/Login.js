@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { api } from '../services/api'
-import { userLogin } from  "../redux"
+import { userLogin, setUserCourses } from  "../redux"
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom'
 
 class Login extends React.Component{
     constructor(){
@@ -11,6 +12,12 @@ class Login extends React.Component{
                 username: '',
                 password: ''
             }
+        }
+    }
+
+    componentWillUpdate() {
+        if (!!localStorage.getItem('token')){
+            this.props.history.push('/profile')
         }
     }
 
@@ -51,6 +58,7 @@ class Login extends React.Component{
 
 const mapStateToProps = state => {
     return {
+        current_user: state.students.current_user,
         error: state.auths.error
     }
 }
@@ -58,6 +66,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onSetUser: (user) => userLogin(user)(dispatch),
+        setUserCourses: (user) => setUserCourses(user)(dispatch)
     } 
 }
 

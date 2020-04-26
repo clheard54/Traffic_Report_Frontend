@@ -1,6 +1,7 @@
 
 const INITIAL_STATE = {
   current_user: {},
+  current_course: {}
 }
 
 const studentReducer = (state = INITIAL_STATE, action) => {
