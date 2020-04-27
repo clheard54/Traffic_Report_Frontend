@@ -1,6 +1,7 @@
 import React, {Fragment} from 'react'
 import { api } from '../services/api'
 import { connect } from 'react-redux'
+import {fitty} from 'fitty'
 
 class AssignmentsContainer extends React.Component{
     state = {
@@ -65,7 +66,7 @@ class AssignmentsContainer extends React.Component{
     render(){
         return (
             <Fragment>
-            <h5>Assignments/Announcements</h5>
+            <h5 style={{'fontSize': '110%'}}>Assignments/Announcements</h5>
             <div>
                 <ul style={{'textAlign': 'left'}}>{this.renderAssignments()}</ul>
             </div>

@@ -104,7 +104,6 @@ const getStudents = (course) => {
 }
 
 const getCourses = (user) => {
-  console.log('api request for courses')
   return fetch(`${API_ROOT}/courses`, {
     headers: headers()
   })

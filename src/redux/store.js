@@ -2,9 +2,9 @@ import { createStore, applyMiddleware } from 'redux';
 import { combineReducers } from 'redux'
 import logger from 'redux-logger';
 import studentReducer from './student/studentReducer';
-import teacherReducer from './student/studentReducer';
-import responseReducer from './student/studentReducer';
-import courseReducer from './student/studentReducer';
+import teacherReducer from './teacher/teacherReducer';
+import responseReducer from './response/responseReducer';
+import courseReducer from './course/courseReducer';
 import authReducer from './auth/authReducer'
 
 export const rootReducer = combineReducers({

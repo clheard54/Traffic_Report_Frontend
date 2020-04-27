@@ -1,6 +1,6 @@
 const INITIAL_STATE = {
-  current_user: {},
-  current_course: {}
+  current_user: {}
+  // current_course: {}
 }
 
   const teacherReducer = (state = INITIAL_STATE, action) => {

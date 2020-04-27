@@ -38,15 +38,16 @@ export const postResponseSuccess = (newResponse) => {
 export const loadResponses = () => {
   return (dispatch) => {
     dispatch(fetchResponsesRequest());
-    api.getRequests.getResponses().then((data) => {
-        if (data.error) {
-          dispatch(fetchResponsesFailure(data.error));
+    api.getRequests.getResponses().then(data => {
+        if (data.error){
+          dispatch(fetchResponsesFailure(data.error))
         } else {
           dispatch(fetchResponsesSuccess(data));
         }
       });
   };
 };
+
 
 export const postResponse = (newResponse) => {
   return (dispatch) => {

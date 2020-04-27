@@ -39,7 +39,7 @@ class QuestionBoard extends React.Component{
           <form onSubmit={this.handleSubmit}>
           <br></br>
               <label>Watcha wanna know?</label>
-              <input type="textarea" name='text'></input>
+              <input type="textarea" rows='3' name='text'></input>
               <br></br><br></br>
               <input className='btn btn-outline-primary' type="submit" value='Submit'></input>
           </form>

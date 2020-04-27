@@ -24,7 +24,7 @@ class StudentClass extends React.Component{
             <Fragment>
                 <br></br>
                 <div className="container" style={{'maxWidth': '100%', 'minHeight': '530px'}}>
-                <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'width': '100%', 'marginLeft': '0', 'marginRight': '0'}}>
+                <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center', 'width': '100%', 'marginLeft': '0', 'marginRight': '0'}}>
                     <div className='col-sm-.5'></div>
                     <div className ="col-md-3" style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center', 'height': 'fit-content'}}>
                         <AssignmentsContainer/>
@@ -41,6 +41,8 @@ class StudentClass extends React.Component{
             <br></br>
             
                 <QuestionBoard/>
+                <br></br>
+                <br></br>
                 <hr></hr>
                 <br></br>
                 <br></br>

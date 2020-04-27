@@ -1,6 +1,5 @@
 const INITIAL_STATE = {
-  current_user: {},
-  current_course: {},
+  responses: [],
   loading: false
 }
 
@@ -15,7 +14,7 @@ const responseReducer = (state = INITIAL_STATE, action) => {
         return {
           ...state,
           loading: false,
-          data: [...state.data, action.payload],
+          responses: [...state.data, action.payload],
         };
       case 'FETCH_RESPONSES_REQUEST':
         return {

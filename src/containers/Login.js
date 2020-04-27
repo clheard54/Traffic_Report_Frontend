@@ -1,8 +1,6 @@
 import React, { Fragment } from 'react'
-import { api } from '../services/api'
 import { userLogin, setUserCourses } from  "../redux"
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom'
 
 class Login extends React.Component{
     constructor(){
@@ -30,10 +28,10 @@ class Login extends React.Component{
 
     handleSubmit = (event) => {
         event.preventDefault()
-        this.props.onSetUser(this.state)
+        this.props.onSetUser(this.state, () => this.props.setUserCourses(this.props.current_user))
         event.target.username.value = ''
         event.target.password.value = ''
-        // fetchCourses(data.user)(store.dispatch)
+        console.log("user logged in")
     }
 
     render(){

@@ -1,6 +1,6 @@
 const INITIAL_STATE = {
     current_course: {},
-    user_courses: null,
+    user_courses: [],
     courses: [],
     loading: false
 }

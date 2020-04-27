@@ -2,33 +2,16 @@ import React, {Fragment} from 'react'
 import { NavLink, Link, Redirect } from 'react-router-dom'
 import { api } from '../services/api'
 import { connect } from 'react-redux'
-import { userLogout, currentCourse } from '../redux'
+import { userLogout, currentCourse, setUserCourses } from '../redux'
 import '../assets/bootstrap.css'
 
 
 class NavBar extends React.Component{
-    constructor(){
-        super()
-        this.state = {
-            courses: []
-        }
-    }
 
-    componentWillReceiveProps() {
-        let userCourses = []
-        api.getRequests.getCourses(this.props.current_user)
-        .then(data => {
-            if (data.length > 0){
-                data.forEach(course => {
-                    let students = course.students.map(student => student.id)
-                    if (students.includes(this.props.current_user.id)) {
-                        userCourses.push(course)}
-                })
-                this.setState({
-                    courses: userCourses
-                })
-            } 
-        })
+    componentDidUpdate(prevProps){
+        if (prevProps.current_user !== this.props.current_user){
+            this.props.setUserCourses(this.props.current_user)
+        }
     }
 
     handleLogout = () => {
@@ -40,6 +23,7 @@ class NavBar extends React.Component{
     }
 
     render(){
+        // {this.props.setUserCourses(this.props.current_user)}
         return (
             <nav className="navbar navbar-light bg-light">
             <Link to={localStorage.getItem('token') ? '/profile' : '/'}><h2 className="navbar-brand">Traffic Controller</h2></Link>
@@ -52,11 +36,9 @@ class NavBar extends React.Component{
                     Course List
                     </a>
                     <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    {/* {this.state.courses ? this.state.courses.map(course => {
-                        return (<a key={course.id} className="dropdown-item" name={{...course}} href={`/courses/${course.id}`}>{course.title}</a> )
-                    }) : "No courses yet entered"} */}
-                    {this.state.courses ? this.state.courses.map(course => {
-                        return (<Link className="dropdown-item" onClick={course => this.setCourse} to={{pathname: `/courses/${course.id}`,
+                    
+                    {this.props.user_courses ? this.props.user_courses.map(course => {
+                        return (<Link className="dropdown-item" onClick={course => this.setCourse} key={course.id} to={{pathname: `/courses/${course.id}`,
                             state: {course}
                         }}>{course.title}</Link>)}) : "No courses yet entered"}
                     </div>
@@ -96,6 +78,7 @@ class NavBar extends React.Component{
 const mapStateToProps = state => {
     return {
       current_user: state.students.current_user,
+      user_courses: state.courses.user_courses,
       courses: state.courses.courses
     }
   }
@@ -104,7 +87,9 @@ const mapDispatchToProps = dispatch => {
     return {
         userLogout: () => dispatch(userLogout()),
         setCurrentCourse: course => dispatch(currentCourse(course)),
+        setUserCourses: (user) => setUserCourses(user)(dispatch)
     }
 }
+
   
 export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

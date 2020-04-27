@@ -1,10 +1,9 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import './App.css';
 import './assets/bootstrap.css'
 import '@popperjs/core'
 import { connect } from "react-redux";
-import {BrowserRouter as Router, Route, Redirect} from 'react-router-dom'
-import { store } from './redux/store'
+import {BrowserRouter as Router, Route } from 'react-router-dom'
 import { api } from './services/api'
 import LandingPage from './containers/LandingPage'
 import NavBar from './containers/NavBar'

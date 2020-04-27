@@ -56,6 +56,7 @@ export const setUserCourses = (user) => {
                 if (students.includes(user.id)) {
                     userCourses.push(course)}
             });
+            console.log(userCourses)
           dispatch(fetchCoursesSuccess(userCourses));
           } else {
             dispatch(fetchCoursesSuccess("No courses"))
@@ -65,11 +66,11 @@ export const setUserCourses = (user) => {
     };
   }
 
-  export const setCurrentCourse = (course) => {
-    return dispatch => {
-      dispatch(currentCourse(course))
-            } 
-    }
+  // export const setCurrentCourse = (course) => {
+  //   return dispatch => {
+  //     dispatch(currentCourse(course))
+  //           } 
+  //   }
 
 /*
 export const fetchCourses = (user) => {

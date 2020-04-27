@@ -11,27 +11,11 @@ import { setUserCourses } from '../redux'
 class UserHome extends React.Component{
 
 //depending on who is logged in, conditionally render either the StudentProfile page or the TeacherProfile page
-renderCourses = () => {
-  this.props.onSetUserCourses(this.props.current_user)
-}
-
-showButtons = () => {
-  if (!!this.props.user_courses){
-    return this.props.user_courses.map(course => {
-      return <button key={course.id} onClick={this.handleSelectCourse}>{course.title}</button>
-    })
-  }
-}
-
-
-
 
     render(){
         return (
           <Fragment>
             <h2>Welcome {this.props.current_user ? `, ${this.props.current_user.username}!` : "!"}</h2>
-            {this.renderCourses()}
-            {this.showButtons()}
             <div>{this.props.current_user.admin ? <TeacherProfile/> : <StudentProfile/>}</div>
           </Fragment>
         )
@@ -45,10 +29,5 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-     onSetUserCourses: (user) => setUserCourses(user)(dispatch)
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserHome);
+export default connect(mapStateToProps)(UserHome);

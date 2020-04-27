@@ -48,7 +48,7 @@ export const fetchUserSuccess = (user) => {
 }
 
 //Actions related to setting current_course in store
-export const selentCourseSuccess = (course) => {
+export const selectCourseSuccess = (course) => {
   return {
     type: 'SELECT_COURSE_SUCCESS',
     payload: course,

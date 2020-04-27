@@ -15,15 +15,15 @@ class ClassPage extends React.Component{
         this.props.setCurrentCourse(this.props.history.location.state.course)
     }
 
-    // showClass = () => {
-    //    return this.props.current_user.admin ? <TeacherClass/> : <StudentClass/>
-    // }
+    showClass = () => {
+       return this.props.current_user.admin ? <TeacherClass/> : <StudentClass/>
+    }
 
 
     render(){
         return (
-            // <div>{this.showClass()}</div>
-            <StudentClass current_course={this.props.history.location.state.course}/>
+            <div>{this.showClass()}</div>
+            /* <StudentClass current_course={this.props.history.location.state.course}/> */
         )
     }
 }
@@ -38,8 +38,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-      setCourse: (course) => dispatch(currentCourse(course)),
-      setCurrentCourse: course => setCurrentCourse(course)(dispatch)
+      setCurrentCourse: (course) => dispatch(currentCourse(course)),
     }
 }
 
