@@ -17,6 +17,16 @@ class IndividualData extends Component {
         if (prevProps.course_student !== this.props.course_student){
 			this.props.getStudentResponses(this.props.course_student.id)
 		}
+		if (prevProps.student_responses !== this.props.student_responses){
+			this.props.getAverage(this.computeAverage())
+		}
+	}
+
+	computeAverage = () => {
+		let numerical = this.props.student_responses.filter(response => response.datatype == 'color').map(entry => {
+			return entry.answer == 'red' ?  2 : (entry.answer == 'yellow' ? 6 : 10)
+		})
+		return numerical.reduce((a,b)=>a+b)/this.props.student_responses.length
 	}
 
     render() {
@@ -74,7 +84,7 @@ class IndividualData extends Component {
 		}
 		return (
 		<div>
-			<CanvasJSChart id='indiv-data' options = {options}
+			<CanvasJSChart id='indiv-data' options = {options} style={{'backgroundImage':"linear-gradient(green, yellow, red)", 'opacity': '0.2'}}
 				/* onRef={ref => this.chart = ref} */
 			/>
 			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}

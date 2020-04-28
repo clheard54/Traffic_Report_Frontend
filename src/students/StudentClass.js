@@ -11,8 +11,21 @@ class StudentClass extends React.Component{
   constructor(){
     super();
     this.state = {
-      course_student: {}
+      course_student: {},
+      avgStyle: null
     }
+  }
+
+  storeAvg = (avg) => {
+    const styling = {
+      'position': 'relative',
+      'zIndex': '1',
+      'top':'25px',
+      'left': (avg*20).toString() + "px"
+    }
+    this.setState({
+      avgStyle: styling
+    })
   }
 
   componentDidUpdate(prevProps){
@@ -64,10 +77,15 @@ class StudentClass extends React.Component{
                         <h5>Check out your recent traffic data in this course.</h5>
                         <br></br>
                         <p>Average Feels: </p>
+                        <div className='container'>
+                        <div id="gradient">
+                          <div className='circle' style={this.state.avgStyle}></div>
+                        </div>
+                        </div>
                     </div>
                     <div className='col-sm-.5'></div>
                     <div className='col-md-8'>
-                      <IndividualData course_student={this.state.course_student}/> 
+                      <IndividualData course_student={this.state.course_student} getAverage={this.storeAvg}/> 
                     </div>  
                   </div>
                 </div>
