@@ -1,4 +1,5 @@
 const INITIAL_STATE = {
+  student_responses: [],
   responses: [],
   loading: false
 }
@@ -14,7 +15,8 @@ const responseReducer = (state = INITIAL_STATE, action) => {
         return {
           ...state,
           loading: false,
-          responses: [...state.data, action.payload],
+          student_responses: [...state.student_responses, action.payload],
+          responses: [...state.responses, action.payload],
         };
       case 'FETCH_RESPONSES_REQUEST':
         return {
@@ -27,6 +29,18 @@ const responseReducer = (state = INITIAL_STATE, action) => {
           loading: false,
           responses: action.payload,
         };
+      case 'FETCH_RESPONSES_FAILURE':
+        return {
+            ...state,
+            loading: false,
+            error: action.payload
+        };
+        case 'FETCH_STUDENT_RESPONSES_SUCCESS':
+          return {
+            ...state,
+            student_responses: action.payload,
+            loading: false,
+          }
       default:
         return state;
     }

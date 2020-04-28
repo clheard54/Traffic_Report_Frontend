@@ -4,17 +4,28 @@ import { connect } from 'react-redux'
 import AssignmentsContainer from '../components/AssignmentsContainer'
 import IndividualData from '../data_charts/IndividualData'
 import TrafficForm from '../components/TrafficForm'
-import { findByLabelText } from '@testing-library/react'
+import { loadStudentResponses } from '../redux'
 import QuestionBoard from '../containers/QuestionBoard'
 
 class StudentClass extends React.Component{
-   constructor(){
+  constructor(){
     super();
     this.state = {
-      show: false,
-      questions: []
+      course_student: {}
     }
-}
+  }
+
+  componentDidUpdate(prevProps){
+    if (prevProps.current_user !== this.props.current_user || prevProps.current_course !== this.props.current_course){
+      api.getRequests.findCoursesStudent()
+      .then(data => {
+        let x = data.find(entry => entry['student_id']==this.props.current_user.id && entry['course_id']==this.props.current_course.id)
+        this.setState({
+          course_student: x
+        })
+      })
+    }
+  }
 
     render(){
         return (
@@ -30,7 +41,7 @@ class StudentClass extends React.Component{
                         <AssignmentsContainer/>
                     </div>
                     <div className='col-md-8'>
-                      <TrafficForm/>
+                      <TrafficForm course_student={this.state.course_student}/>
                     </div>  
                     <div className='col-sm-.5'></div>
                   </div>
@@ -48,16 +59,16 @@ class StudentClass extends React.Component{
                 <br></br>
                 <div className="container">
                 <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between'}}>
-                    <div className='col-sm-.5'></div>
                     <div className ="col-md-3">
                     <br></br>
-                        <h4>Check out your recent traffic data in this course.</h4>
+                        <h5>Check out your recent traffic data in this course.</h5>
+                        <br></br>
+                        <p>Average Feels: </p>
                     </div>
-                    <div className='col-sm-1.5'></div>
-                    <div className='col-md-8'>
-                      <IndividualData/> 
-                    </div>  
                     <div className='col-sm-.5'></div>
+                    <div className='col-md-8'>
+                      <IndividualData course_student={this.state.course_student}/> 
+                    </div>  
                   </div>
                 </div>
             </div>
@@ -67,9 +78,17 @@ class StudentClass extends React.Component{
 }
 
 const mapStateToProps = state => {
-    return {
-        current_course: state.courses.current_course
-    }
+	return {
+		current_user: state.students.current_user,
+		current_course: state.courses.current_course,
+		student_responses: state.responses.student_responses
+	}
 }
 
-export default connect(mapStateToProps)(StudentClass)
+const mapDispatchToProps = dispatch => {
+	return {
+		getStudentResponses: (id) => loadStudentResponses(id)(dispatch)	
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StudentClass)

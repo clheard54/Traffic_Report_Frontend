@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { userLogin, setUserCourses } from  "../redux"
 import { connect } from 'react-redux';
 
@@ -31,7 +31,6 @@ class Login extends React.Component{
         this.props.onSetUser(this.state, () => this.props.setUserCourses(this.props.current_user))
         event.target.username.value = ''
         event.target.password.value = ''
-        console.log("user logged in")
     }
 
     render(){

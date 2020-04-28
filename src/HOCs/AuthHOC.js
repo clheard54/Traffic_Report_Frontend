@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import { Redirect } from 'react-router-dom'
 import {api} from "../services/api"
 
@@ -51,8 +51,7 @@ const AuthHOC = WrappedComponent => {
         render(){
           return (
             <div>
-                {this.isAuthorized() ? (<WrappedComponent {...this.props}/>) : 
-                this.isRejected() ? <Redirect to="/login"/> : null} 
+                {this.state.authorized ? (<WrappedComponent {...this.props}/>) : null} 
             </div>)
         }
     }

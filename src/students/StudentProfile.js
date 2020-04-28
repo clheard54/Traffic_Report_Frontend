@@ -22,7 +22,7 @@ class StudentProfile extends React.Component{
                         <h4 style={{'color': '#007bff', 'lineHeight': '200%'}}>Your Classes</h4>
                         {this.props.user_courses ? this.props.user_courses.map(course => {
                         return (
-                            <li><button className="btn btn-outline-primary" style={{'maxWidth': '350px'}} key={course.id} onClick={this.handleSelectCourse}><Link onClick={course => this.setCourse} key={course.id} to={{pathname: `/courses/${course.id}`,
+                            <li key={course.id}><button className="btn btn-outline-primary" style={{'maxWidth': '350px'}} onClick={this.handleSelectCourse}><Link onClick={course => this.setCourse} key={course.id} to={{pathname: `/courses/${course.id}`,
                             state: {course}
                         }}>{course.title}</Link></button></li>)})
                      : "No courses yet entered"}

@@ -8,6 +8,21 @@ import WeekTotal from '../data_charts/WeekTotal'
 import { connect } from 'react-redux'
 
 class TeacherClass extends React.Component{
+  constructor(){
+    super();
+    this.state = {
+      dataset: []
+    }
+  }
+
+  componentDidUpdate(prevProps){
+    if (prevProps.current_course !== this.props.current_course){
+        let responses = api.getRequests.getClassResponses(this.props.current_course);
+      this.setState({
+        dataset: responses
+      })    
+    }
+}
 
     render(){
         return (

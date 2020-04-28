@@ -58,17 +58,12 @@ const createStudent = data => {
 };
 
 const postResponse = (newResponse) => {
-  // let newResponse = {
-  //   [event.target.name]: event.target.value
-  // }
   return fetch(`${API_ROOT}/responses`, {
     method: 'POST',
     headers: headers(),
     body: JSON.stringify(newResponse)
   })
   .then(resp => resp.json())
-  .then(data => 
-    console.log(data))
 }
 
 const postQuestion = (newQuestion) => {
@@ -97,6 +92,16 @@ const getResponses = () => {
     // probably sort based on course of interest
 }
 
+const getClassResponses = (course) => {
+  return fetch(`${API_ROOT}/responses`, {
+    headers: headers()
+  })
+  .then(resp => resp.json())
+  .then(data => {
+    return data.filter(response => course.responses.includes(response))
+  })
+}
+
 const getStudents = (course) => {
   return fetch(`${API_ROOT}/students`)
   .then(resp => resp.json())
@@ -105,6 +110,13 @@ const getStudents = (course) => {
 
 const getCourses = (user) => {
   return fetch(`${API_ROOT}/courses`, {
+    headers: headers()
+  })
+  .then(resp => resp.json())
+}
+
+const findCoursesStudent = () => {
+  return fetch(`${API_ROOT}/courses_students`, {
     headers: headers()
   })
   .then(resp => resp.json())
@@ -121,8 +133,10 @@ export const api = {
   getRequests: {
     getResponses,
     getStudents,
+    getClassResponses,
     getAssignments,
-    getCourses
+    getCourses,
+    findCoursesStudent
   },
   posts: {
     postResponse,

@@ -56,7 +56,6 @@ export const setUserCourses = (user) => {
                 if (students.includes(user.id)) {
                     userCourses.push(course)}
             });
-            console.log(userCourses)
           dispatch(fetchCoursesSuccess(userCourses));
           } else {
             dispatch(fetchCoursesSuccess("No courses"))

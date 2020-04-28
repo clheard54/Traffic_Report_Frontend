@@ -2,25 +2,49 @@ import React, {Component} from 'react'
 import CanvasJSReact from '../assets/canvasjs.react';
 import '@popperjs/core'
 import { connect } from 'react-redux';
-import { loadResponses } from '../redux';
+import { loadStudentResponses } from '../redux';
 import { api } from '../services/api'
 //var CanvasJSReact = require('./canvasjs.react');
 // var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
+let responses
+let course_student = {}
 class IndividualData extends Component {	
+	
 	// fetch recent responses based on current_user
-
-	componentDidMount(){
-		this.props.getResponses()
-	}
-
-	componentWillReceiveProps(){
-		console.log(this.props.responses)
+	componentDidUpdate(prevProps){
+        if (prevProps.course_student !== this.props.course_student){
+			this.props.getStudentResponses(this.props.course_student.id)
+		}
 	}
 
     render() {
-        const n = Math.sqrt(2)
+		const hash = {
+			'red': 2,
+			'yellow': 6,
+			'green': 10
+		}
+		const matchColor = {
+			'red': '#EA4335',
+			'yellow': 'rgb(248, 200, 54)',
+			'green': '#34A853'
+		}
+		const feeling = {
+			2: "really confused",
+			6: "shaky",
+			10: "great!"
+		}
+		const n = Math.sqrt(2)
+		const myData = this.props.student_responses.filter(response => response.datatype == 'color').map(response => (
+			{
+				label: response.day.replace('.', '/'), 
+				x: parseFloat(response.day),
+				y: hash[response.answer], 
+				z: 80*n^2,
+				markerColor: matchColor[response.answer],
+			}
+		));
         const options = {
 			animationEnabled: true,
 			exportEnabled: true,
@@ -31,25 +55,21 @@ class IndividualData extends Component {
 			},
 			axisX: {
 				title: 'Date',
-			logarithmic: false
+				logarithmic: false,
+				interval: 0.01,
+				labelWrap: true,
+				labelAngle: -45
 			},
 			axisY: {
-				title: "Traffic Temperature"
+				title: "Traffic Temperature",
+				gridThickness: 2
 			},
 			data: [{
 				type: "bubble",
-				indexLabel: "{label}",
-				toolTipContent: "<b>{label}</b><br>Date: {x}<br>Traffic Temperature: {y}<br>Diameter: {z} number",
-				dataPoints: [
-					{ label: "Red", x: 1, y: 10, z: 80*n^2, color: 'red' },
-					{ label: "Yellow", x: 1, y: 20, z: 80*n^4, color: 'yellow'},
-					{ label: "Green", x: 1, y: 30, z: 80*n^1, color: 'green'}
-					// { label: "Aiden", x: 1, y: 10, z: 100 },
-					// { label: "Kailana", x: 1, y: 20, z: 100 },
-					// { label: "Chris", x: 1, y: 20, z: 100 },
-					// { label: "Jack", x: 1, y: 20, z: 100 },
-					// { label: "Kim", x: 1, y: 30, z: 100 },
-				]
+				// indexLabel: "{label}",
+				toolTipContent: "<b>{label}</b><br>Date: {x}<br>Traffic Temperature: {y}<br>Feeling: {feeling[z]}",
+				indexLabelWrap: true,
+				dataPoints: myData
 			}]
 		}
 		return (
@@ -66,13 +86,14 @@ class IndividualData extends Component {
 const mapStateToProps = state => {
 	return {
 		current_user: state.students.current_user,
-		responses: state.responses.responses
+		current_course: state.courses.current_course,
+		student_responses: state.responses.student_responses
 	}
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
-		getResponses: () => loadResponses()(dispatch)	
+		getStudentResponses: (id) => loadStudentResponses(id)(dispatch)	
 	}
 }
 

@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
-import { NavLink, Link, Redirect } from 'react-router-dom'
-import { api } from '../services/api'
+import { Link } from 'react-router-dom'
+// import { api } from '../services/api'
 import { connect } from 'react-redux'
 import { userLogout, currentCourse, setUserCourses } from '../redux'
 import '../assets/bootstrap.css'

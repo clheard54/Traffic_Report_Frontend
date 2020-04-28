@@ -14,6 +14,13 @@ export const fetchResponsesSuccess = (responses) => {
   };
 };
 
+export const fetchStudentResponsesSuccess = (responses) => {
+  return {
+    type: 'FETCH_STUDENT_RESPONSES_SUCCESS',
+    payload: responses,
+  };
+};
+
 export const fetchResponsesFailure = (error) => {
   return {
     type: 'FETCH_RESPONSES_FAILURE',
@@ -35,14 +42,15 @@ export const postResponseSuccess = (newResponse) => {
 };
 
 
-export const loadResponses = () => {
+export const loadStudentResponses = (id) => {
   return (dispatch) => {
     dispatch(fetchResponsesRequest());
     api.getRequests.getResponses().then(data => {
         if (data.error){
           dispatch(fetchResponsesFailure(data.error))
         } else {
-          dispatch(fetchResponsesSuccess(data));
+          let filtered = data.filter(entry => entry['courses_student_id']==id)
+          dispatch(fetchStudentResponsesSuccess(filtered));
         }
       });
   };
@@ -52,19 +60,11 @@ export const loadResponses = () => {
 export const postResponse = (newResponse) => {
   return (dispatch) => {
     dispatch(fetchResponsesRequest());
-    fetch("http://localhost:3000/api/v1/responses", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newResponse),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          dispatch(fetchResponsesFailure(data.error));
+    api.posts.postResponse(newResponse).then(resp => {
+      if (resp.error) {
+          dispatch(fetchResponsesFailure(resp.error));
         } else {
-          dispatch(postResponseSuccess(data));
+          dispatch(postResponseSuccess(resp));
         }
       });
   };

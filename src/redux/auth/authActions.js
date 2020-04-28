@@ -46,24 +46,3 @@ export const fetchUserSuccess = (user) => {
         })
     }
 }
-
-//Actions related to setting current_course in store
-export const selectCourseSuccess = (course) => {
-  return {
-    type: 'SELECT_COURSE_SUCCESS',
-    payload: course,
-  };
-};
-
-export const selectCourseFailure = (error) => {
-  return {
-    type: 'SELECT_COURSE_FAILURE',
-    payload: error,
-  };
-};
-
-export const selectCourseRequest = () => {
-  return {
-    type: 'FETCH_COURSE_REQUEST',
-  };
-};
