@@ -99,20 +99,15 @@ const getTeachersResponses = () => {
   .then(resp => resp.json())
   }
 
-const getClassResponses = (course) => {
-  return fetch(`${API_ROOT}/responses`, {
-    headers: headers()
-  })
-  .then(resp => resp.json())
-  .then(data => {
-    return data.filter(response => course.responses ? course.responses.includes(response) : null)
-  })
-}
-
-const getStudents = (course) => {
+const getStudents = () => {
   return fetch(`${API_ROOT}/students`)
   .then(resp => resp.json())
     // probably sort based on course of interest
+}
+
+const getClassStudents = (course) => {
+  return fetch(`${API_ROOT}/students`)
+  .then(resp => resp.json())
 }
 
 const getCourses = (user) => {
@@ -140,7 +135,7 @@ export const api = {
   getRequests: {
     getResponses,
     getStudents,
-    getClassResponses,
+    getClassStudents,
     getAssignments,
     getCourses,
     findCoursesStudent,

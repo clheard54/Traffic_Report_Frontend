@@ -36,7 +36,8 @@ const mapStateToProps = state => {
     return {
         current_user: state.auths.current_user,
         current_course: state.courses.current_course,
-        courses: state.courses.courses
+        courses: state.courses.courses,
+        teachers_responses: state.responses.teachers_responses
     }
 }
 

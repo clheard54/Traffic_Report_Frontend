@@ -2,6 +2,7 @@ const INITIAL_STATE = {
   student_responses: [],
   teachers_responses: [],
   responses: [],
+  class_responses: [],
   loading: false
 }
 
@@ -46,6 +47,12 @@ const responseReducer = (state = INITIAL_STATE, action) => {
         return {
           ...state,
           teachers_responses: action.payload,
+          loading: false,
+        }
+        case 'FETCH_CLASS_RESPONSES_SUCCESS':
+        return {
+          ...state,
+          class_responses: action.payload,
           loading: false,
         }
       default:

@@ -6,6 +6,7 @@ import TriageChart from '../data_charts/TriageChart'
 import WeekAvgs from '../data_charts/WeekAvgs'
 import WeekTotal from '../data_charts/WeekTotal'
 import { connect } from 'react-redux'
+import { loadClassResponses } from '../redux'
 
 
 const hash = {
@@ -41,13 +42,16 @@ class TeacherClass extends React.Component{
       if (prevProps.teachers_responses !== this.props.teachers_responses){
         this.storeAvg(this.computeAverage())
       }
+      if (prevProps.current_course !== this.props.current_course){
+          this.props.loadClassResponses(this.props.current_course.id)
+          }
     }
 
   computeAverage = () => {
-    let numerical = this.props.teachers_responses.map(entry => {
+    let numerical = this.props.class_responses.map(entry => {
       return entry.answer == 'red' ?  2 : (entry.answer == 'yellow' ? 6 : 10)
     })
-    return numerical.reduce((a,b)=>a+b)/this.props.teachers_responses.length
+    return numerical.reduce((a,b)=>a+b)/this.props.class_responses.length
   }
 
     
@@ -64,7 +68,7 @@ class TeacherClass extends React.Component{
                       <div style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center', 'height': 'fit-content'}}><AssignmentsContainer/></div>
                         <br></br>
                         <br></br>
-                        <h4>Triage Chart:</h4>
+                        
                         <div style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center', 'height': 'fit-content'}}><TriageChart /></div>
                     </div>
                     <div className='col-md-6'>
@@ -116,4 +120,10 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(TeacherClass)
+const mapDispatchToProps = dispatch => {
+  return {
+    loadClassResponses: id => loadClassResponses(id)(dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TeacherClass)

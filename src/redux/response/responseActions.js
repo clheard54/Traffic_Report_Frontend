@@ -29,6 +29,15 @@ export const fetchTeachersResponsesSuccess = (responses) => {
   };
 };
 
+
+export const fetchClassResponsesSuccess = (responses) => {
+  return {
+    type: 'FETCH_CLASS_RESPONSES_SUCCESS',
+    payload: responses,
+  };
+};
+
+
 export const fetchResponsesFailure = (error) => {
   return {
     type: 'FETCH_RESPONSES_FAILURE',
@@ -72,6 +81,20 @@ export const loadStudentResponses = (id) => {
         } else {
           let filtered = data.filter(entry => entry['courses_student_id']==id)
           dispatch(fetchStudentResponsesSuccess(filtered));
+        }
+      });
+  };
+}
+
+export const loadClassResponses = (id) => {
+  return (dispatch) => {
+    dispatch(fetchResponsesRequest());
+    api.getRequests.getResponses().then(data => {
+        if (data.error){
+          dispatch(fetchResponsesFailure(data.error))
+        } else {
+          let filtered = data.filter(response => response.course_id == id)
+          dispatch(fetchClassResponsesSuccess(filtered));
         }
       });
   };
