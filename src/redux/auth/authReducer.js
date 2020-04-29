@@ -2,6 +2,7 @@ const INITIAL_STATE = {
     current_user: null,
     current_course: {},
     user_courses: [],
+    user_assignments: [],
     error: null
 }
 
@@ -38,6 +39,24 @@ const INITIAL_STATE = {
             error: null
         }
         case 'FETCH_USER_FAILURE':
+        return {
+            ...state,
+            loading: false,
+            error: action.payload
+        };
+        case 'FETCH_ASSIGNMENTS_REQUEST':
+            return {
+                ...state,
+                loading: true,
+            };
+        case 'FETCH_ASSIGNMENTS_SUCCESS':
+        return {
+            ...state,
+            loading: false,
+            error: null,
+            user_assignments: action.payload
+        };
+        case 'FETCH_ASSIGNMENTS_FAILURE':
         return {
             ...state,
             loading: false,

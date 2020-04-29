@@ -1,8 +1,8 @@
 import React, {Fragment} from 'react'
-import AssignmentsContainer from '../components/AssignmentsContainer'
+import UserAssignments from '../components/UserAssignments'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { currentCourse } from '../redux'
+import { currentCourse, loadClassResponses, loadClassAssignments, loadClassQuestions } from '../redux'
 import AuthHOC from "../HOCs/AuthHOC";
 
 class StudentProfile extends React.Component{
@@ -22,15 +22,15 @@ class StudentProfile extends React.Component{
                         <h4 style={{'color': '#007bff', 'lineHeight': '200%'}}>Your Classes</h4>
                         {this.props.user_courses ? this.props.user_courses.map(course => {
                         return (
-                            <li key={course.id}><button className="btn btn-outline-primary" style={{'maxWidth': '350px'}} onClick={this.handleSelectCourse}><Link onClick={course => this.setCourse} key={course.id} to={{pathname: `/courses/${course.id}`,
+                            <div><br></br><li key={course.id}><button className="btn btn-outline-primary" style={{'maxWidth': '350px'}} onClick={() => this.setCourse(course)}><Link onClick={() => this.setCourse(course)} key={course.id} to={{pathname: "/courses/current",
                             state: {course}
-                        }}>{course.title}</Link></button></li>)})
+                        }}>{course.title}</Link></button></li></div>)})
                      : "No courses yet entered"}
 
                     </div>
                     <div className='col-md-3'></div>
                     <div className ="col-md-4" style={{'borderStyle': 'solid', 'borderWidth': '3px', 'borderColor': 'var(--gray-dark)', 'position': 'relative', 'right': '10%', 'padding': '15px'}}>
-                        <AssignmentsContainer/>
+                        <UserAssignments/>
                     </div>
                 </div>
                 </div>
@@ -51,8 +51,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setCurrentCourse: course => dispatch(currentCourse(course))
+        setCurrentCourse: course => {
+            console.log(course)
+            dispatch(currentCourse(course));
         }
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentProfile)

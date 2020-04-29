@@ -8,10 +8,13 @@ import {currentCourse, setCurrentCourse} from '../redux'
 
 class ClassPage extends React.Component{
 //conditionally render either Teacher View or Student view for a class
-componentDidMount(){
-    console.log(this.props)
-    this.props.setCurrentCourse(this.props.history.location.state.course)
-}
+
+    // componentDidMount() {
+    //     if (!this.props.current_course.id) {
+    //       this.props.history.push("/profile");
+    //     } 
+    // }
+
 //find current_course based on url :id param and update store with it
     componentDidUpdate(prevProps){
         if (prevProps.current_user !== this.props.current_user){
@@ -20,7 +23,7 @@ componentDidMount(){
     }
 
     showClass = () => {
-       return this.props.current_user ? (this.props.current_user.admin ? <TeacherClass/> : <StudentClass/>) : null
+       return this.props.current_user !== null ? (this.props.current_user.admin ? <TeacherClass/> : <StudentClass/>) : null
     }
 
 

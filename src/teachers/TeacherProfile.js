@@ -13,6 +13,12 @@ import { connect } from 'react-redux'
 let allData = []
 class TeacherProfile extends React.Component{
 
+    componentDidMount(){
+        let courseIds = this.props.user_courses.map(course => course.id)
+        console.log(this.props.current_user.courses)
+        this.props.loadTeachersResponses(courseIds)
+    }
+
     componentDidUpdate(prevProps){
         if (prevProps.current_user !== this.props.current_user || prevProps.user_courses !== this.props.user_courses){
             if (this.props.current_user && this.props.user_courses){
@@ -38,7 +44,7 @@ class TeacherProfile extends React.Component{
                         <h4 style={{'color': '#007bff', 'lineHeight': '200%'}}>Your Classes</h4>
                         {this.props.user_courses ? this.props.user_courses.map(course => {
                         return (
-                            <div><li><button className="btn btn-outline-primary" style={{'maxWidth': '350px'}} key={course.id} onClick={this.handleSelectCourse}><Link onClick={course => this.setCourse(course)} key={course.id} to={{pathname: `/courses/${course.id}`,
+                            <div><li><button className="btn btn-outline-primary" style={{'maxWidth': '350px'}} key={course.id} onClick={() => this.setCourse(course)}><Link onClick={() => this.setCourse(course)} key={course.id} to={{pathname: "/courses/current",
                             state: {course}
                         }}>{course.title}</Link></button></li><br></br></div>)})
                         : "No courses yet entered"}

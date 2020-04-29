@@ -6,7 +6,9 @@ import { connect } from 'react-redux'
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 // Grab every response from this course for the past 5 days. Each one gets plotted. All same diameter. Label with names?
-
+let red
+let yellow
+let green
 class WeekTotal extends Component {	
 	constructor() {
 		super();
@@ -17,7 +19,10 @@ class WeekTotal extends Component {
 
 	
 	// componentDidUpdate(prevProps){
-	// 	if (prevProps.teachers_responses !== this.props.teachers_responses || prevProps.current_course !== this.props.current_course){
+	// 	if (prevProps.current_course !== this.props.current_course){
+	// 		red = this.props.current_course.responses.filter(resp => resp.answer == 'red')
+	// 		yellow = this.props.current_course.responses.filter(resp => resp.answer == 'yellow')
+	// 		green = this.props.current_course.responses.filter(resp => resp.answer == 'green');
 	// 		if (this.props.teachers_responses !== []){
 	// 		this.addAllData()
 	// 		}
@@ -63,27 +68,30 @@ class WeekTotal extends Component {
 		const today = date.toDateString().slice(4,10)
 		date.setDate(date.getDate()-7)
 		const weekago = date.toDateString().slice(4,10)
-		const ordered = this.props.teachers_responses.sort((a,b) => (a.day < b.day) ? 1 : -1)
+		const ordered = this.props.current_course.responses.sort((a,b) => (a.day < b.day) ? 1 : -1)
+		if (ordered.length !== 0){
+		const todayDateAsInt = parseInt(ordered[0].day)
 		let arr = []
 		for (let i=0; i<7; i++){
 			let point = {};
-			point.label = weekago.slice(0,4) + ' ' + parseInt(weekago.slice(8)+i)
-			point.y = (color.filter( resp => Math.abs(parseInt(resp.day) - parseInt(ordered[0].day))<1 )).length
-		arr.push(point)	
+			point.label = `${weekago.slice(0,4)} ${parseInt(weekago.slice(4))+i}`
+			point.y = (color.filter( resp => Math.abs(parseInt(resp.day) - (todayDateAsInt-7+i))<1 )).length
+			arr.push(point)	
 		}
 		return arr
+	}
 	}
 	
 	
 	render() {
-		const red = this.props.teachers_responses.filter(resp => resp.answer == 'red')
-		const yellow = this.props.teachers_responses.filter(resp => resp.answer == 'yellow')
-		const green = this.props.teachers_responses.filter(resp => resp.answer == 'green');
+		// const red = this.props.current_course.responses.filter(resp => resp.answer == 'red')
+		// const yellow = this.props.current_course.responses.filter(resp => resp.answer == 'yellow')
+		// const green = this.props.current_course.responses.filter(resp => resp.answer == 'green');
 
-		const date = new Date()
-		const today = date.toDateString().slice(4,10)
+		let date = new Date()
+		let today = date.toDateString().slice(4,10)
 		date.setDate(date.getDate()-7)
-		const weekago = date.toDateString().slice(4,10)
+		let weekago = date.toDateString().slice(4,10)
         const options = {
 			animationEnabled: true,
 			exportEnabled: true,
@@ -106,21 +114,21 @@ class WeekTotal extends Component {
 					showInLegend: true,
 					legendText: "Red",
 					color: "#EA4335",
-					dataPoints: this.fillData(red)
+					dataPoints: this.fillData(this.props.current_course.responses.filter(resp => resp.answer == 'red'))
 				  },
 				  {
 					type: "column",
 					showInLegend: true,
 					legendText: "Yellow",
 					color: "rgb(248, 200, 54)",
-					dataPoints: this.fillData(yellow)
+					dataPoints: this.fillData(this.props.current_course.responses.filter(resp => resp.answer == 'yellow'))
 				  },
 				  {
 					type: "column",
 					showInLegend: true,
 					legendText: "Green",
 					color: "#34A853",
-					dataPoints: this.fillData(green)
+					dataPoints: this.fillData(this.props.current_course.responses.filter(resp => resp.answer == 'green'))
 				  }
 			]
 			  }

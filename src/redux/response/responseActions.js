@@ -86,15 +86,17 @@ export const loadStudentResponses = (id) => {
   };
 }
 
-export const loadClassResponses = (id) => {
+export const loadClassResponses = (course) => {
   return (dispatch) => {
     dispatch(fetchResponsesRequest());
     api.getRequests.getResponses().then(data => {
         if (data.error){
           dispatch(fetchResponsesFailure(data.error))
         } else {
-          let filtered = data.filter(response => response.course_id == id)
-          dispatch(fetchClassResponsesSuccess(filtered));
+          if (data.length > 0){
+            let filtered = data.filter(response => response.course_id == course.id)
+            dispatch(fetchClassResponsesSuccess(filtered));
+          }
         }
       });
   };
@@ -103,13 +105,35 @@ export const loadClassResponses = (id) => {
   export const loadTeachersResponses = (courseIds) => {
     return (dispatch) => {
       dispatch(fetchResponsesRequest());
-      api.getRequests.getTeachersResponses(courseIds).then(data => {
+      api.getRequests.getTeachersResponses().then(data => {
           if (data.error){
             dispatch(fetchResponsesFailure(data.error))
           } else {
-            let allData = data.filter(entry => courseIds.includes(entry['courses_student_id']))
-            dispatch(fetchTeachersResponsesSuccess(allData));
+            if (data.length > 0){
+              let allData = data.filter(entry => courseIds.includes(entry['courses_student_id']))
+              dispatch(fetchTeachersResponsesSuccess(allData));
+            }
           }
         })
       };
     }
+
+  export const setTeachersResponses = (teacher) => {
+    return (dispatch) => {
+      dispatch(fetchResponsesRequest());
+      api.getRequests.getResponses().then(data => {
+          if (data.error){
+            dispatch(fetchResponsesFailure(data.error))
+          } else {
+            if (data.length > 0){
+              let allData = data.filter(entry => teacher.courses.responses.includes(entry));
+              dispatch(fetchTeachersResponsesSuccess(allData));
+            } else {
+              dispatch(fetchTeachersResponsesSuccess([]));
+            }
+          }
+        })
+      };
+    }
+
+  

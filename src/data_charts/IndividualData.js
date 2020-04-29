@@ -8,26 +8,33 @@ import { api } from '../services/api'
 // var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-let responses
-let course_student = {}
+let student_responses
+let numerical
 class IndividualData extends Component {	
+	state = {
+		avg: 0
+	}
 	
 	// fetch recent responses based on current_user
-	componentDidUpdate(prevProps){
-        if (prevProps.course_student !== this.props.course_student){
-			this.props.getStudentResponses(this.props.course_student.id)
-		}
-		if (prevProps.student_responses !== this.props.student_responses){
-			this.props.getAverage(this.computeAverage())
-		}
-	}
+	// componentDidMount(){
+	// 	student_responses = this.props.current_course.responses.map(resp => resp.student_id == this.props.current_user.id ? resp : null).filter(e => e!==null)
+	// 	this.computeAverage()
+	// }
 
-	computeAverage = () => {
-		let numerical = this.props.student_responses.filter(response => response.datatype == 'color').map(entry => {
-			return entry.answer == 'red' ?  2 : (entry.answer == 'yellow' ? 6 : 10)
-		})
-		return numerical.reduce((a,b)=>a+b)/this.props.student_responses.length
-	}
+	// componentDidUpdate(prevProps){
+	// 	if (prevProps.current_course !== this.props.current_course){
+	// 		this.computeAverage()
+	// 	}
+	// }
+
+	// computeAverage = () => {
+	// 	numerical = student_responses.filter(response => response.datatype == 'light').map(entry => {
+	// 		return entry.answer == 'red' ?  2 : (entry.answer == 'yellow' ? 6 : 10)
+	// 	})
+	// 	this.setState({
+	// 		avg: numerical.reduce((a,b)=>a+b)/student_responses.length
+	// 	})
+	// }
 
     render() {
 		const hash = {
@@ -46,7 +53,7 @@ class IndividualData extends Component {
 			10: "great!"
 		}
 		const n = Math.sqrt(2)
-		const myData = this.props.student_responses.filter(response => response.datatype == 'color').map(response => (
+		const myData = this.props.current_course.responses.map(resp => resp.student_id == this.props.current_user.id ? resp : null).filter(e => e!==null).map(response => (
 			{
 				label: response.day[0] == '0' ? response.day[1]+"/"+response.day.slice(2,4) : response.day.slice(0,2)+"/"+response.day.slice(1,4),
 				x: parseFloat(response.day),

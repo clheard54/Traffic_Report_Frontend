@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { api } from '../services/api'
 import TodaysData from '../data_charts/TodaysData'
-import AssignmentsContainer from '../components/AssignmentsContainer'
+import ClassAssignmentsContainer from '../components/ClassAssignmentsContainer'
 import TriageChart from '../data_charts/TriageChart'
 import WeekAvgs from '../data_charts/WeekAvgs'
 import WeekTotal from '../data_charts/WeekTotal'
@@ -14,6 +14,7 @@ const hash = {
   'yellow': 6,
   'green': 10
 }
+
 
 class TeacherClass extends React.Component{
     constructor(){
@@ -36,6 +37,10 @@ class TeacherClass extends React.Component{
         avg: avg,
         avgStyle: styling
       })
+    }
+
+    componentDidMount(){
+      this.props.loadClassResponses(this.props.current_course)
     }
 
     componentDidUpdate(prevProps){
@@ -65,7 +70,9 @@ class TeacherClass extends React.Component{
                 <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center', 'width': '100%', 'marginLeft': '0', 'marginRight': '0'}}>
                     <div className='col-sm-.5'></div>
                     <div className ="col-md-4" >
-                      <div style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center', 'height': 'fit-content'}}><AssignmentsContainer/></div>
+                      <div style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center', 'height': 'fit-content'}}>
+                        {this.props.current_course ?
+                      <ClassAssignmentsContainer/> : null} </div>
                         <br></br>
                         <br></br>
                         
@@ -101,10 +108,28 @@ class TeacherClass extends React.Component{
                 </div>
                 
                 <br></br>
-                {this.props.teachers_responses ==undefined || this.props.teachers_responses !== [] ?
-                    <div>
-                      <WeekAvgs />
-                    </div> : null }
+                <br></br>
+                <br></br>
+                <br></br>
+                <hr></hr>
+                <br></br>
+                <br></br>
+                <br></br>
+                <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center', 'width': '100%', 'marginLeft': '0', 'marginRight': '0'}}>
+                    <div className='col-md-1'></div>
+                    <div className ="col-md-8" style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center', 'height': 'fit-content'}}>
+                    {this.props.current_course !== undefined ?
+                        <WeekAvgs /> : null}
+                        </div>
+                    <div className='col-md-1'>
+                    {/* <div className='container' style={{'alignItems': 'center'}}>
+                        <div id="gradient">
+                          <div className='circle' style={this.state.avgStyle}></div>
+                        </div>
+                    </div>  
+                    <div className='col-sm-.5'></div> */}
+                  </div>
+                </div>
               </div>
             </Fragment>
           </div>

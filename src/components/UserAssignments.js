@@ -3,36 +3,50 @@ import { api } from '../services/api'
 import { connect } from 'react-redux'
 import {fitty} from 'fitty'
 
-class AssignmentsContainer extends React.Component{
+class UserAssignments extends React.Component{
     state = {
         showForm: false,
         assignments: []
     }
 
-    componentDidMount(){
-        let classHW = []
-        api.getRequests.getAssignments()
-            .then(data => {
-                if (!this.props.current_course.id){
-                    classHW = data
-                } else {
-                    if (data.length > 0){
-                    classHW = data.filter(hw => hw.course_id == this.props.current_course.id)
-                }
-            }
-            this.setState({
-                assignments: classHW
-            })
-         })
-    }
+    // componentDidMount(){
+    //     let classHW = []
+    //     api.getRequests.getAssignments()
+    //         .then(data => {
+    //             if (!this.props.current_user.id){
+    //                if (this.props.user_courses){
+    //                    console.log(this.props.user_courses)
+    //                 let ids =this.props.user_courses.map(course => course.id)
+    //                 classHW = data.filter(hw => ids.includes(hw.course_id))
+    //                } else {
+    //                 classHW = data
+    //                }
+    //             }
+    //         this.setState({
+    //             assignments: classHW
+    //         })
+    //      })
+    // }
+
+
+    // renderAssignments = () => {
+    //     if (this.state.assignments.length > 0){
+    //         return this.state.assignments.map(hw => {
+    //         return <li key={hw.id}>{hw.details}</li>
+    //         })
+    //     }
+    // }
 
     renderAssignments = () => {
-        if (this.state.assignments.length > 0){
-            return this.state.assignments.map(hw => {
-            return <li key={hw.id}>{hw.details}</li>
+        let userHW = []
+        this.props.user_courses.forEach(course => {
+            course.assignments.forEach(hw => {
+                userHW.push(hw)})
             })
-        }
+        return userHW.map(hw => {
+            return <li key={hw.id}>{hw.details}</li>})
     }
+
 
     handleSubmit = (event) => {
         event.preventDefault();
@@ -66,7 +80,7 @@ class AssignmentsContainer extends React.Component{
     render(){
         return (
             <Fragment>
-            <h5 style={{'fontSize': '110%'}}>Assignments/Announcements</h5>
+            <h5 style={{'fontSize': '115%'}}>Assignments/Announcements</h5>
             <div>
                 <ul style={{'textAlign': 'left'}}>{this.renderAssignments()}</ul>
             </div>
@@ -81,8 +95,9 @@ class AssignmentsContainer extends React.Component{
 const mapStateToProps = state => {
     return {
       current_user: state.auths.current_user,
-      current_course: state.courses.current_course
+      current_course: state.courses.current_course,
+      user_courses: state.courses.user_courses
     }
   }
   
-  export default connect(mapStateToProps)(AssignmentsContainer);
+  export default connect(mapStateToProps)(UserAssignments);

@@ -113,7 +113,7 @@ createStudent = (event) => {
       
             <Route
               exact
-              path="/courses/:id"
+              path="/courses/current"
               render={props => <ClassPage {...props} course={this.props.current_course}/>}
             />    
 

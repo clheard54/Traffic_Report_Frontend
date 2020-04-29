@@ -2,43 +2,100 @@ import React from 'react'
 import { api } from '../services/api'
 import { connect } from 'react-redux';
 
+let responses
+let today
 class TriageChart extends React.Component{
-    constructor() {
-        super();
-        this.state ={
-            classResponses: []
-        }
-    }
 
     componentDidMount(){
-            this.setState({
-                classResponses: this.props.class_responses,
-                ids: this.props.class_responses.map(resp => resp.student_id[0]),
-                students: this.props.current_course.students
-            })
+        console.log(this.props.current_course)
+        //     
     }
 
-    componentDidUpdate(prevProps){
-        if (prevProps.class_responses !== this.props.class_responses || prevProps.current_course !== this.props.current_course){
-            this.componentDidMount()
-        }
-    }
+    // componentDidUpdate(prevProps){
+    //     if (prevProps.class_responses !== this.props.class_responses || prevProps.current_course !== this.props.current_course){
+    //         this.setState({
+    //             ids: this.props.class_responses.map(resp => resp.student_id[0]),
+    //             students: this.props.current_course.students
+    //         })
+    //     }
+    // }
 
-    noAnswer = (classR) => {
-        if (this.state.students != undefined) {
-            let missing = this.state.students.filter(student => !this.state.ids.includes(student.id)) 
-            return missing.join(' ')
+    noAnswer = (course) => {
+        today = new Date()
+        if (this.props.class_responses != undefined) {
+            responses = this.props.class_responses.filter(resp => resp.day.slice(2,4) == today.getDate()-1)
+            let ids = responses.map(entry => entry.student_id)
+            let missing = course.students.filter(student => !ids.includes(student.id)).map(x => x.name)
+            if (missing.length == 0){
+                return <i>None recorded</i>
+            } else {
+            return missing.join(', ')
+            }
         }
     }
 
     red = (classR) => {
+        let allReds = []
+        today = new Date()
         if (this.props.class_responses != undefined) {
-            let reds = this.state.classResponses.map((k, v) => {
-                if (k == 'red'){
-                    return v
+            responses = classR.filter(resp => resp.day.slice(2,4) == today.getDate()-1)
+
+            let reds = responses.filter(entry => entry.answer == 'red').map(entry => entry.student_id)
+            reds.forEach(id => {
+                let toAdd = this.props.current_course.students.find(student => student.id == id)
+                if (!allReds.includes(toAdd.name)){
+                    allReds.push(toAdd.name)
                 }
             })
-            return reds.join(' ')
+        }
+        if (allReds.length == 0){
+            return <i>None recorded</i>
+        } else {
+            return allReds.join(', ')
+        }
+    }
+
+    yellow = (classR) => {
+        let allyellows = []
+        today = new Date()
+        if (this.props.class_responses != undefined) {
+            responses = classR.filter(resp => resp.day.slice(2,4) == today.getDate()-1)
+        
+            let yellows = responses.filter(entry => entry.answer == 'yellow').map(entry => entry.student_id)
+            yellows.forEach(id => {
+                let toAdd = this.props.current_course.students.find(student => student.id == id)
+                if (toAdd){
+                if (!allyellows.includes(toAdd.name)){
+                    allyellows.push(toAdd.name)
+                }
+            }
+            })
+        }
+        if (allyellows.length == 0){
+            return <i>None recorded</i>
+        } else {
+        return allyellows.join(', ')
+        }
+    }
+
+    green = (classR) => {
+        let allgreens = []
+        today = new Date()
+        if (this.props.class_responses != undefined) {
+            responses = classR.filter(resp => resp.day.slice(2,4) == today.getDate()-1)
+        
+            let greens = responses.filter(entry => entry.answer == 'green').map(entry => entry.student_id)
+            greens.forEach(id => {
+                let toAdd = this.props.current_course.students.find(student => student.id == id)
+                if (!allgreens.includes(toAdd.name)){
+                    allgreens.push(toAdd.name)
+                }
+            })
+        }
+        if (allgreens.length == 0){
+            return <i>None recorded</i>
+        } else {
+        return allgreens.join(', ')
         }
     }
 
@@ -51,27 +108,19 @@ class TriageChart extends React.Component{
             <table style={{width:"100%"}}>
                 <tr>
                     <th>HAVE NOT ANSWERED: </th>
-                    <td>{this.noAnswer(this.state.classResponses)}</td>
+                    <td>{this.noAnswer(this.props.current_course)}</td>
                 </tr>
                 <tr>
                     <th>RED LIGHT: </th>
-                    <td>{this.red(this.state.classResponses)}</td>
+                    <td>{this.red(this.props.class_responses)}</td>
                 </tr>
                 <tr>
                     <th>YELLOW:</th>
-                    {this.state.classResponses !== undefined ? <td>{this.state.classResponses.map((k, v) => {
-                        if (k == 'yellow'){
-                            return v
-                        }
-                    })}</td> : null }
+                     <td>{this.yellow(this.props.class_responses)}</td>
                 </tr>
                 <tr>
                     <th>GREEN:</th>
-                    {this.state.classResponses !== undefined ? <td>{this.state.classResponses.map((k, v) => {
-                        if (k == 'green'){
-                            return v
-                        }
-                    })}</td> : null }
+                    <td>{this.green(this.props.class_responses)}</td>
                 </tr>
             </table> : null }
           </div>

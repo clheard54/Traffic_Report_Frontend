@@ -37,13 +37,13 @@ class AllClasses extends Component {
 		myData = this.props.teachers_responses ? (this.props.teachers_responses.filter(response => response.datatype == 'light').map(response => (
 			{
 				label: response.day[0] == '0' ? response.day[1]+"/"+response.day.slice(2,4) : response.day.slice(0,2)+"/"+response.day.slice(1,4),
-				x: parseFloat(response.day),
+				x: (parseFloat(response.day))/100,
 				y: hash[response.answer], 
 				course: response.course,
 				student: response.student,
 				// z: 80*(Math.sqrt(2))^2,
                 markerColor: matchColor[response.answer],
-                markerSize: 45
+                markerSize: 35
 			}
 		))) : []
 		return myData;
@@ -66,18 +66,18 @@ class AllClasses extends Component {
 			fontSize: 26
 			},
 			axisX: {
-				title: 'Date',
+				title: '\n Date',
 				logarithmic: false,
-				interval: 1,
+				interval: .01,
 				labelWrap: true,
-				labelAngle: -45
+				labelAngle: -25
 			},
 			axisY: {
 				title: "Traffic Temperature",
 				gridThickness: 2
 			},
 			data: [{
-				type: "spline",
+				type: "scatter",
 				// indexLabel: "{label}",
 				toolTipContent: "<b>{label}</b><br>Date: {x}<br>Class: {course}<br>Student: {student}",
 				indexLabelWrap: true,

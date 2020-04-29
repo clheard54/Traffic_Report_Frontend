@@ -11,8 +11,8 @@ export default class TodaysData extends Component {
 		const myData = []
         const n = Math.sqrt(2)
 		const date = new Date()
-		const today = parseFloat(date.toLocaleString().slice(0,5).replace('/', '.'))*100
-		if (this.props.class_responses !== undefined){
+		const today = parseFloat(date.toLocaleString().slice(0,5).replace('/', '.'))*100 -1
+				if (this.props.class_responses !== undefined){
 			let dataset = this.props.class_responses.filter(resp => parseInt(resp.day) == today)
 			let r = dataset.filter(resp => resp.answer == 'red').length
 			let y = dataset.filter(resp => resp.answer == 'yellow').length

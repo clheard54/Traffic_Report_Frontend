@@ -8,6 +8,12 @@ import '../assets/bootstrap.css'
 
 class NavBar extends React.Component{
 
+    componentDidMount(){
+        if (this.props.current_user){
+        this.props.setUserCourses(this.props.current_user)
+        }
+    }
+
     componentDidUpdate(prevProps){
         if (prevProps.current_user !== this.props.current_user){
             this.props.setUserCourses(this.props.current_user)
@@ -38,7 +44,7 @@ class NavBar extends React.Component{
                     <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     
                     {this.props.user_courses ? this.props.user_courses.map(course => {
-                        return (<Link className="dropdown-item" onClick={course => this.setCourse} key={course.id} to={{pathname: `/courses/${course.id}`,
+                        return (<Link className="dropdown-item" onClick={() => this.setCourse(course)} key={course.id} to={{pathname: `/courses/current`,
                             state: {course}
                         }}>{course.title}</Link>)}) : "No courses yet entered"}
                     </div>

@@ -1,6 +1,9 @@
 const INITIAL_STATE = {
-    current_course: {},
+    current_course: {assignments: [], responses: [], students:[]},
     user_courses: [],
+    classResponses: [],
+    classHW: [],
+    classQs: [],
     courses: [],
     loading: false
 }
@@ -22,7 +25,7 @@ const courseReducer = (state = INITIAL_STATE, action) => {
         return {
             ...state,
             loading: false,
-            data: [...state.data, action.payload],
+            courses: [...state.data, action.payload],
         };
         case 'FETCH_COURSES_REQUEST':
         return {
@@ -34,6 +37,67 @@ const courseReducer = (state = INITIAL_STATE, action) => {
             ...state,
             user_courses: [...action.payload],
             loading: false,
+            error: null
+        };
+        case 'FETCH_COURSES_FAILURE':
+        return {
+            ...state,
+            loading: false,
+            error: action.payload
+        };
+        case 'FETCH_ASSIGNMENTS_REQUEST':
+        return {
+            ...state,
+            loading: true,
+        };
+        case 'FETCH_ASSIGNMENTS_SUCCESS':
+        return {
+            ...state,
+            classHW: [...action.payload],
+            loading: false,
+            error: null
+        };
+        case 'FETCH_ASSIGNMENTS_FAILURE':
+        return {
+            ...state,
+            loading: false,
+            error: action.payload
+        };
+        case 'FETCH_RESPONSES_REQUEST':
+        return {
+            ...state,
+            loading: true,
+        };
+        case 'FETCH_RESPONSES_SUCCESS':
+        return {
+            ...state,
+            classResponses: [...action.payload],
+            loading: false,
+            error: null
+        };
+        case 'FETCH_RESPONSES_FAILURE':
+        return {
+            ...state,
+            loading: false,
+            error: action.payload
+        };
+        case 'FETCH_QUESTIONS_REQUEST':
+        return {
+            ...state,
+            loading: true,
+        };
+        case 'FETCH_QUESTIONS_SUCCESS':
+        return {
+            ...state,
+            classQs: [...action.payload],
+            loading: false,
+            error: null
+        };
+        case 'FETCH_QUESTIONS_FAILURE':
+        return {
+            ...state,
+            loading: false,
+            error: action.payload
         };
         default:
             return state

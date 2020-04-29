@@ -26,13 +26,11 @@ const getCurrentUser = () => {
   });
 };
 
-const getAssignments = (/*CURRENT COURSE?*/) => {
+const getAssignments = () => {
   // then filter questions by course...
   return fetch(`${API_ROOT}/assignments`, {
     headers: headers()
-  }).then(res => {
-    return res.json();
-  });
+  }).then(res => res.json())
 }
 
 const createTeacher = data => {
@@ -92,6 +90,13 @@ const getResponses = () => {
     // probably sort based on course of interest
 }
 
+const getQuestions = () => {
+  return fetch(`${API_ROOT}/questions`, {
+    headers: headers()
+  })
+  .then(resp => resp.json())
+}
+
 const getTeachersResponses = () => {
   return fetch(`${API_ROOT}/responses`, {
     headers: headers()
@@ -139,7 +144,8 @@ export const api = {
     getAssignments,
     getCourses,
     findCoursesStudent,
-    getTeachersResponses
+    getTeachersResponses,
+    getQuestions
   },
   posts: {
     postResponse,
