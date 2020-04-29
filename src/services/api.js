@@ -92,13 +92,20 @@ const getResponses = () => {
     // probably sort based on course of interest
 }
 
+const getTeachersResponses = () => {
+  return fetch(`${API_ROOT}/responses`, {
+    headers: headers()
+  })
+  .then(resp => resp.json())
+  }
+
 const getClassResponses = (course) => {
   return fetch(`${API_ROOT}/responses`, {
     headers: headers()
   })
   .then(resp => resp.json())
   .then(data => {
-    return data.filter(response => course.responses.includes(response))
+    return data.filter(response => course.responses ? course.responses.includes(response) : null)
   })
 }
 
@@ -136,7 +143,8 @@ export const api = {
     getClassResponses,
     getAssignments,
     getCourses,
-    findCoursesStudent
+    findCoursesStudent,
+    getTeachersResponses
   },
   posts: {
     postResponse,

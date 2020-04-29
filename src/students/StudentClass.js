@@ -12,7 +12,8 @@ class StudentClass extends React.Component{
     super();
     this.state = {
       course_student: {},
-      avgStyle: null
+      avgStyle: null,
+      avg: ''
     }
   }
 
@@ -20,10 +21,11 @@ class StudentClass extends React.Component{
     const styling = {
       'position': 'relative',
       'zIndex': '1',
-      'top':'25px',
-      'left': (avg*20).toString() + "px"
+      'top': 400 - (avg*40).toString() + "px",
+      'left': '24px'
     }
     this.setState({
+      avg: avg,
       avgStyle: styling
     })
   }
@@ -70,25 +72,30 @@ class StudentClass extends React.Component{
                 <hr></hr>
                 <br></br>
                 <br></br>
+                <br></br>
+                <h5>Check out your recent traffic data in this course.</h5><br></br>
                 <div className="container">
-                <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between'}}>
-                    <div className ="col-md-3">
-                    <br></br>
-                        <h5>Check out your recent traffic data in this course.</h5>
-                        <br></br>
-                        <p>Average Feels: </p>
-                        <div className='container'>
+                <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center'}}>
+                    <div className='col-md-8'>
+                      <IndividualData course_student={this.state.course_student} getAverage={this.storeAvg}/>
+                    </div> 
+                    <div className='col-md-2'>
+                        <div className='container' style={{'alignItems': 'center'}}>
                         <div id="gradient">
                           <div className='circle' style={this.state.avgStyle}></div>
                         </div>
                         </div>
                     </div>
-                    <div className='col-sm-.5'></div>
-                    <div className='col-md-8'>
-                      <IndividualData course_student={this.state.course_student} getAverage={this.storeAvg}/> 
-                    </div>  
-                  </div>
+                    <div className='col-md-2'>
+                    <div style={{'border': '1px solid black', 'padding': '7px'}}>
+                        <h5>Average Feels: </h5>
+                        <h4>{this.state.avg}</h4>
+                        </div>
+                        <br></br>
+                        <br></br>
+                    </div>
                 </div>
+              </div>
             </div>
           </div>
         )

@@ -29,6 +29,20 @@ export const fetchUserSuccess = (user) => {
       }
   }
 
+  export const setStudent = student => {
+    return {
+        type: 'SET_STUDENT_USER',
+        payload: {...student, admin: false}
+    }
+}
+
+  export const setTeacher = teacher => {
+    return {
+        type: 'SET_TEACHER_USER',
+        payload: {...teacher, admin: true}
+    }
+  }
+
   export const userLogin = (user) => {
       return dispatch => {
         dispatch(fetchUserRequest());
@@ -38,9 +52,11 @@ export const fetchUserSuccess = (user) => {
             } else {
                 localStorage.setItem('token', resp.jwt)
                 if (resp.user.admin){
-                  dispatch(setTeacherUser(resp.user));
+                  dispatch(setTeacherUser(resp.user), ()=> {
+                  dispatch(setTeacher(resp.user))})
                 } else {
-                    dispatch(setStudentUser(resp.user));
+                    dispatch(setStudentUser(resp.user), () => {
+                    dispatch(setStudent(resp.user))});
                   }
             }
         })

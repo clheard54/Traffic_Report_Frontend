@@ -25,6 +25,18 @@ const INITIAL_STATE = {
             loading: false,
             error: null
         };
+        case 'SET_STUDENT_USER':
+          return {
+              ...state,
+              current_user: action.payload,
+              error: null
+          }
+        case 'SET_TEACHER_USER':
+        return {
+            ...state,
+            current_user: action.payload,
+            error: null
+        }
         case 'FETCH_USER_FAILURE':
         return {
             ...state,

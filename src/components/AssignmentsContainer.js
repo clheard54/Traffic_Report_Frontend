@@ -53,7 +53,7 @@ class AssignmentsContainer extends React.Component{
     showForm = () => {
         return (
             <form onSubmit={this.handleSubmit}>
-                <label>Add Question:</label>
+                <label>Add Post:</label>
                 <input type="textarea" name="details"></input>
                 <br></br>
                 <input type="button" onClick={() => this.setState({showForm: false})}>Go Back</input>&emsp;&emsp;
@@ -70,7 +70,7 @@ class AssignmentsContainer extends React.Component{
             <div>
                 <ul style={{'textAlign': 'left'}}>{this.renderAssignments()}</ul>
             </div>
-            {this.props.current_user.admin ? <button onClick={() => this.setState({showForm: true})}>Add Question</button> : null}
+            {this.props.current_user ? (this.props.current_user.admin ? <button onClick={() => this.setState({showForm: true})}>Add Question</button> : null) : null}
             {this.state.showForm ? <div>{this.showForm()}</div> : null}
             </Fragment>
         )
@@ -80,7 +80,7 @@ class AssignmentsContainer extends React.Component{
 
 const mapStateToProps = state => {
     return {
-      current_user: state.students.current_user,
+      current_user: state.auths.current_user,
       current_course: state.courses.current_course
     }
   }

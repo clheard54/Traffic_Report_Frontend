@@ -4285,12 +4285,16 @@ input[type="button"].btn-block {
   z-index: 86;
 }
 
+tr {
+  border: 1px solid black;
+}
+
 #gradient {
   z-index: 2;
-  height: 75px;
-  width: 200px;
-  background-image: linear-gradient(90deg, red, rgb(248, 200, 54), green);
-  opacity: 0.8;
+  height: 400px;
+  width: 75px;
+  background-image: linear-gradient( green, rgb(248, 200, 54), red);
+  opacity: 0.7;
 }
 
 .nav {

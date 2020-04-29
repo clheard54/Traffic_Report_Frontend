@@ -48,7 +48,7 @@ class IndividualData extends Component {
 		const n = Math.sqrt(2)
 		const myData = this.props.student_responses.filter(response => response.datatype == 'color').map(response => (
 			{
-				label: response.day.replace('.', '/'), 
+				label: response.day[0] == '0' ? response.day[1]+"/"+response.day.slice(2,4) : response.day.slice(0,2)+"/"+response.day.slice(1,4),
 				x: parseFloat(response.day),
 				y: hash[response.answer], 
 				z: 80*n^2,
@@ -66,7 +66,7 @@ class IndividualData extends Component {
 			axisX: {
 				title: 'Date',
 				logarithmic: false,
-				interval: 0.01,
+				interval: 0.5,
 				labelWrap: true,
 				labelAngle: -45
 			},
@@ -95,7 +95,7 @@ class IndividualData extends Component {
 	
 const mapStateToProps = state => {
 	return {
-		current_user: state.students.current_user,
+		current_user: state.auths.current_user,
 		current_course: state.courses.current_course,
 		student_responses: state.responses.student_responses
 	}

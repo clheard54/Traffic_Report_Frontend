@@ -21,6 +21,14 @@ export const fetchStudentResponsesSuccess = (responses) => {
   };
 };
 
+
+export const fetchTeachersResponsesSuccess = (responses) => {
+  return {
+    type: 'FETCH_TEACHERS_RESPONSES_SUCCESS',
+    payload: responses,
+  };
+};
+
 export const fetchResponsesFailure = (error) => {
   return {
     type: 'FETCH_RESPONSES_FAILURE',
@@ -41,6 +49,19 @@ export const postResponseSuccess = (newResponse) => {
   };
 };
 
+export const postResponse = (newResponse) => {
+  return (dispatch) => {
+  dispatch(fetchResponsesRequest());
+  api.posts.postResponse(newResponse).then(resp => {
+    if (resp.error) {
+        dispatch(fetchResponsesFailure(resp.error));
+      } else {
+        dispatch(postResponseSuccess(resp));
+      }
+    });
+    }
+} 
+
 
 export const loadStudentResponses = (id) => {
   return (dispatch) => {
@@ -54,18 +75,18 @@ export const loadStudentResponses = (id) => {
         }
       });
   };
-};
+}
 
-
-export const postResponse = (newResponse) => {
-  return (dispatch) => {
-    dispatch(fetchResponsesRequest());
-    api.posts.postResponse(newResponse).then(resp => {
-      if (resp.error) {
-          dispatch(fetchResponsesFailure(resp.error));
-        } else {
-          dispatch(postResponseSuccess(resp));
-        }
-      });
-  };
-};
+  export const loadTeachersResponses = (courseIds) => {
+    return (dispatch) => {
+      dispatch(fetchResponsesRequest());
+      api.getRequests.getTeachersResponses(courseIds).then(data => {
+          if (data.error){
+            dispatch(fetchResponsesFailure(data.error))
+          } else {
+            let allData = data.filter(entry => courseIds.includes(entry['courses_student_id']))
+            dispatch(fetchTeachersResponsesSuccess(allData));
+          }
+        })
+      };
+    }

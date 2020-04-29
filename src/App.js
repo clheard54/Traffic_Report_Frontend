@@ -12,6 +12,7 @@ import Signup from './components/Signup';
 import UserHome from './containers/UserHome';
 import ClassPage from './containers/ClassPage';
 import TrafficForm from './components/TrafficForm';
+import { setTeacherUser, setTeacher, setStudentUser, setStudent } from './redux';
 
 class App extends React.Component{
   constructor(){
@@ -45,8 +46,7 @@ class App extends React.Component{
     password: event.target.password.value,
     admin: true
   }
-  api.auth.createTeacher(newTeacher).then(resp => resp.json())
-  .then(data => {
+  api.auth.createTeacher(newTeacher).then(data => {
     console.log(data)
      if (!!data.teacher.id){
         this.login(data);
@@ -134,8 +134,8 @@ createStudent = (event) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSetTeacherUser: (teacher) => dispatch({type: 'SET_TEACHER_USER', payload: teacher}),
-    onSetStudentUser: student => dispatch({type: 'SET_STUDENT_USER', payload: student}),
+    onSetTeacherUser: teacher => dispatch(setTeacher(teacher), ()=> dispatch(setTeacherUser(teacher))),
+    onSetStudentUser: student => dispatch(setStudent(student), () => dispatch(setStudentUser(student))),
     // fetchCourses: user => dispatch(fetchCourses(user))
   }
 }

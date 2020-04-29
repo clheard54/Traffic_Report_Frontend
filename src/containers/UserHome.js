@@ -16,7 +16,7 @@ class UserHome extends React.Component{
         return (
           <Fragment>
             <h2>Welcome {this.props.current_user ? `, ${this.props.current_user.username}!` : "!"}</h2>
-            <div>{this.props.current_user.admin ? <TeacherProfile/> : <StudentProfile/>}</div>
+            <div>{this.props.current_user ? (this.props.current_user.admin ? <TeacherProfile/> : <StudentProfile/>) : null}</div>
           </Fragment>
         )
     }
@@ -24,7 +24,7 @@ class UserHome extends React.Component{
 
 const mapStateToProps = state => {
     return {
-        current_user: state.students.current_user,
+        current_user: state.auths.current_user,
         user_courses: state.courses.user_courses
     }
 }

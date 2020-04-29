@@ -30,7 +30,7 @@ class NavBar extends React.Component{
             
             <div className="navbar-expand" id="navbarNavDropdown">
                 <ul className="navbar-nav">
-                {this.props.current_user.id ?
+                {this.props.current_user ?
                 <li className="nav-item dropdown">
                     <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Course List
@@ -45,7 +45,7 @@ class NavBar extends React.Component{
                 </li> : <li className="nav-item active">
                     <a className="nav-link" href="https://flatironschool.com/">School Website <span className="sr-only">(current)</span></a>
                 </li>}
-                {this.props.current_user.id ?
+                {this.props.current_user ?
                 <li className="nav-item">
                     <a className="nav-link" href="/profile">Profile</a>
                 </li> : null }
@@ -53,7 +53,7 @@ class NavBar extends React.Component{
                 <li className="nav-item">
                     <a className="nav-link" href="/">Home</a>
                 </li>
-                {this.props.current_user.id ?
+                {this.props.current_user ?
                 <li className="nav-item">
                     <a onClick={this.handleLogout}className="nav-link" href="/">Logout</a>
                 </li> :
@@ -77,7 +77,7 @@ class NavBar extends React.Component{
 
 const mapStateToProps = state => {
     return {
-      current_user: state.students.current_user,
+      current_user: state.auths.current_user,
       user_courses: state.courses.user_courses,
       courses: state.courses.courses
     }

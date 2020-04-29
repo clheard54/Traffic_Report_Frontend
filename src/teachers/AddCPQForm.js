@@ -3,21 +3,32 @@ import { connect } from 'react-redux'
 
 class AddCPQuestion extends React.Component{
 
+    addQuestion = (event) => {
+        event.preventDefault();
+        console.log(event.target.course.value)
+        console.log(event.target.question.value)
+        //postQuestion via api method
+    }
+
     render(){
         return (
             <div>
-            <h4>Post a Class Participation Question</h4>
+            <h5>Post a Class Participation Question?</h5>
+                <br></br>
                 <form onSubmit={this.addQuestion}>
-                <label>What class?</label>
-                <select id="courses" name="courseList">
+                <label>What class?&ensp;</label>
+                <select id="courses" name="course">
                     <option value="all">All Courses</option>
                     {this.props.user_courses.map(course => {
                         return <option value={course.id}>{course.title}</option>
                     })}
                 </select>
                 <br></br>
-                <label>Enter question:</label>
-                <input type='textarea' rows="5" name='question'></input>
+                <div style={{'display': 'flex', 'flexDirection': 'row', 'alignItems': 'flex-start'}}>
+                <label style={{'lineHeight': '60px'}}>Enter question: &ensp;</label>
+                <textarea rows="2" name='question'></textarea>
+                </div>
+                <br></br>
                 <input type='submit' value="Post Question"></input>
                 </form>
             </div>
