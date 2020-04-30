@@ -14,12 +14,12 @@ export const fetchResponsesSuccess = (responses) => {
   };
 };
 
-export const fetchStudentResponsesSuccess = (responses) => {
-  return {
-    type: 'FETCH_STUDENT_RESPONSES_SUCCESS',
-    payload: responses,
-  };
-};
+// export const fetchStudentResponsesSuccess = (responses) => {
+//   return {
+//     type: 'FETCH_STUDENT_RESPONSES_SUCCESS',
+//     payload: responses,
+//   };
+// };
 
 
 export const fetchTeachersResponsesSuccess = (responses) => {
@@ -30,12 +30,12 @@ export const fetchTeachersResponsesSuccess = (responses) => {
 };
 
 
-export const fetchClassResponsesSuccess = (responses) => {
-  return {
-    type: 'FETCH_CLASS_RESPONSES_SUCCESS',
-    payload: responses,
-  };
-};
+// export const fetchClassResponsesSuccess = (responses) => {
+//   return {
+//     type: 'FETCH_CLASS_RESPONSES_SUCCESS',
+//     payload: responses,
+//   };
+// };
 
 
 export const fetchResponsesFailure = (error) => {
@@ -72,35 +72,35 @@ export const postResponse = (newResponse) => {
 } 
 
 
-export const loadStudentResponses = (id) => {
-  return (dispatch) => {
-    dispatch(fetchResponsesRequest());
-    api.getRequests.getResponses().then(data => {
-        if (data.error){
-          dispatch(fetchResponsesFailure(data.error))
-        } else {
-          let filtered = data.filter(entry => entry['courses_student_id']==id)
-          dispatch(fetchStudentResponsesSuccess(filtered));
-        }
-      });
-  };
-}
+// export const loadStudentResponses = (id) => {
+//   return (dispatch) => {
+//     dispatch(fetchResponsesRequest());
+//     api.getRequests.getResponses().then(data => {
+//         if (data.error){
+//           dispatch(fetchResponsesFailure(data.error))
+//         } else {
+//           let filtered = data.filter(entry => entry['courses_student_id']==id)
+//           dispatch(fetchStudentResponsesSuccess(filtered));
+//         }
+//       });
+//   };
+// }
 
-export const loadClassResponses = (course) => {
-  return (dispatch) => {
-    dispatch(fetchResponsesRequest());
-    api.getRequests.getResponses().then(data => {
-        if (data.error){
-          dispatch(fetchResponsesFailure(data.error))
-        } else {
-          if (data.length > 0){
-            let filtered = data.filter(response => response.course_id == course.id)
-            dispatch(fetchClassResponsesSuccess(filtered));
-          }
-        }
-      });
-  };
-}
+// export const loadClassResponses = (course) => {
+//   return (dispatch) => {
+//     dispatch(fetchResponsesRequest());
+//     api.getRequests.getResponses().then(data => {
+//         if (data.error){
+//           dispatch(fetchResponsesFailure(data.error))
+//         } else {
+//           if (data.length > 0){
+//             let filtered = data.filter(response => response.course_id == course.id)
+//             dispatch(fetchClassResponsesSuccess(filtered));
+//           }
+//         }
+//       });
+//   };
+// }
 
   export const loadTeachersResponses = (courseIds) => {
     return (dispatch) => {
@@ -118,22 +118,22 @@ export const loadClassResponses = (course) => {
       };
     }
 
-  export const setTeachersResponses = (teacher) => {
-    return (dispatch) => {
-      dispatch(fetchResponsesRequest());
-      api.getRequests.getResponses().then(data => {
-          if (data.error){
-            dispatch(fetchResponsesFailure(data.error))
-          } else {
-            if (data.length > 0){
-              let allData = data.filter(entry => teacher.courses.responses.includes(entry));
-              dispatch(fetchTeachersResponsesSuccess(allData));
-            } else {
-              dispatch(fetchTeachersResponsesSuccess([]));
-            }
-          }
-        })
-      };
-    }
+//   export const setTeachersResponses = (teacher) => {
+//     return (dispatch) => {
+//       dispatch(fetchResponsesRequest());
+//       api.getRequests.getResponses().then(data => {
+//           if (data.error){
+//             dispatch(fetchResponsesFailure(data.error))
+//           } else {
+//             if (data.length > 0){
+//               let allData = data.filter(entry => teacher.courses.responses.includes(entry));
+//               dispatch(fetchTeachersResponsesSuccess(allData));
+//             } else {
+//               dispatch(fetchTeachersResponsesSuccess([]));
+//             }
+//           }
+//         })
+//       };
+//     }
 
   

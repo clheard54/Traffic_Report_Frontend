@@ -44,24 +44,7 @@ const INITIAL_STATE = {
             loading: false,
             error: action.payload
         };
-        case 'FETCH_ASSIGNMENTS_REQUEST':
-            return {
-                ...state,
-                loading: true,
-            };
-        case 'FETCH_ASSIGNMENTS_SUCCESS':
-        return {
-            ...state,
-            loading: false,
-            error: null,
-            user_assignments: action.payload
-        };
-        case 'FETCH_ASSIGNMENTS_FAILURE':
-        return {
-            ...state,
-            loading: false,
-            error: action.payload
-        };
+        
         default:
             return state
     }

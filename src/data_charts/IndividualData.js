@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import CanvasJSReact from '../assets/canvasjs.react';
 import '@popperjs/core'
 import { connect } from 'react-redux';
-import { loadStudentResponses } from '../redux';
 import { api } from '../services/api'
 //var CanvasJSReact = require('./canvasjs.react');
 // var CanvasJS = CanvasJSReact.CanvasJS;
@@ -104,14 +103,9 @@ const mapStateToProps = state => {
 	return {
 		current_user: state.auths.current_user,
 		current_course: state.courses.current_course,
-		student_responses: state.responses.student_responses
+		// student_responses: state.responses.student_responses
 	}
 }
 
-const mapDispatchToProps = dispatch => {
-	return {
-		getStudentResponses: (id) => loadStudentResponses(id)(dispatch)	
-	}
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(IndividualData)
+export default connect(mapStateToProps)(IndividualData)

@@ -37,24 +37,23 @@ const responseReducer = (state = INITIAL_STATE, action) => {
             loading: false,
             error: action.payload
         };
-        case 'FETCH_STUDENT_RESPONSES_SUCCESS':
-          return {
-            ...state,
-            student_responses: action.payload,
-            loading: false,
-          }
+        // case 'FETCH_STUDENT_RESPONSES_SUCCESS':
+        //   return {
+        //     ...state,
+        //     student_responses: action.payload,
+        //     loading: false,
+        //   }
         case 'FETCH_TEACHERS_RESPONSES_SUCCESS':
         return {
           ...state,
           teachers_responses: action.payload,
           loading: false,
-        }
-        case 'FETCH_CLASS_RESPONSES_SUCCESS':
-        return {
-          ...state,
-          class_responses: action.payload,
-          loading: false,
-        }
+        };
+        // case 'FETCH_CLASS_RESPONSES_SUCCESS':
+        // return {
+        //   ...state,
+        //   class_responses: action.payload,
+        //   loading: false,
       default:
         return state;
     }

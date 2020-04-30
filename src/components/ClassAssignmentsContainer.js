@@ -85,14 +85,14 @@ class ClassAssignmentsContainer extends React.Component{
     // List of most recent assignments posted
     render(){
         return (
-            <Fragment>
-            <h5 style={{'fontSize': '115%'}}>Assignments/Announcements</h5>
+            <div style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'minHeight': '200px', 'alignText': 'center', 'height': 'fit-content'}}>
+            <h5 style={{'overflowWrap': 'normal' }}>Assignments & Announcements</h5>
             <div>
                 <ul style={{'textAlign': 'left'}}>{this.renderAssignments()}</ul>
             </div>
             {this.props.current_user ? (this.props.current_user.admin ? <button onClick={() => this.setState({showForm: true})}>Add Question</button> : null) : null}
             {this.state.showForm ? <div>{this.showForm()}</div> : null}
-            </Fragment>
+            </div>
         )
     }
 

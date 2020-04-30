@@ -5,7 +5,6 @@ import StudentProfile from '../students/StudentProfile'
 // import ClassPage from '../containers/ClassPage'
 import { connect } from 'react-redux'
 import AuthHOC from "../HOCs/AuthHOC";
-import { setUserCourses, setTeachersResponses } from '../redux'
 
 
 class UserHome extends React.Component{
@@ -34,11 +33,6 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setTeachersResponses: teacher => setTeachersResponses(teacher)(dispatch)
-  }
-}
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserHome);
+export default connect(mapStateToProps)(UserHome);

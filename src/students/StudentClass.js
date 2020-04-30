@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import ClassAssignmentsContainer from '../components/ClassAssignmentsContainer'
 import IndividualData from '../data_charts/IndividualData'
 import TrafficForm from '../components/TrafficForm'
-import { loadStudentResponses } from '../redux'
 import QuestionBoard from '../containers/QuestionBoard'
 
 let student_responses = []
@@ -15,6 +14,13 @@ class StudentClass extends React.Component{
   }
   
   componentDidMount(){
+    api.getRequests.findCoursesStudent()
+      .then(data => {
+        let x = data.find(entry => entry['student_id']==this.props.current_user.id && entry['course_id']==this.props.current_course.id)
+        this.setState({
+          course_student: x
+        })
+      });
 		student_responses = this.props.current_course.responses.map(resp => resp.student_id == this.props.current_user.id ? resp : null).filter(e => e!==null)
 		this.computeAverage()
 	}
@@ -31,17 +37,22 @@ class StudentClass extends React.Component{
 			return entry.answer == 'red' ?  2 : (entry.answer == 'yellow' ? 6 : 10)
     })
     let average = numerical.reduce((a,b)=>a+b)/student_responses.length
+    let avg = average.toFixed(1)
 		this.setState({
-      avg: average,
+      avg: avg,
       avgStyle: {
             'position': 'relative',
             'zIndex': '1',
-            'top': 400 - (average*40).toString() + "px",
+            'top': 400 - (avg*40).toString() + "px",
             'width': '75px',
             'borderBottom': "5px solid black"
           }
     })
   }
+  }
+
+  goBack = () => {
+    this.props.history.push('/profile')
   }
   
   
@@ -103,12 +114,14 @@ class StudentClass extends React.Component{
             <Fragment>
                 <br></br>
                 <div className="container" style={{'maxWidth': '100%', 'minHeight': '530px'}}>
-                <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center', 'width': '100%', 'marginLeft': '0', 'marginRight': '0'}}>
+                <div className="row" style={{'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center', 'width': '100%', 'marginLeft': '0', 'marginRight': '0'}}>
                     <div className='col-sm-.5'></div>
-                    <div className ="col-md-3" style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center', 'height': 'fit-content'}}>
+                    <div className ="col-md-4" style={{'display': 'flex', 'flexDirection': 'column', 'justifyContent': 'center', 'maxWidth': '30%', 'margin': '18px'}}>
                         <ClassAssignmentsContainer/>
+                        <br></br>
+                        <button className="btn btn-secondary" style={{'maxWidth': '120px', 'margin': 'auto'}} onClick={this.goBack}>Go Back</button>
                     </div>
-                    <div className='col-md-8'>
+                    <div className='col-md-8' style={{'maxWidth': '55%', 'margin': '18px'}}>
                       <TrafficForm course_student={this.state.course_student}/>
                     </div>  
                     <div className='col-sm-.5'></div>
@@ -160,15 +173,10 @@ class StudentClass extends React.Component{
 const mapStateToProps = state => {
 	return {
 		current_user: state.students.current_user,
-    current_course: state.courses.current_course,
-		student_responses: state.responses.student_responses
+    current_course: state.courses.current_course
+		// student_responses: state.responses.student_responses
 	}
 }
 
-const mapDispatchToProps = dispatch => {
-	return {
-		getStudentResponses: (id) => loadStudentResponses(id)(dispatch)	
-	}
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(StudentClass)
+export default connect(mapStateToProps)(StudentClass)

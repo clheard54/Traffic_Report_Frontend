@@ -19,7 +19,9 @@ class TrafficForm extends React.Component{
 				answer: myAnswer,
 				datatype: 'color',
 				day: '',
-				courses_student_id: this.props.course_student.id
+				courses_student_id: this.props.course_student.id,
+				student_id: this.props.current_user.id,
+				course_id: this.props.current_course.id
 			}
 		}
 		this.props.onPostResponse(newResponse)
@@ -61,7 +63,8 @@ class TrafficForm extends React.Component{
 
 const mapStateToProps = state => {
 	return {
-		current_user: state.students.current_user
+		current_user: state.students.current_user,
+		current_course: state.courses.current_course
 	}
 }
 

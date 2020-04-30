@@ -16,25 +16,6 @@ export const fetchUserSuccess = (user) => {
     };
   };
   
-  export const fetchAssignmentsRequest = () => {
-    return {
-      type: 'FETCH_ASSIGNMENTS_REQUEST',
-    };
-  };
-
-  export const fetchAssignmentsSuccess = (hws) => {
-    return {
-      type: 'FETCH_ASSIGNMENTS_SUCCESS',
-      payload: hws
-    };
-  };
-
-  export const fetchAssignmentsFailure = (error) => {
-    return {
-      type: 'FETCH_ASSIGNMENTS_FAILURE',
-      payload: error
-    };
-  };
 
   export const fetchUserRequest = () => {
     return {
@@ -83,24 +64,24 @@ export const fetchUserSuccess = (user) => {
     }
 }
 
-export const setUserAssignments = (user) => {
-  return dispatch => {
-    dispatch(fetchAssignmentsRequest());
-    api.getRequests.getAssignments().then(resp => {
-        if (resp.error){
-            dispatch(fetchAssignmentsFailure(resp.error))
-        } else {
-          if (resp.length > 0){
-            let userHW = []
-            resp.forEach(hw => {
-                if (user.courses.assignments.includes(hw)) {
-                    userHW.push(hw)}
-            });
-          dispatch(fetchAssignmentsSuccess(userHW));
-          } else {
-            dispatch(fetchAssignmentsSuccess(["No Assignments"]))
-              }
-        }
-    })
-}
-}
+// export const setUserAssignments = (user) => {
+//   return dispatch => {
+//     dispatch(fetchAssignmentsRequest());
+//     api.getRequests.getAssignments().then(resp => {
+//         if (resp.error){
+//             dispatch(fetchAssignmentsFailure(resp.error))
+//         } else {
+//           if (resp.length > 0){
+//             let userHW = []
+//             resp.forEach(hw => {
+//                 if (user.courses.assignments.includes(hw)) {
+//                     userHW.push(hw)}
+//             });
+//           dispatch(fetchAssignmentsSuccess(userHW));
+//           } else {
+//             dispatch(fetchAssignmentsSuccess(["No Assignments"]))
+//               }
+//         }
+//     })
+// }
+// }

@@ -11,7 +11,6 @@ class WeekAvgs extends Component {
    
 	sortData = (responses) => {
 		let date = new Date()
-		let today = date.toDateString().slice(4,10)
 		date.setDate(date.getDate()-7)
 		let weekago = date.toDateString().slice(4,10)
 		const ordered = responses.sort((a,b) => (a.day < b.day) ? 1 : -1)
@@ -26,7 +25,7 @@ class WeekAvgs extends Component {
 					return ({
 					label: `${weekago.slice(0,4)} ${parseInt(weekago.slice(4))+week.indexOf(dayData)}`,
 					x: week.indexOf(dayData)+1,
-					y: (1/dayData.length)*(dayData.reduce((a,b) => a+b)), 
+					y: dayData.length !== 0 ? (1/dayData.length)*(dayData.reduce((a,b) => a+b)) : 0, 
 					z: 80*2, 
 					color: 'gray' })
 				})

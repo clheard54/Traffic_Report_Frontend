@@ -6,7 +6,6 @@ import TriageChart from '../data_charts/TriageChart'
 import WeekAvgs from '../data_charts/WeekAvgs'
 import WeekTotal from '../data_charts/WeekTotal'
 import { connect } from 'react-redux'
-import { loadClassResponses } from '../redux'
 
 
 const hash = {
@@ -14,51 +13,50 @@ const hash = {
   'yellow': 6,
   'green': 10
 }
-
-
+let weekData = []
+let numerical 
 class TeacherClass extends React.Component{
     constructor(){
       super();
       this.state = {
-        classResponses: [],
         avgStyle: null,
         avg: ''
       }
     }
-  
-    storeAvg = (avg) => {
-      const styling = {
-        'position': 'relative',
-        'zIndex': '1',
-        'top': 400 - (avg*40).toString() + "px",
-        'left': '24px'
+
+
+    componentDidUpdate(prevProps){
+      if (prevProps.current_course !== this.props.current_course){
+        this.storeAvg(this.computeAverage())
       }
-      this.setState({
-        avg: avg,
-        avgStyle: styling
-      })
     }
 
     componentDidMount(){
-      this.props.loadClassResponses(this.props.current_course)
+      let month = new Date().getMonth() + 1
+      const todayDateAsInt = (month*100) + new Date().getDate()
+      weekData = this.props.current_course.responses.filter(resp => Math.abs(todayDateAsInt-Math.floor(parseInt(resp.day))) < 8)
+      this.computeAverage()
     }
 
-    componentDidUpdate(prevProps){
-      if (prevProps.teachers_responses !== this.props.teachers_responses){
-        this.storeAvg(this.computeAverage())
-      }
-      if (prevProps.current_course !== this.props.current_course){
-          this.props.loadClassResponses(this.props.current_course.id)
-          }
+    computeAverage = () => {
+      if (weekData.length !==0 ){
+      numerical = weekData.filter(response => response.datatype == 'light').map(entry => {
+        return entry.answer == 'red' ?  2 : (entry.answer == 'yellow' ? 6 : 10)
+      })
+      let average = numerical.reduce((a,b)=>a+b)/weekData.length
+      let avg = average.toFixed(1)
+      this.setState({
+        avg: avg,
+        avgStyle: {
+              'position': 'relative',
+              'zIndex': '1',
+              'top': 400 - (avg*40).toString() + "px",
+              'width': '75px',
+              'borderBottom': "5px solid black"
+            }
+      })
     }
-
-  computeAverage = () => {
-    let numerical = this.props.class_responses.map(entry => {
-      return entry.answer == 'red' ?  2 : (entry.answer == 'yellow' ? 6 : 10)
-    })
-    return numerical.reduce((a,b)=>a+b)/this.props.class_responses.length
-  }
-
+    }
     
     render(){
         return (
@@ -97,14 +95,21 @@ class TeacherClass extends React.Component{
                     <div className ="col-md-8" style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center', 'height': 'fit-content'}}>
                         <WeekTotal />
                         </div>
-                    <div className='col-md-3'>
-                    <div className='container' style={{'alignItems': 'center'}}>
+                    <div className='col-md-1'>
+                    <div className='container' style={{'alignItems': 'center', 'paddingLeft':'0px'}}>
                         <div id="gradient">
                           <div className='circle' style={this.state.avgStyle}></div>
                         </div>
                     </div>  
-                    <div className='col-sm-.5'></div>
                   </div>
+                  <div className='col-md-2'>
+                    <div style={{'border': '1px solid black', 'padding': '7px'}}>
+                        <h5>Average Feels: </h5>
+                        <h4>{this.state.avg}</h4>
+                        </div>
+                        <br></br>
+                        <br></br>
+                    </div>
                 </div>
                 
                 <br></br>
@@ -145,10 +150,5 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    loadClassResponses: id => loadClassResponses(id)(dispatch)
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(TeacherClass)
+export default connect(mapStateToProps)(TeacherClass)
