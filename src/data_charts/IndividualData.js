@@ -6,35 +6,39 @@ import { connect } from 'react-redux';
 import { api } from '../services/api'
 //var CanvasJSReact = require('./canvasjs.react');
 // var CanvasJS = CanvasJSReact.CanvasJS;
+const back = '<'
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-let student_responses
-let numerical
+let myWeeksData = []
 class IndividualData extends Component {	
-	// state = {
-	// 	avg: 0
-	// }
+	state = {}
+
+	componentDidMount(){
+		let now = moment()
+		this.setState({
+			beginning: now.clone().subtract(8, 'days').toDate(),
+			ending: now.clone().add(1, 'day').toDate()
+		})
+	}
 	
-	// fetch recent responses based on current_user
-	// componentDidMount(){
-	// 	student_responses = this.props.current_course.responses.map(resp => resp.student_id == this.props.current_user.id ? resp : null).filter(e => e!==null)
-	// 	this.computeAverage()
-	// }
-
-	// componentDidUpdate(prevProps){
-	// 	if (prevProps.current_course !== this.props.current_course){
-	// 		this.computeAverage()
-	// 	}
-	// }
-
-	// computeAverage = () => {
-	// 	numerical = student_responses.filter(response => response.datatype == 'light').map(entry => {
-	// 		return entry.answer == 'red' ?  2 : (entry.answer == 'yellow' ? 6 : 10)
-	// 	})
-	// 	this.setState({
-	// 		avg: numerical.reduce((a,b)=>a+b)/student_responses.length
-	// 	})
-	// }
+	weekBack = () => {
+		this.setState(prev => {
+			return ({
+				beginning: moment(prev.beginning).subtract(7, 'days').toDate(),
+				ending: moment(prev.beginning).add(1, 
+					'day')
+			})
+	    })
+	}
+	
+	weekForward = () => {
+		this.setState(prev => {
+			return ({
+				beginning: moment(prev.ending).subtract(1, 'day'),
+				ending: moment(prev.ending).add(7, 'days').toDate()
+			})
+	    })
+	}
 
     render() {
 		const hash = {
@@ -53,31 +57,45 @@ class IndividualData extends Component {
 			'green': "Great! :)"
 		}
 		const n = Math.sqrt(2)
-		const myData = this.props.current_course.responses.map(resp => resp.student_id == this.props.current_user.id ? resp : null).filter(e => e!==null).map(response => (
-			{
-				label: moment(parseInt(response.day)).format("dddd"),
-				date: moment(parseInt(response.day)).format("MMM Do"),
-				x: moment(parseInt(response.day)),
-				y: hash[response.answer], 
-				z: 80*n^2,
-				feeling: feeling[response.answer],
-				markerColor: matchColor[response.answer],
-			}
-		));
+		const allMyData = this.props.current_course.responses.map(resp => resp.student_id == this.props.current_user.id ? resp : null).filter(e => e!==null)
+		
+		if (allMyData.length !== 0){
+			myWeeksData = allMyData
+			.filter(response => (moment(parseInt(response.day)) >= moment(this.state.beginning)) && (moment(parseInt(response.day)) <= moment(this.state.ending)))
+			.map(response => (
+				{
+					label: moment(parseInt(response.day)).format("dddd"),
+					date: moment(parseInt(response.day)).format("MMM Do"),
+					x: moment(parseInt(response.day)),
+					y: hash[response.answer], 
+					z: 80*n^2,
+					feeling: feeling[response.answer],
+					markerColor: matchColor[response.answer],
+				}
+			));
+		}
+		let arr = []
+		for (let i=0; i<7; i++){
+			let point = {};
+			point.x = `${moment(this.state.ending).clone().add(i-7, 'days').format("MMM D")}`;
+			point.y = 0
+			point.z = 0
+			arr.push(point)	
+		}
+		let finalData = myWeeksData.concat(arr)
+		
         const options = {
 			animationEnabled: true,
 			exportEnabled: true,
-			theme: "light2", // "light1", "light2", "dark1", "dark2"
+			theme: "light2", 
 			title:{
 				text: "Your Understanding",
 			fontSize: 26
 			},
 			axisX: {
 				title: 'Date',
-				logarithmic: false,
-				// interval: 0.5,
 				labelWrap: true,
-				labelAngle: -25
+				labelAngle: -15
 			},
 			axisY: {
 				title: "Traffic Temperature",
@@ -89,7 +107,7 @@ class IndividualData extends Component {
 				// indexLabel: "{label}",
 				toolTipContent: "<b>{label}</b><br>Date: {date}<br>Traffic Temperature: {y}<br>Feeling: {feeling}",
 				indexLabelWrap: true,
-				dataPoints: myData
+				dataPoints: finalData
 			}]
 		}
 		return (
@@ -97,7 +115,9 @@ class IndividualData extends Component {
 			<CanvasJSChart id='indiv-data' options = {options} style={{'backgroundImage':"linear-gradient(green, yellow, red)", 'opacity': '0.2'}}
 				/* onRef={ref => this.chart = ref} */
 			/>
-			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+			<button className="btn btn-outline-primary" style={{'position': 'absolute', 'left': '20%'}} onClick={this.weekBack}><h2>{back}</h2></button>
+			<button className="btn btn-outline-primary" style={{'position': 'absolute', 'right': '23%'}} onClick={this.weekForward}><h2>></h2></button>
+			<br></br>
 		</div>
 		);
 	}

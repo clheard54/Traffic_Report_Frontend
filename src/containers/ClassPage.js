@@ -10,24 +10,24 @@ import { api } from '../services/api';
 class ClassPage extends React.Component{
 //conditionally render either Teacher View or Student view for a class
 
-    componentDidMount() {
-        if (this.props.current_course == null) {
-            try {
-                const current_course = localStorage.getItem('course_token');
-                if ('course_token' == null) {
-                  return undefined;
-                }
-                api.getRequests.getCourses().then(data => {
-                    let thisCourse = data.find(parseInt(current_course));
-                    this.props.setCurrentCourse(thisCourse)
-                })
-              } catch (err) {
-                this.props.history.push("/profile");
-              }
-        } 
-    }
+    // componentDidMount() {
+    //     if (!this.props.current_course.id) {
+    //         try {
+    //             const current_course = localStorage.getItem('course_token');
+    //             if ('course_token' == null) {
+    //               return undefined;
+    //             }
+    //             api.getRequests.getCourses().then(data => {
+    //                 let thisCourse = data.filter(course => course.id == parseInt(current_course));
+    //                 this.props.setCurrentCourse(thisCourse)
+    //             })
+    //           } catch (err) {
+    //             this.props.history.push("/profile");
+    //           }
+    //     } 
+    // }
 
-//find current_course based on url :id param and update store with it
+
     componentDidUpdate(prevProps){
         if (prevProps.current_user !== this.props.current_user || prevProps.current_course != this.props.current_course){
             this.showClass()
@@ -63,4 +63,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ClassPage)
+export default AuthHOC(connect(mapStateToProps, mapDispatchToProps)(ClassPage))

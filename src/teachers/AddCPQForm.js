@@ -20,7 +20,7 @@ class AddCPQuestion extends React.Component{
                 <select id="courses" name="course">
                     <option value="all">All Courses</option>
                     {this.props.user_courses.map(course => {
-                        return <option value={course.id}>{course.title}</option>
+                        return <option key={course.id} value={course.id}>{course.title}</option>
                     })}
                 </select>
                 <br></br>

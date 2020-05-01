@@ -43,7 +43,7 @@ class TeacherProfile extends React.Component{
                         <h4 style={{'color': '#007bff', 'lineHeight': '200%'}}>Your Classes</h4>
                         {this.props.user_courses ? this.props.user_courses.map(course => {
                         return (
-                            <div><li><button className="btn btn-outline-primary" style={{'maxWidth': '350px'}} key={course.id} onClick={() => this.setCourse(course)}><Link onClick={() => this.setCourse(course)} key={course.id} to={{pathname: "/courses/current",
+                            <div key={course.id}><li><button className="btn btn-outline-primary" style={{'maxWidth': '350px'}} onClick={() => this.setCourse(course)}><Link onClick={() => this.setCourse(course)} key={course.id} to={{pathname: "/courses/current",
                             state: {course}
                         }}>{course.title}</Link></button></li><br></br></div>)})
                         : "No courses yet entered"}
@@ -77,9 +77,10 @@ class TeacherProfile extends React.Component{
 
                 <br></br>
                 <br></br>
-                <br></br>
-                <br></br>
                 <div>
+                <br></br>
+                <br></br>
+                <br></br>
                     <img style={{'backgroundColor': 'white', 'opacity': '0.8', 'maxWidth': '80%', 'height': '140px'}} src='https://wisedriving.s3.amazonaws.com/1557481400.96992aba487fcea3053ff9c455f2f905.png' alt='driving'></img>
                 </div>
                 
@@ -104,6 +105,6 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TeacherProfile)
+export default AuthHOC(connect(mapStateToProps, mapDispatchToProps)(TeacherProfile))
 
 

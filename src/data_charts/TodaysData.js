@@ -18,9 +18,9 @@ export default class TodaysData extends Component {
 			let y = dataset.filter(resp => resp.answer == 'yellow').length
 			let g = dataset.filter(resp => resp.answer == 'green').length
 		myData = [
-			{ label: "Red", x: 1, y: 10, z: 80*n^r, color: 'red' },
-			{ label: "Yellow", x: 1, y: 20, z: 80*n^y, color: 'yellow'},
-			{ label: "Green", x: 1, y: 30, z: 80*n^g, color: 'green'}
+			{ label: "Red", x: 1, y: 2, z: 30*n^r, color: 'red' },
+			{ label: "Yellow", x: 1, y: 6, z: 30*n^y, color: 'yellow'},
+			{ label: "Green", x: 1, y: 10, z: 30*n^g, color: 'green'}
 		]
 	}
 	return myData

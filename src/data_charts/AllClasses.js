@@ -3,26 +3,53 @@ import CanvasJSReact from '../assets/canvasjs.react';
 import '@popperjs/core'
 import { connect } from 'react-redux';
 import * as moment from 'moment'
-import { loadStudentResponses } from '../redux';
+import AuthHOC from '../HOCs/AuthHOC'
 import { api } from '../services/api'
-//var CanvasJSReact = require('./canvasjs.react');
-// var CanvasJS = CanvasJSReact.CanvasJS;
+var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+const back = '<'
+let allData = []
 
-let myData = []
 class AllClasses extends Component {	
-	
-	componentDidUpdate(prevProps){
-		if (prevProps.current_course !== this.props.current_course){
-			myData = this.fillData()
+	constructor(){
+		super();
+		this.state = {
+			beginning: moment().clone().subtract(8, 'days').toDate(),
+			ending: moment().clone().add(1, 'day').toDate()
 		}
 	}
-	// computeAverage = () => {
-	// 	let numerical = this.props.teachers_responses.filter(response => response.datatype == 'color').map(entry => {
-	// 		return entry.answer == 'red' ?  2 : (entry.answer == 'yellow' ? 6 : 10)
-	// 	})
-	// 	return numerical.reduce((a,b)=>a+b)/this.props.student_responses.length
-	// }
+
+	componentDidMount(){
+		let now = moment()
+		this.setState({
+			beginning: now.clone().subtract(8, 'days').toDate(),
+			ending: now.clone().add(1, 'day').toDate()
+		})
+	}
+
+	weekBack = () => {
+		this.setState(prev => {
+			return ({
+				beginning: moment(prev.beginning).subtract(7, 'days').toDate(),
+				ending: moment(prev.beginning).add(1, 
+					'day')
+			})
+	    })
+	}
+	
+	weekForward = () => {
+		this.setState(prev => {
+			return ({
+				beginning: moment(prev.ending).subtract(1, 'day'),
+				ending: moment(prev.ending).add(7, 'days').toDate()
+			})
+	    })
+	}
+
+	weekFilter = (dataset) => {
+		return dataset.filter(response => moment(parseInt(response.day)) >= moment(this.state.beginning))
+		.filter(response => moment(parseInt(response.day)) <= moment(this.state.ending))
+	}
 
 	fillData = () => {
 		const hash = {
@@ -36,7 +63,8 @@ class AllClasses extends Component {
 			'green': '#34A853'
 		}
 		
-		myData = this.props.teachers_responses ? (this.props.teachers_responses.filter(response => response.datatype == 'light').map(response => (
+		allData = this.props.teachers_responses ? (this.props.teachers_responses.filter(response => response.datatype == 'light')) : []
+		let myData = this.weekFilter(allData).map(response => (
 			{
 			label: moment(parseInt(response.day)).format("dddd"),
 			date: moment(parseInt(response.day)).format("MMM Do"),
@@ -48,7 +76,7 @@ class AllClasses extends Component {
 			markerColor: matchColor[response.answer],
 			markerSize: 35
 		}
-		))) : []
+		))
 		return myData;
 	}
 
@@ -63,7 +91,7 @@ class AllClasses extends Component {
         const options = {
 			animationEnabled: true,
 			exportEnabled: true,
-			theme: "light2", // "light1", "light2", "dark1", "dark2"
+			theme: "light2",
 			title:{
 				text: "Responses from All Classes",
 			fontSize: 26
@@ -71,9 +99,11 @@ class AllClasses extends Component {
 			axisX: {
 				title: '\n Date',
 				logarithmic: false,
-				// interval: .01,
+				intervalType: 'day',
 				labelWrap: true,
-				labelAngle: -25
+				labelAngle: -25,
+				labelFormatter: function (e) {
+					return CanvasJS.formatDate( e.value, "MMM D")}
 			},
 			axisY: {
 				title: "Traffic Temperature",
@@ -92,9 +122,12 @@ class AllClasses extends Component {
 		return (
 		<div>
 			<CanvasJSChart id='indiv-data' options = {options} style={{'backgroundImage':"linear-gradient(green, yellow, red)", 'opacity': '0.2'}}
-				/* onRef={ref => this.chart = ref} */
 			/>
-			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+			<br></br>
+			<button className="btn btn-outline-primary" style={{'position': 'absolute', 'left': '25%'}} onClick={this.weekBack}><h2>{back}</h2></button>
+			<button className="btn btn-outline-primary" style={{'position': 'absolute', 'right': '20%'}} onClick={this.weekForward}><h2>></h2></button>
+			<br></br>
+			<br></br>
 		</div>
 		);
 	}
@@ -106,4 +139,4 @@ const mapStateToProps = state => {
 	}
 }
 
-export default connect(mapStateToProps)(AllClasses)
+export default AuthHOC(connect(mapStateToProps)(AllClasses))

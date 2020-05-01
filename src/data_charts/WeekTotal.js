@@ -1,79 +1,75 @@
-import React, {Component} from 'react'
+import React, {Component, Fragment} from 'react'
 import CanvasJSReact from '../assets/canvasjs.react';
 import '@popperjs/core'
 import * as moment from 'moment'
 import { connect } from 'react-redux'
+import { currentCourse } from '../redux'
+import { api } from '../services/api'
 // var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+const back = '<'
 
-// Grab every response from this course for the past 5 days. Each one gets plotted. All same diameter. Label with names?
 
-class WeekTotal extends Component {	
-	constructor() {
-		super();
-		this.state = {
-			datapoints: []
-		}
+let myData = []
+class WeekTotal extends Component {
+	state = {loading: true}
+
+	componentDidMount() {
+		if (!this.props.current_course.id) {
+			try {
+				const current_course = localStorage.getItem('course_token');
+				if ('course_token' == null) {
+					return undefined;
+				}
+				api.getRequests.getCourses().then(data => {
+					let thisCourse = data.filter(course => course.id == parseInt(current_course));
+					this.props.setCurrentCourse(thisCourse)
+					this.setState({
+						loading: false
+					})
+				})
+				} catch (err) {
+				this.props.history.push("/profile");
+				}
+		} 
+
+		let now = moment()
+		this.setState({
+			beginning: now.clone().subtract(8, 'days').toDate(),
+			ending: now.clone().add(1, 'day').toDate()
+		})
 	}
 
-	
-	// componentDidUpdate(prevProps){
-	// 	if (prevProps.current_course !== this.props.current_course){
-	// 		red = this.props.current_course.responses.filter(resp => resp.answer == 'red')
-	// 		yellow = this.props.current_course.responses.filter(resp => resp.answer == 'yellow')
-	// 		green = this.props.current_course.responses.filter(resp => resp.answer == 'green');
-	// 		if (this.props.teachers_responses !== []){
-	// 		this.addAllData()
-	// 		}
-	// 	}
-	// 	}
-
-	// addAllData = () => {
-	// 	const red = this.props.teachers_responses.filter(resp => resp.answer == 'red')
-	// 	const yellow = this.props.teachers_responses.filter(resp => resp.answer == 'yellow')
-	// 	const green = this.props.teachers_responses.filter(resp => resp.answer == 'green');
-
-	// 	let myData = [
-	// 		{
-	// 			type: "column",
-	// 			showInLegend: true,
-	// 			legendText: "Yikes",
-	// 			color: "red",
-	// 			dataPoints: this.fillData(red)
-	// 		  },
-	// 		  {
-	// 			type: "column",
-	// 			showInLegend: true,
-	// 			legendText: "Meh",
-	// 			color: "yellow",
-	// 			dataPoints: this.fillData(yellow)
-	// 		  },
-	// 		  {
-	// 			type: "column",
-	// 			showInLegend: true,
-	// 			legendText: "Yahoo",
-	// 			color: "green",
-	// 			dataPoints: this.fillData(green)
-	// 		  }
-	// 	]
-	// 	this.setState({
-	// 		datapoints: myData
-	// 	}) 
-	// }
-	
-
-	fillData = (color) => {
-		let myData = this.props.current_course.id ? (this.props.current_course.responses.filter(response => response.datatype == 'light').filter(response => (moment(parseInt(response.day)) >= moment(moment().format())) && (moment(parseInt(response.day)) <= moment()))) : []
+	fillData = (dataset, color) => {
+		myData = this.props.current_course.id && dataset ? (dataset.filter(response => response.datatype == 'light').filter(response => (moment(parseInt(response.day)) >= moment(this.state.beginning)) && (moment(parseInt(response.day)) <= moment(this.state.ending)))) : []
 		let arr = []
 		for (let i=0; i<7; i++){
 			let point = {};
-			point.label = `${moment().clone().add(i-7, 'days').format("MMM D")}`
-			point.y = (color.filter( resp => moment(parseInt(resp.day)).format("MMM D") == moment().clone().add(i-7, 'days').format("MMM D"))).length
+			point.label = `${moment(this.state.ending).clone().add(i-7, 'days').format("MMM D")}`
+			point.y = (myData.filter(resp => resp.answer == color).filter( resp => moment(parseInt(resp.day)).format("MMM D") == moment().clone().add(i-7, 'days').format("MMM D"))).length
 			arr.push(point)	
 		}
 		return arr
 	}
 	
+	weekBack = () => {
+		this.setState(prev => {
+			return ({
+				beginning: moment(prev.beginning).subtract(7, 'days').toDate(),
+				ending: moment(prev.beginning).add(1, 
+					'day')
+			})
+	    }, () => {this.props.changeDates(this.state.beginning, this.state.ending)})
+	}
+	
+	weekForward = () => {
+		this.setState(prev => {
+			return ({
+				beginning: moment(prev.ending).subtract(1, 'day'),
+				ending: moment(prev.ending).add(7, 'days').toDate()
+			})
+	    }, () => {this.props.changeDates(this.state.beginning, this.state.ending)})
+	}
 	
 	render() {
 		// const red = this.props.current_course.responses.filter(resp => resp.answer == 'red')
@@ -84,14 +80,19 @@ class WeekTotal extends Component {
         const options = {
 			animationEnabled: true,
 			exportEnabled: true,
-			theme: "light2", // "light1", "light2", "dark1", "dark2"
+			theme: "light2",
 			title:{
-				text: "Past Week's Traffic",
-			fontSize: 26
+				text: "Week's Traffic:",
+				fontSize: 26
 			},
+			subtitles: [
+				{
+					text: `${now.clone().subtract(7, 'days').format("MMM D")} - ${now.clone().format("MMM D")}`,
+					fontSize: 22
+				}
+				],
 			axisX: {
-				title: `Past Week: ${now.clone().subtract(7, 'days').format("MMM D")} - ${now.clone().format("MMM D")}`,
-			logarithmic: false
+				title: `Date`
 			},
 			axisY: {
 				title: "Traffic Temperature"
@@ -103,30 +104,33 @@ class WeekTotal extends Component {
 					showInLegend: true,
 					legendText: "Red",
 					color: "#EA4335",
-					dataPoints: this.fillData(this.props.current_course.responses.filter(resp => resp.answer == 'red'))
+					dataPoints: this.fillData(this.props.current_course.responses,'red')
 				  },
 				  {
 					type: "column",
 					showInLegend: true,
 					legendText: "Yellow",
 					color: "rgb(248, 200, 54)",
-					dataPoints: this.fillData(this.props.current_course.responses.filter(resp => resp.answer == 'yellow'))
+					dataPoints: this.fillData(this.props.current_course.responses, 'yellow')
 				  },
 				  {
 					type: "column",
 					showInLegend: true,
 					legendText: "Green",
 					color: "#34A853",
-					dataPoints: this.fillData(this.props.current_course.responses.filter(resp => resp.answer == 'green'))
+					dataPoints: this.fillData(this.props.current_course.responses, 'green')
 				  }
 			]
 			  }
 		return (
 		<div>
-			<CanvasJSChart options = {options}
-				/* onRef={ref => this.chart = ref} */
-			/>
-			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+		{this.state.loading ? null :
+		<Fragment>
+			<CanvasJSChart options = {options}	/>
+			<button className="btn btn-outline-primary" style={{'position': 'absolute', 'left': '20%'}} onClick={this.weekBack}><h2>{back}</h2></button>
+			<button className="btn btn-outline-primary" style={{'position': 'absolute', 'right': '23%'}} onClick={this.weekForward}><h2>></h2></button>
+			<br></br>
+		</Fragment> }
 		</div>
 		);
 	}
@@ -142,4 +146,10 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(WeekTotal)
+const mapDispatchToProps = dispatch => {
+    return {
+        setCurrentCourse: course => dispatch(currentCourse(course))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(WeekTotal)

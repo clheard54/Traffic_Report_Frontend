@@ -58,4 +58,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StudentProfile)
+export default AuthHOC(connect(mapStateToProps, mapDispatchToProps)(StudentProfile))

@@ -1,17 +1,34 @@
 import React from 'react'
 import { api } from '../services/api'
 import { connect } from 'react-redux';
+import { currentCourse } from '../redux'
 import * as moment from 'moment'
 
 let responses
 let date
 class TriageChart extends React.Component{
 
-    componentDidMount(){
+    componentDidMount() {
         date = moment()
-        //     
+        if (!this.props.current_course.id) {
+            try {
+                const current_course = localStorage.getItem('course_token');
+                if ('course_token' == null) {
+                  return undefined;
+                }
+                api.getRequests.getCourses().then(data => {
+                    let thisCourse = data.filter(course => course.id == parseInt(current_course));
+                    this.props.setCurrentCourse(thisCourse)
+                    this.setState({
+                        loading: false,
+                        current_course: thisCourse[0]
+                    })
+                })
+              } catch (err) {
+                this.props.history.push("/profile");
+              }
+        } 
     }
-
     // componentDidUpdate(prevProps){
     //     if (prevProps.class_responses !== this.props.class_responses || prevProps.current_course !== this.props.current_course){
     //         this.setState({
@@ -22,8 +39,8 @@ class TriageChart extends React.Component{
     // }
 
     noAnswer = (course) => {
-        if (this.props.class_responses != undefined) {
-            responses = this.props.class_responses.filter(resp => moment(parseInt(resp.day)).format("MMM D") == moment(date).format("MMM D"))
+        if (!!course.id) {
+            responses = course.responses.filter(resp => moment(parseInt(resp.day)).format("MMM D") == moment(date).format("MMM D"))
             let ids = responses.map(entry => entry.student_id)
             let missing = course.students.filter(student => !ids.includes(student.id)).map(x => x.name)
             if (missing.length == 0){
@@ -34,14 +51,14 @@ class TriageChart extends React.Component{
         }
     }
 
-    red = (classR) => {
+    red = (course) => {
         let allReds = []
-        if (this.props.class_responses != undefined) {
-            responses = classR.filter(resp => moment(parseInt(resp.day)).format("MMM D") == moment(date).format("MMM D"))
+        if (!!course.id){
+            responses = course.responses.filter(resp => moment(parseInt(resp.day)).format("MMM D") == moment(date).format("MMM D"))
 
             let reds = responses.filter(entry => entry.answer == 'red').map(entry => entry.student_id)
             reds.forEach(id => {
-                let toAdd = this.props.current_course.students.find(student => student.id == id)
+                let toAdd = course.students.find(student => student.id == id)
                 if (!allReds.includes(toAdd.name)){
                     allReds.push(toAdd.name)
                 }
@@ -54,14 +71,14 @@ class TriageChart extends React.Component{
         }
     }
 
-    yellow = (classR) => {
+    yellow = (course) => {
         let allyellows = []
-        if (this.props.class_responses != undefined) {
-            responses = classR.filter(resp => moment(parseInt(resp.day)).format("MMM D") == moment(date).format("MMM D"))
+        if (!!course.id) {
+            responses = course.responses.filter(resp => moment(parseInt(resp.day)).format("MMM D") == moment(date).format("MMM D"))
         
             let yellows = responses.filter(entry => entry.answer == 'yellow').map(entry => entry.student_id)
             yellows.forEach(id => {
-                let toAdd = this.props.current_course.students.find(student => student.id == id)
+                let toAdd = course.students.find(student => student.id == id)
                 if (toAdd){
                 if (!allyellows.includes(toAdd.name)){
                     allyellows.push(toAdd.name)
@@ -76,14 +93,14 @@ class TriageChart extends React.Component{
         }
     }
 
-    green = (classR) => {
+    green = (course) => {
         let allgreens = []
-        if (this.props.class_responses != undefined) {
-            responses = classR.filter(resp => moment(parseInt(resp.day)).format("MMM D") == moment(date).format("MMM D"))
+        if (!!course.id) {
+            responses = course.responses.filter(resp => moment(parseInt(resp.day)).format("MMM D") == moment(date).format("MMM D"))
         
             let greens = responses.filter(entry => entry.answer == 'green').map(entry => entry.student_id)
             greens.forEach(id => {
-                let toAdd = this.props.current_course.students.find(student => student.id == id)
+                let toAdd = course.students.find(student => student.id == id)
                 if (!allgreens.includes(toAdd.name)){
                     allgreens.push(toAdd.name)
                 }
@@ -103,22 +120,24 @@ class TriageChart extends React.Component{
           <h5>Triage Chart:</h5>
           {this.props.class_responses !== undefined ?
             <table style={{width:"100%"}}>
+              <tobody>
                 <tr style={{'backgroundColor': 'rgb(255, 248, 40)', 'padding': '6px'}}>
                     <th style={{'padding': '6px'}}>HAVE NOT ANSWERED: </th>
                     <td style={{'padding': '12px 4px'}}>{this.noAnswer(this.props.current_course)}</td>
                 </tr>
                 <tr>
                     <th style={{'padding': '6px', 'height': '20px'}}>RED LIGHT: </th>
-                    <td style={{'padding': '12px 4px'}}>{this.red(this.props.class_responses)}</td>
+                    <td style={{'padding': '12px 4px'}}>{this.red(this.props.current_course)}</td>
                 </tr>
                 <tr>
                     <th style={{'padding': '6px'}}>YELLOW:</th>
-                     <td style={{'padding': '12px 4px'}}>{this.yellow(this.props.class_responses)}</td>
+                     <td style={{'padding': '12px 4px'}}>{this.yellow(this.props.current_course)}</td>
                 </tr>
                 <tr>
                     <th style={{'padding': '6px'}}>GREEN:</th>
-                    <td style={{'padding': '12px 4px'}}>{this.green(this.props.class_responses)}</td>
+                    <td style={{'padding': '12px 4px'}}>{this.green(this.props.current_course)}</td>
                 </tr>
+              </tobody>
             </table> : null }
           </div>
         )
@@ -132,4 +151,10 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(TriageChart)
+const mapDispatchToProps = dispatch => {
+    return {
+        setCurrentCourse: course => dispatch(currentCourse(course))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TriageChart)

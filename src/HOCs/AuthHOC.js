@@ -3,56 +3,63 @@ import { Redirect } from 'react-router-dom'
 import {api} from "../services/api"
 
 const AuthHOC = WrappedComponent => {
-
-    return class AuthHOC extends React.Component{
-
-        state={
+console.log("auth check")
+  return class AuthHOC extends React.Component{
+    constructor(){
+        super();
+        this.state={
             authorized: false,
-            responseCollected: false
+            received: false
         }
+    }
 
-        componentDidMount(){
-            this.checkLogin()
-        }
+    componentDidMount(){
+        this.checkLogin()
+    }
 
-        checkLogin = () => {
-            if (!localStorage.getItem('token')){
-                this.setState({
-                    authorized: false,
-                    responseCollected: true
-                })
-            } else {
-                api.auth.getCurrentUser()
-                .then(resp => {
-                    if (resp.error){
-                        this.setState({
-                            authorized: false,
-                            responseCollected: true
-                        })
-                    } else {
-                        this.setState({
-                            authorized: true,
-                            responseCollected: true
-                        })
-                    }
-                })
-            }
+    screenUser = () => {
+        if (!this.state.authorized && !this.state.received){
+            return <h3>Loading...</h3>
+        } else if (this.state.received && !this.state.authorized){
+            return <Redirect to='/login'/>
+        } else {
+            return <WrappedComponent {...this.props}/>
         }
+    }
+
+    checkLogin = () => {
+        if (!localStorage.getItem('token')){
+            this.setState({
+                received: true
+            })
+        } else {
+            api.auth.getCurrentUser()
+            .then(resp => {
+                console.log(resp)
+                if (resp.error){
+                    this.setState({
+                        received: true,
+                        authorized: false
+                    })
+                } else {
+                    this.setState({
+                        received: true,
+                        authorized: true
+                    })
+                }
+            })
+        }
+    }
     
+    isAuthorized = () => {
+        return this.state.authorized
+    }
 
-        isAuthorized = () => {
-            return this.state.authorized
-        }
-
-        isRejected = () => {
-            return !this.state.authorized && this.state.responseCollected
-        }
-
-        render(){
-          return (
-            <div>
-                {this.state.authorized ? (<WrappedComponent {...this.props}/>) : null} 
-            </div>)
+    render(){
+        return (
+        <div>
+            {this.screenUser()}
+        </div>)
         }
     }
 }
