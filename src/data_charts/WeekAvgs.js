@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import CanvasJSReact from '../assets/canvasjs.react';
 import '@popperjs/core'
+import * as moment from 'moment'
 import { connect } from 'react-redux'
 // var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -18,7 +19,7 @@ class WeekAvgs extends Component {
 			const todayDateAsInt = parseInt(ordered[0].day)
 			let week = []
 			for (let i=0; i<7; i++){
-				week[i] = responses.filter( resp => Math.abs(parseInt(resp.day) - (todayDateAsInt-7+i))<1 )
+				week[i] = responses.filter( resp => Math.abs(parseInt(parseInt(resp.day)) - (todayDateAsInt-7+i))<1 )
 			}
 			console.log(week)
 				return dataset = week.map(dayData => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { userLogin, setUserCourses, setUserAssignments } from  "../redux"
+import { userLogin, setUserCourses } from  "../redux"
 import { connect } from 'react-redux';
 
 
@@ -65,8 +65,7 @@ const mapDispatchToProps = dispatch => {
     return {
         onSetUser: (user) => 
             userLogin(user)(dispatch),
-            // setUserAssignments(user)(dispatch)
-        // },
+            
         setUserCourses: (user) => setUserCourses(user)(dispatch)
     } 
 }

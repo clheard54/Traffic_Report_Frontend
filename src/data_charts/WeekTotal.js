@@ -1,14 +1,13 @@
 import React, {Component} from 'react'
 import CanvasJSReact from '../assets/canvasjs.react';
 import '@popperjs/core'
+import * as moment from 'moment'
 import { connect } from 'react-redux'
 // var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 // Grab every response from this course for the past 5 days. Each one gets plotted. All same diameter. Label with names?
-let red
-let yellow
-let green
+
 class WeekTotal extends Component {	
 	constructor() {
 		super();
@@ -64,22 +63,15 @@ class WeekTotal extends Component {
 	
 
 	fillData = (color) => {
-		const date = new Date()
-		const today = date.toDateString().slice(4,10)
-		date.setDate(date.getDate()-7)
-		const weekago = date.toDateString().slice(4,10)
-		const ordered = this.props.current_course.responses.sort((a,b) => (a.day < b.day) ? 1 : -1)
-		if (ordered.length !== 0){
-		const todayDateAsInt = parseInt(ordered[0].day)
+		let myData = this.props.current_course.id ? (this.props.current_course.responses.filter(response => response.datatype == 'light').filter(response => (moment(parseInt(response.day)) >= moment(moment().format())) && (moment(parseInt(response.day)) <= moment()))) : []
 		let arr = []
 		for (let i=0; i<7; i++){
 			let point = {};
-			point.label = `${weekago.slice(0,4)} ${parseInt(weekago.slice(4))+i}`
-			point.y = (color.filter( resp => Math.abs(parseInt(resp.day) - (todayDateAsInt-7+i))<1 )).length
+			point.label = `${moment().clone().add(i-7, 'days').format("MMM D")}`
+			point.y = (color.filter( resp => moment(parseInt(resp.day)).format("MMM D") == moment().clone().add(i-7, 'days').format("MMM D"))).length
 			arr.push(point)	
 		}
 		return arr
-	}
 	}
 	
 	
@@ -87,11 +79,8 @@ class WeekTotal extends Component {
 		// const red = this.props.current_course.responses.filter(resp => resp.answer == 'red')
 		// const yellow = this.props.current_course.responses.filter(resp => resp.answer == 'yellow')
 		// const green = this.props.current_course.responses.filter(resp => resp.answer == 'green');
+		const now = moment()
 
-		let date = new Date()
-		let today = date.toDateString().slice(4,10)
-		date.setDate(date.getDate()-7)
-		let weekago = date.toDateString().slice(4,10)
         const options = {
 			animationEnabled: true,
 			exportEnabled: true,
@@ -101,7 +90,7 @@ class WeekTotal extends Component {
 			fontSize: 26
 			},
 			axisX: {
-				title: `Past Week: ${weekago} - ${today}`,
+				title: `Past Week: ${now.clone().subtract(7, 'days').format("MMM D")} - ${now.clone().format("MMM D")}`,
 			logarithmic: false
 			},
 			axisY: {

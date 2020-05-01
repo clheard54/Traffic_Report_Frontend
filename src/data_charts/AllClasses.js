@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import CanvasJSReact from '../assets/canvasjs.react';
 import '@popperjs/core'
 import { connect } from 'react-redux';
+import * as moment from 'moment'
 import { loadStudentResponses } from '../redux';
 import { api } from '../services/api'
 //var CanvasJSReact = require('./canvasjs.react');
@@ -12,7 +13,7 @@ let myData = []
 class AllClasses extends Component {	
 	
 	componentDidUpdate(prevProps){
-		if (prevProps.teachers_responses !== this.props.teachers_responses){
+		if (prevProps.current_course !== this.props.current_course){
 			myData = this.fillData()
 		}
 	}
@@ -34,17 +35,19 @@ class AllClasses extends Component {
 			'yellow': 'rgb(248, 200, 54)',
 			'green': '#34A853'
 		}
+		
 		myData = this.props.teachers_responses ? (this.props.teachers_responses.filter(response => response.datatype == 'light').map(response => (
 			{
-				label: response.day[0] == '0' ? response.day[1]+"/"+response.day.slice(2,4) : response.day.slice(0,2)+"/"+response.day.slice(1,4),
-				x: (parseFloat(response.day))/100,
-				y: hash[response.answer], 
-				course: response.course,
-				student: response.student,
-				// z: 80*(Math.sqrt(2))^2,
-                markerColor: matchColor[response.answer],
-                markerSize: 35
-			}
+			label: moment(parseInt(response.day)).format("dddd"),
+			date: moment(parseInt(response.day)).format("MMM Do"),
+			x: moment(parseInt(response.day)).toDate(),
+			y: hash[response.answer],
+			student: response.student_id,
+			course: response.course_id,
+			// z: 80*(Math.sqrt(2))^2,
+			markerColor: matchColor[response.answer],
+			markerSize: 35
+		}
 		))) : []
 		return myData;
 	}
@@ -68,7 +71,7 @@ class AllClasses extends Component {
 			axisX: {
 				title: '\n Date',
 				logarithmic: false,
-				interval: .01,
+				// interval: .01,
 				labelWrap: true,
 				labelAngle: -25
 			},
@@ -78,8 +81,10 @@ class AllClasses extends Component {
 			},
 			data: [{
 				type: "scatter",
+				fillOpacity: 0.7,
+				xValueType: "dateTime",
 				// indexLabel: "{label}",
-				toolTipContent: "<b>{label}</b><br>Date: {x}<br>Class: {course}<br>Student: {student}",
+				toolTipContent: "<b>{label}</b><br>Date: {date}<br>Class: {course}<br>Student: {student}",
 				indexLabelWrap: true,
 				dataPoints: this.fillData()
 			}]

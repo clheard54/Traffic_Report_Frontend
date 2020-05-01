@@ -4,26 +4,39 @@ import TeacherClass from '../teachers/TeacherClass'
 import StudentClass from '../students/StudentClass'
 import { connect } from 'react-redux'
 import AuthHOC from "../HOCs/AuthHOC";
-import {currentCourse, setCurrentCourse} from '../redux'
+import {currentCourse, setCurrentCourse } from '../redux'
+import { api } from '../services/api';
 
 class ClassPage extends React.Component{
 //conditionally render either Teacher View or Student view for a class
 
-    // componentDidMount() {
-    //     if (!this.props.current_course.id) {
-    //       this.props.history.push("/profile");
-    //     } 
-    // }
+    componentDidMount() {
+        if (this.props.current_course == null) {
+            try {
+                const current_course = localStorage.getItem('course_token');
+                if ('course_token' == null) {
+                  return undefined;
+                }
+                api.getRequests.getCourses().then(data => {
+                    let thisCourse = data.find(parseInt(current_course));
+                    this.props.setCurrentCourse(thisCourse)
+                })
+              } catch (err) {
+                this.props.history.push("/profile");
+              }
+        } 
+    }
 
 //find current_course based on url :id param and update store with it
     componentDidUpdate(prevProps){
-        if (prevProps.current_user !== this.props.current_user){
+        if (prevProps.current_user !== this.props.current_user || prevProps.current_course != this.props.current_course){
             this.showClass()
         }
+        
     }
 
     showClass = () => {
-       return this.props.current_user !== null ? (this.props.current_user.admin ? <TeacherClass/> : <StudentClass/>) : null
+       return this.props.current_user !== null ? (this.props.current_user.admin ? <TeacherClass {...this.props}/> : <StudentClass/>) : null
     }
 
 

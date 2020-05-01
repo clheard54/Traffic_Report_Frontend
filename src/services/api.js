@@ -40,7 +40,7 @@ const createTeacher = data => {
       "Content-Type": "application/json",
       Accept: "application/json"
       },
-    body: JSON.stringify({user: data})
+    body: JSON.stringify({teacher: data})
   }).then(res => res.json());
 };
 
@@ -51,7 +51,7 @@ const createStudent = data => {
       "Content-Type": "application/json",
       Accept: "application/json"
       },
-    body: JSON.stringify({user: data})
+    body: JSON.stringify({student: data})
   }).then(res => res.json());
 };
 
@@ -110,11 +110,6 @@ const getStudents = () => {
     // probably sort based on course of interest
 }
 
-const getClassStudents = (course) => {
-  return fetch(`${API_ROOT}/students`)
-  .then(resp => resp.json())
-}
-
 const getCourses = (user) => {
   return fetch(`${API_ROOT}/courses`, {
     headers: headers()
@@ -140,7 +135,6 @@ export const api = {
   getRequests: {
     getResponses,
     getStudents,
-    getClassStudents,
     getAssignments,
     getCourses,
     findCoursesStudent,

@@ -8,6 +8,7 @@ import AuthHOC from "../HOCs/AuthHOC";
 class StudentProfile extends React.Component{
 
     setCourse = (course) => {
+        localStorage.setItem('course_token', course.id)
         this.props.setCurrentCourse(course)
     }
     
@@ -52,7 +53,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         setCurrentCourse: course => {
-            console.log(course)
             dispatch(currentCourse(course));
         }
     }

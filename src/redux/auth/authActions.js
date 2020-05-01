@@ -25,6 +25,7 @@ export const fetchUserSuccess = (user) => {
 
   export const userLogout = () => {
       localStorage.removeItem('token')
+      localStorage.removeItem('current_course')
       return dispatch => {
           dispatch(setStudentUser({}))
       }

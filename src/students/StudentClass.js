@@ -14,6 +14,20 @@ class StudentClass extends React.Component{
   }
   
   componentDidMount(){
+    if (this.props.current_course == null) {
+      try {
+          const current_course = localStorage.getItem('course_token');
+          if ('course_token' == null) {
+            return undefined;
+          }
+          api.getRequests.getCourses().then(data => {
+              let thisCourse = data.find(parseInt(current_course));
+              this.props.setCurrentCourse(thisCourse)
+          })
+        } catch (err) {
+          this.props.history.push("/profile");
+        }
+  } 
     api.getRequests.findCoursesStudent()
       .then(data => {
         let x = data.find(entry => entry['student_id']==this.props.current_user.id && entry['course_id']==this.props.current_course.id)
@@ -138,7 +152,7 @@ class StudentClass extends React.Component{
                 <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center'}}>
                     <div className='col-md-8'>
                     {this.props.current_course.id ?
-                      <IndividualData course_student={this.state.course_student} getAverage={this.storeAvg}/> : null}
+                      <IndividualData /> : null}
                     </div> 
                     <div className='col-md-2'>
                         <div className='container' style={{'alignItems': 'center'}}>

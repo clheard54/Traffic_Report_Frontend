@@ -25,7 +25,8 @@ class NavBar extends React.Component{
     }
 
     setCourse = (course) => {
-        this.props.setCurrentCourse(course)
+        localStorage.setItem('course_token', course.id)
+        this.props.setCurrentCourse(course);
     }
 
     render(){

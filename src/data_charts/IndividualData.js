@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import CanvasJSReact from '../assets/canvasjs.react';
 import '@popperjs/core'
+import * as moment from 'moment'
 import { connect } from 'react-redux';
 import { api } from '../services/api'
 //var CanvasJSReact = require('./canvasjs.react');
@@ -10,9 +11,9 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 let student_responses
 let numerical
 class IndividualData extends Component {	
-	state = {
-		avg: 0
-	}
+	// state = {
+	// 	avg: 0
+	// }
 	
 	// fetch recent responses based on current_user
 	// componentDidMount(){
@@ -47,17 +48,19 @@ class IndividualData extends Component {
 			'green': '#34A853'
 		}
 		const feeling = {
-			2: "really confused",
-			6: "shaky",
-			10: "great!"
+			'red': "Really confused :(",
+			'yellow': "Shaky :/",
+			'green': "Great! :)"
 		}
 		const n = Math.sqrt(2)
 		const myData = this.props.current_course.responses.map(resp => resp.student_id == this.props.current_user.id ? resp : null).filter(e => e!==null).map(response => (
 			{
-				label: response.day[0] == '0' ? response.day[1]+"/"+response.day.slice(2,4) : response.day.slice(0,2)+"/"+response.day.slice(1,4),
-				x: parseFloat(response.day),
+				label: moment(parseInt(response.day)).format("dddd"),
+				date: moment(parseInt(response.day)).format("MMM Do"),
+				x: moment(parseInt(response.day)),
 				y: hash[response.answer], 
 				z: 80*n^2,
+				feeling: feeling[response.answer],
 				markerColor: matchColor[response.answer],
 			}
 		));
@@ -72,9 +75,9 @@ class IndividualData extends Component {
 			axisX: {
 				title: 'Date',
 				logarithmic: false,
-				interval: 0.5,
+				// interval: 0.5,
 				labelWrap: true,
-				labelAngle: -45
+				labelAngle: -25
 			},
 			axisY: {
 				title: "Traffic Temperature",
@@ -82,8 +85,9 @@ class IndividualData extends Component {
 			},
 			data: [{
 				type: "bubble",
+				xValueType: "dateTime",
 				// indexLabel: "{label}",
-				toolTipContent: "<b>{label}</b><br>Date: {x}<br>Traffic Temperature: {y}<br>Feeling: {feeling[z]}",
+				toolTipContent: "<b>{label}</b><br>Date: {date}<br>Traffic Temperature: {y}<br>Feeling: {feeling}",
 				indexLabelWrap: true,
 				dataPoints: myData
 			}]

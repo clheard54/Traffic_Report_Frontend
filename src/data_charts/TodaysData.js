@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import CanvasJSReact from '../assets/canvasjs.react';
 import '@popperjs/core'
+import * as moment from 'moment'
 //var CanvasJSReact = require('./canvasjs.react');
 // var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -11,9 +12,8 @@ export default class TodaysData extends Component {
 		const myData = []
         const n = Math.sqrt(2)
 		const date = new Date()
-		const today = parseFloat(date.toLocaleString().slice(0,5).replace('/', '.'))*100 -1
-				if (this.props.class_responses !== undefined){
-			let dataset = this.props.class_responses.filter(resp => parseInt(resp.day) == today)
+		if (this.props.class_responses !== undefined){
+			let dataset = this.props.class_responses.filter(resp => moment(parseInt(resp.day)).format("MMM D") == moment(date).format("MMM D"))
 			let r = dataset.filter(resp => resp.answer == 'red').length
 			let y = dataset.filter(resp => resp.answer == 'yellow').length
 			let g = dataset.filter(resp => resp.answer == 'green').length
@@ -26,7 +26,6 @@ export default class TodaysData extends Component {
 	return myData
 	}
     render() {
-		const myDay = (new Date()).toDateString().slice(4,10)
         const options = {
 			animationEnabled: true,
 			exportEnabled: true,
@@ -36,7 +35,7 @@ export default class TodaysData extends Component {
 			fontSize: 26
 			},
 			axisX: {
-				title: `Today - ${myDay}`,
+				title: `Today - ${moment().format("MMMM Do")}`,
 			logarithmic: false
 			},
 			axisY: {
@@ -44,6 +43,7 @@ export default class TodaysData extends Component {
 			},
 			data: [{
 				type: "bubble",
+				xValueType: "dateTime",
 				indexLabel: "{label}",
 				toolTipContent: "<b>{label}</b><br>Date: {x}<br>Traffic Temperature: {y}<br>Diameter: {z} number",
 				dataPoints: this.fillData()

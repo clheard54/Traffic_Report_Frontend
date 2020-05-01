@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react'
 import { api } from '../services/api'
-// import TodaysData from '../data_charts/TodaysData'
 import AuthHOC from "../HOCs/AuthHOC";
 import AllClasses from '../data_charts/AllClasses'
 // import WeekAvgs from '../data_charts/WeekAvgs'
@@ -15,7 +14,6 @@ class TeacherProfile extends React.Component{
 
     componentDidMount(){
         let courseIds = this.props.user_courses.map(course => course.id)
-        console.log(this.props.current_user.courses)
         this.props.loadTeachersResponses(courseIds)
     }
 
@@ -29,6 +27,7 @@ class TeacherProfile extends React.Component{
     }
 
     setCourse = (course) => {
+        localStorage.setItem('course_token', course.id)
         this.props.setCurrentCourse(course)
     }
     
@@ -58,6 +57,8 @@ class TeacherProfile extends React.Component{
                 </div>
                 <br></br>
                 <br></br>
+
+                
 
                 <hr></hr>
                 <div className="row" style={{'display': 'flex','flexDirection': 'column', 'justifyContent': 'center', 'marginTop': '90px'}}>

@@ -38,13 +38,15 @@ class UserAssignments extends React.Component{
     // }
 
     renderAssignments = () => {
-        let userHW = []
-        this.props.user_courses.forEach(course => {
-            course.assignments.forEach(hw => {
-                userHW.push(hw)})
-            })
-        return userHW.map(hw => {
-            return <li key={hw.id}>{hw.details}</li>})
+        return this.props.user_courses.map(course => {
+            return (
+            <div>
+                <ul><b>{course.title}:</b></ul>
+                {course.assignments.map(hw => {
+                return <li key={hw.id}>{hw.details}</li>})}
+            </div>
+            )
+        })
     }
 
 
