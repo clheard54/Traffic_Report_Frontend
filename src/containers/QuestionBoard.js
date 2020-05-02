@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react'
 import { api } from '../services/api'
+import { connect } from 'react-redux'
 
 class QuestionBoard extends React.Component{
   constructor(){
@@ -17,6 +18,8 @@ class QuestionBoard extends React.Component{
       }
     })
   }
+
+
 
   handleSubmit = (event) => {
     event.preventDefault()
@@ -46,6 +49,12 @@ class QuestionBoard extends React.Component{
       )
   }
 
+  deleteQuestion = (id) => {
+    api.posts.deleteQuestion(id).then(data => {
+      console.log(data)
+    })
+  }
+
     renderQuestions = () => {
       if (this.state.questions.length == 0){
         return (
@@ -60,8 +69,11 @@ class QuestionBoard extends React.Component{
         return this.state.questions.map(question => {
           return (
             <Fragment>
-              <div>
+              <div key={question.id}>
                 <p>{i}. {question.text}</p>
+                {this.current_user.admin ? 
+                <button className='btn btn-warning' onClick={() => this.deleteQuestion(question.id)}>&emsp; &emsp; Delete</button>
+                :null}
                 <span style={{display:'none'}}>{i++}</span>
                 <br></br>
                 </div>
@@ -74,21 +86,29 @@ class QuestionBoard extends React.Component{
     render(){
       return (
         <div className="container" style={{'maxWidth': '100%'}}>
-          <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'width': '100%',  'marginLeft': '0', 'marginRight': '0'}}>
+          <div className="row" style={{'display': 'flex', 'justifyContent': 'center', 'width': '100%',  'marginLeft': '0', 'marginRight': '0'}}>
+          {!this.props.current_user.admin ?
+            <Fragment>   
+              <div className ="col-md-8" style={{'borderStyle': 'solid', 'borderWidth': '1px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center'}}>
+              <h2>All Questions:</h2>
+              {this.renderQuestions()}
+            </div>  
+               
+            <div className='col-md-3'>
+              <br></br>
+              <h5>Do YOU have a question about something?</h5>
+              <button style={{'padding': '10px'}} className="btn btn-primary font-weight-bolder" onClick={this.handleAsk}>Ask It!</button>
+              {this.state.show == true ? this.showForm() : null}
+            </div> 
+            <br></br>  
             <div className='col-sm-.5'></div>
-            <div className ="col-md-8" style={{'borderStyle': 'solid', 'borderWidth': '1px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center'}}>
-            <h2>All Questions:</h2>
-            {this.renderQuestions()}
-          </div>
-                    
-          <div className='col-md-3'>
-            <br></br>
-            <h5>Do YOU have a question about something?</h5>
-            <button style={{'padding': '10px'}} className="btn btn-primary font-weight-bolder" onClick={this.handleAsk}>Ask It!</button>
-            {this.state.show == true ? this.showForm() : null}
-          </div>
-          <br></br>  
-          <div className='col-sm-.5'></div>
+          </Fragment> : 
+          <Fragment>
+            <div className="col-md-12" style={{'borderStyle': 'solid', 'borderWidth': '1px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center'}}>
+              <h2>All Questions:</h2>
+              {this.renderQuestions()}
+            </div> 
+          </Fragment>}
         </div>
         </div>
         );
@@ -96,4 +116,11 @@ class QuestionBoard extends React.Component{
 
     };
 
-    export default QuestionBoard;
+    const mapStateToProps = state => {
+      return {
+        current_user: state.auths.current_user
+      }
+    }
+
+    export default connect(mapStateToProps)(QuestionBoard)
+  ;

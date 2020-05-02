@@ -104,10 +104,12 @@ const getTeachersResponses = () => {
   .then(resp => resp.json())
   }
 
-const getStudents = () => {
-  return fetch(`${API_ROOT}/students`)
+const deleteQuestion = (id) => {
+  return fetch(`${API_ROOT}/questions/${id}`, {
+    method: 'DELETE',
+    headers: headers()
+  })
   .then(resp => resp.json())
-    // probably sort based on course of interest
 }
 
 const getCourses = (user) => {
@@ -134,7 +136,6 @@ export const api = {
   },
   getRequests: {
     getResponses,
-    getStudents,
     getAssignments,
     getCourses,
     findCoursesStudent,
@@ -144,6 +145,7 @@ export const api = {
   posts: {
     postResponse,
     postQuestion,
-    postAssignment
+    postAssignment,
+    deleteQuestion
   }
 };

@@ -43,8 +43,8 @@ class ClassAssignmentsContainer extends React.Component{
     // //     console.log(this.props.current_course)
     // // }
 
-    renderAssignments = () => {
-        if (this.props.current_course !== null){
+    renderAssignments = (course) => {
+        if (!!course.id){
         if (this.props.current_course.assignments.length == 0) {
             return <div><br></br><p>It's your lucky day! There are currently no assignments.</p></div>
         } else {
@@ -69,28 +69,15 @@ class ClassAssignmentsContainer extends React.Component{
 
     }
 
-     // Form for teacher to post assignments, rendered conditionally
-    showForm = () => {
-        return (
-            <form onSubmit={this.handleSubmit}>
-                <label>Add Post:</label>
-                <input type="textarea" name="details"></input>
-                <br></br>
-                <input type="button" onClick={() => this.setState({showForm: false})}>Go Back</input>&emsp;&emsp;
-                <input type="submit" value="Post Question"></input>
-            </form>
-        )
-     }
-
     // List of most recent assignments posted
     render(){
         return (
             <div style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'minHeight': '200px', 'alignText': 'center', 'height': 'fit-content'}}>
             <h5 style={{'overflowWrap': 'normal' }}>Assignments & Announcements</h5>
             <div>
-                <ul style={{'textAlign': 'left'}}>{this.renderAssignments()}</ul>
+                <ul style={{'textAlign': 'left'}}>{this.renderAssignments(this.props.current_course)}</ul>
             </div>
-            {this.props.current_user ? (this.props.current_user.admin ? <button onClick={() => this.setState({showForm: true})}>Add Question</button> : null) : null}
+            {/* {this.props.current_user ? (this.props.current_user.admin ? <button onClick={() => this.setState({showForm: true})}>Add Question</button> : null) : null} */}
             {this.state.showForm ? <div>{this.showForm()}</div> : null}
             </div>
         )

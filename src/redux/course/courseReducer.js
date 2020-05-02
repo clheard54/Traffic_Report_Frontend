@@ -1,8 +1,8 @@
 const INITIAL_STATE = {
     current_course: {assignments: [], responses: [], students:[]},
     user_courses: [],
-    classHW: [],
-    classQs: [],
+    assignments: [],
+    questions: [],
     courses: [],
     loading: false
 }
@@ -44,7 +44,16 @@ const courseReducer = (state = INITIAL_STATE, action) => {
             loading: false,
             error: action.payload
         };
-        
+        case 'ADD_ASSIGNMENT':
+            return {
+                ...state,
+                current_course: {...state.current_course, assignments: [...state.current_course.assignments, action.payload]}
+            };
+        case 'ADD_QUESTION':
+        return {
+            ...state,
+            courses: [...state.courses, action.payload]
+        };
         default:
             return state
     }

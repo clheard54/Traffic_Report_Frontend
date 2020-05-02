@@ -1,13 +1,16 @@
 import React, { Fragment } from 'react'
-import { api } from '../services/api'
-import { currentCourse } from '../redux'
 import TodaysData from '../data_charts/TodaysData'
 import AuthHOC from '../HOCs/AuthHOC'
 import TriageChart from '../data_charts/TriageChart'
 import WeekAvgs from '../data_charts/WeekAvgs'
 import WeekTotal from '../data_charts/WeekTotal'
+import QuestionBoard from '../containers/QuestionBoard'
+import ClassAssignmentsContainer from '../components/ClassAssignmentsContainer'
+import AddCPForm from './AddCPQForm'
+import AddAssignmentForm from './AddAssignmentForm'
+import { api } from '../services/api'
+import { currentCourse } from '../redux'
 import { connect } from 'react-redux'
-// import WeeksData from '../highcharts/WeeksData'
 import * as moment from 'moment'
 
 const hash = {
@@ -24,6 +27,8 @@ class TeacherClass extends React.Component{
         avgStyle: null,
         avg: '',
         loading: true,
+        addingAssignment: false,
+        seeQuestions: false,
         startDate: moment().clone().subtract(1, 'week'),
         endDate: moment().clone()
       }
@@ -95,29 +100,99 @@ class TeacherClass extends React.Component{
       this.props.history.push('/profile')
     }
 
+    addingAssignment = () => {
+      this.setState({
+        addingAssignment: true,
+        seeQuestions: false
+      })
+    }
+
+    seeQuestionBoard = () => {
+      this.setState({
+        seeQuestions: true,
+        addingAssignment: false
+      })
+    }
+
+    hwPosted = () => {
+      this.setState({
+        addingAssignment: false
+      })
+    }
+
+    resetPage = () => {
+      this.setState({
+        addingAssignment: false,
+        seeQuestions: false
+      })
+    }
+
     render(){
         return (
           <div>
             <h3>{this.props.current_course.title}</h3>
+            <hr style={{'maxWidth': '30%'}}></hr>
             <Fragment>
                 <br></br>
                 <div className="container" style={{'maxWidth': '100%', 'minHeight': '530px'}}>
                 <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center', 'width': '100%', 'marginLeft': '0', 'marginRight': '0'}}>
                     <div className='col-sm-.5'></div>
                     <div className ="col-md-4" >
-                        <div style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center', 'height': 'fit-content'}}><TriageChart {...this.props} /></div>
+                      <button className='btn btn-outline-success' onClick={this.addingAssignment}><h6>View / Add Assignments</h6></button>
+                      &emsp;
+                      <button className='btn btn-outline-warning' onClick={this.seeQuestionBoard}><h6>See Question Board</h6></button>
+                        <br></br><br></br>
+                        {this.state.addingAssignment ?
+                        <Fragment>
+                          <h4>Current List:</h4>
+                          <ClassAssignmentsContainer/>
+                          <br></br>
+                          <button className="btn btn-outline-danger" onClick={this.resetPage}>Just Kidding, Go Back</button>
+                        </Fragment>
+                        : (this.state.seeQuestions ? 
+                        <Fragment>
+                          <AddCPForm/>
+                          <button className="btn btn-outline-danger" onClick={this.resetPage}>Just Kidding, Go Back</button>
+                        </Fragment>
+                        : 
+                        <Fragment>
+                          <div style={{'borderStyle': 'solid', 'borderWidth': '1px', 'borderColor': 'var(--gray-dark)', 'padding': '16px', 'alignText': 'center', 'height': 'fit-content'}}>
+                            <TriageChart {...this.props} />
+                          </div>
                         <br></br>
-                        <button className="btn btn-secondary" style={{'maxWidth': '120px', 'margin': 'auto'}} onClick={this.goBack}>Go Back</button>
+                        <button className="btn btn-outline-danger" style={{'maxWidth': '120px', 'margin': 'auto', 'alignContent': 'center'}} onClick={this.goBack}><h6>Go Back</h6></button>
+                        </Fragment> )}
                     </div>
-                    <div className='col-md-6'>
-                      <TodaysData />
+                    <div className='col-md-6' style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '25px 40px', 'alignText': 'center', 'maxHeight': '80%'}}>
+                    {this.state.addingAssignment ?
+                    <AddAssignmentForm hwAdded={this.hwPosted}/>
+                     : (this.state.seeQuestions ? 
+                     <QuestionBoard />
+                     : <TodaysData />) }
+                      <br></br>
                     </div>
                     <div className='col-sm-.5'></div>
                   </div>  
 
+                <br></br><br></br><br></br>
+                  <hr></hr>
+                  <br></br><br></br>
+
+                  {/* <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center', 'width': '100%', 'marginLeft': '0', 'marginRight': '0'}}>
+                  <div className="col-sm-1"></div>
+                  <div className="col-md-4">
+                    <ClassAssignmentsContainer />
+                  </div>
+                  <div className="col-md-6">
+                    <QuestionBoard />
+                  </div>
+                  <div className="col-sm-1"></div>
+
+                </div>
+
                   <br></br><br></br><br></br>
                   <hr></hr>
-                  <br></br><br></br><br></br>
+                  <br></br><br></br><br></br> */}
 
                   <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center', 'width': '100%', 'marginLeft': '0', 'marginRight': '0'}}>
                     <div className='col-sm-.5'></div>
@@ -155,7 +230,7 @@ class TeacherClass extends React.Component{
                     <div className='col-md-1'>
                     <div className='container' style={{'alignItems': 'center', 'paddingLeft':'0px'}}>
                         <div id="gradient" style={{'height': '500px'}}>
-                          <div className='circle' style={{'position': 'relative', 'zIndex': '1','top': `${500 - (this.state.weekAvg*50).toString()}` + "px", 'width': '75px', 'borderBottom': "5px solid black"}}></div>
+                          <div className='circle' style={this.state.avgStyle}></div>
                         </div>
                     </div>  
                   </div>

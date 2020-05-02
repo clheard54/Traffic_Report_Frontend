@@ -113,7 +113,7 @@ class TriageChart extends React.Component{
           {this.props.class_responses !== undefined ?
             <table style={{width:"100%"}}>
               <tbody>
-                <tr style={{'backgroundColor': 'rgb(255, 248, 40)', 'padding': '6px'}}>
+                <tr style={{'backgroundColor': '#007bffc9', 'padding': '6px'}}>
                     <th style={{'padding': '6px'}}>HAVE NOT ANSWERED: </th>
                     <td style={{'padding': '12px 4px'}}>{this.noAnswer(this.props.current_course)}</td>
                 </tr>
