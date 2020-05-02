@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { api } from '../services/api'
 import { currentCourse } from '../redux'
 import TodaysData from '../data_charts/TodaysData'
-import ClassAssignmentsContainer from '../components/ClassAssignmentsContainer'
+import AuthHOC from '../HOCs/AuthHOC'
 import TriageChart from '../data_charts/TriageChart'
 import WeekAvgs from '../data_charts/WeekAvgs'
 import WeekTotal from '../data_charts/WeekTotal'
@@ -69,7 +69,7 @@ class TeacherClass extends React.Component{
           avgStyle: {
                 'position': 'relative',
                 'zIndex': '1',
-                'top': 400 - (avg*40).toString() + "px",
+                'top': 500 - (avg*50).toString() + "px",
                 'width': '75px',
                 'borderBottom': "5px solid black"
               }
@@ -82,6 +82,12 @@ class TeacherClass extends React.Component{
       this.setState({
         startDate: newStart,
         endDate: newEnd
+      })
+    }
+
+    setWeekAvg = (x) => {
+      this.setState({
+        weekAvg: x
       })
     }
     
@@ -99,12 +105,6 @@ class TeacherClass extends React.Component{
                 <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center', 'width': '100%', 'marginLeft': '0', 'marginRight': '0'}}>
                     <div className='col-sm-.5'></div>
                     <div className ="col-md-4" >
-                      {/* <div style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center', 'height': 'fit-content'}}>
-                        {this.props.current_course ?
-                      <ClassAssignmentsContainer/> : null} </div>
-                        <br></br>
-                        <br></br>
-                         */}
                         <div style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center', 'height': 'fit-content'}}><TriageChart {...this.props} /></div>
                         <br></br>
                         <button className="btn btn-secondary" style={{'maxWidth': '120px', 'margin': 'auto'}} onClick={this.goBack}>Go Back</button>
@@ -115,25 +115,20 @@ class TeacherClass extends React.Component{
                     <div className='col-sm-.5'></div>
                   </div>  
 
-                  <br></br>
-                  <br></br>
-                  <br></br>
+                  <br></br><br></br><br></br>
                   <hr></hr>
-                  <br></br>
-                  <br></br>
-                  <br></br>
+                  <br></br><br></br><br></br>
 
                   <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center', 'width': '100%', 'marginLeft': '0', 'marginRight': '0'}}>
                     <div className='col-sm-.5'></div>
                     <div className ="col-md-8" style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center'}}>
                         <WeekTotal changeDates={this.changeDates}/>
-                        <br></br>
-                        <br></br>
+                        <br></br><br></br>
                         </div>
                     <div className='col-md-1'>
                     {this.state.loading ? null :
                     <div className='container' style={{'alignItems': 'center', 'paddingLeft':'0px'}}>
-                        <div id="gradient">
+                        <div id="gradient" style={{'height': '500'}}>
                           <div className='circle' style={this.state.avgStyle}></div>
                         </div>
                     </div> }
@@ -143,42 +138,30 @@ class TeacherClass extends React.Component{
                         <h5>Average Feels: </h5>
                         <h4>{this.state.avg}</h4>
                         </div>
-                        <br></br>
-                        <br></br>
+                        <br></br><br></br>
                     </div>
                 </div>
-                <br></br>
-                <br></br>
-                <br></br>
-                <br></br>
-
+                <br></br><br></br><br></br><br></br>
                 <hr></hr>
-                <br></br>
-                <br></br>
-                <br></br>
+                <br></br><br></br><br></br>
+
                 <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center', 'width': '100%', 'marginLeft': '0', 'marginRight': '0'}}>
                     <div className='col-md-1'></div>
                     <div className ="col-md-8" style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center'}}>
                     {this.props.current_course !== undefined ?
-                        <WeekAvgs /> : null}
-                        <br></br>
-                        <br></br>
+                        <WeekAvgs setWeekAvg={this.setWeekAvg}/> : null}
+                        <br></br><br></br>
                         </div>
                     <div className='col-md-1'>
                     <div className='container' style={{'alignItems': 'center', 'paddingLeft':'0px'}}>
-                        <div id="gradient" style={{'height': '575px'}}>
-                          
+                        <div id="gradient" style={{'height': '500px'}}>
+                          <div className='circle' style={{'position': 'relative', 'zIndex': '1','top': `${500 - (this.state.weekAvg*50).toString()}` + "px", 'width': '75px', 'borderBottom': "5px solid black"}}></div>
                         </div>
                     </div>  
                   </div>
-                  <div className='col-md-1'>
-                        <br></br>
-                        <br></br>
-                    </div>
+                  <div className='col-md-1'><br></br><br></br></div>
                 </div>
-                <br></br>
-                <br></br>
-                <br></br>
+                <br></br><br></br><br></br>
               </div>
             </Fragment>
           </div>
@@ -201,4 +184,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(TeacherClass)
+export default AuthHOC(connect(mapStateToProps, mapDispatchToProps)(TeacherClass))

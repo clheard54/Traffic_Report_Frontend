@@ -8,12 +8,12 @@ import { connect } from 'react-redux'
 // var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 const back = '<'
-let weeksData = []
+let total = 0; let counter = 0;
 
 class WeekAvgs extends Component {	
 	state = {
 		loading: true,
-		current_course: this.props.current_course
+		current_course: this.props.current_course,
 	}
 
 	componentDidMount(){
@@ -27,7 +27,8 @@ class WeekAvgs extends Component {
 					let thisCourse = data.filter(course => course.id == parseInt(current_course));
 					this.props.setCurrentCourse(thisCourse[0])
 					this.setState({
-						loading: false
+						loading: false,
+						current_course: thisCourse[0]
 					})
 				})
 				} catch (err) {
@@ -61,24 +62,28 @@ class WeekAvgs extends Component {
 	    })
 	}
 
-	fillData = (dataset) => {
-		let myData = this.props.current_course.id && dataset ? (dataset.filter(response => response.datatype == 'light')
-		.filter(response => (moment(parseInt(response.day)) >= moment(this.state.beginning)) && (moment(parseInt(response.day)) <= moment(this.state.ending)))) : []
+
+	fillData = (course) => {
+		if (!!course.id){
+		let myData = course.responses.filter(response => response.datatype == 'light')
+		.filter(response => (moment(parseInt(response.day)) >= moment(this.state.beginning)) && (moment(parseInt(response.day)) <= moment(this.state.ending)))
 
 	//seven times, filter by date and take average
 		let arr = []
-			for (let i=0; i<7; i++){
-				let daysData = myData.filter(response => moment(parseInt(response.day)).format("MMM D") == moment(this.state.ending).clone().add(i-7, 'days').format("MMM D"));
-				console.log(daysData)
-				let point = {};
-				point.label = `${moment(this.state.ending).clone().add(i-7, 'days').format("MMM D")}`
-				point.x = moment(this.state.beginning).clone().add(i, 'days').toDate()
-				point.date = moment(this.state.beginning).clone().add(i, 'days').format("dddd")
-				point.y = this.computeAverage(daysData)
-				arr.push(point)
+		for (let i=0; i<7; i++){
+			let point = {};
+			point.label = `${moment(this.state.ending).clone().add(i-7, 'days').format("MMM D")}`
+			point.x = moment(this.state.beginning).clone().add(i, 'days').toDate()
+			point.date = moment(this.state.beginning).clone().add(i, 'days').format("dddd")
+			point.y = parseFloat(this.computeAverage(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == moment(this.state.ending).clone().add(i-7, 'days').format("MMM D"))))
+			if (!!this.computeAverage(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == moment(this.state.ending).clone().add(i-7, 'days').format("MMM D")))) {
+				total += point.y
+				counter += 1
+			} 
+			arr.push(point)
 			}
 		return arr
-	}
+	}}
 
     computeAverage = (daysResponses) => {
       if (daysResponses.length !==0 ){
@@ -87,43 +92,54 @@ class WeekAvgs extends Component {
       })
 	  let avg = (numerical.reduce((a,b)=>a+b)/daysResponses.length).toFixed(1)
 	  return avg
-	}
+	} else { return null}
 }
     	
 	render() {
         const n = Math.sqrt(2)
-        const today = new Date().toDateString().slice(4)
         const options = {
 			animationEnabled: true,
 			exportEnabled: true,
 			theme: "light2", 
 			title:{
-				text: "Average Each Day",
+				text: "Daily Averages",
 			fontSize: 26
 			},
+			subtitles: [
+				{text: `Week of ${moment().clone().subtract(7, 'days').format("MMM D")} - ${moment().clone().format("MMM D")}`,
+				fontSize: 22}
+			],
 			axisX: {
-				title: `Date`
+				title: `Date`,
+				intervalType: 'day',
+				interval: 1,
+				valueFormatString: "MMM D"
+
 			},
 			axisY: {
-				title: "Traffic Temperature"
+				title: "Traffic Temperature",
+				viewportMinimum: 0,
+        		viewportMaximum: 10
 			},
 			data: [{
-				type: "bubble",
+				type: "spline",
 				xValueType: 'dateTime',
-				indexLabel: "{label}",
+				markerType: "circle",
+				type: "line",
+				connectNullData: true,
 				toolTipContent: "<b>{label}</b><br>Date: {date}<br>Day's Average: {y}<br>",
-				dataPoints: this.state.loading ? null : this.fillData(this.props.current_course.responses)
+				dataPoints: this.fillData(this.props.current_course)
 			}]
 		}
 		return (
 		<div>
-		{this.state.loading ? null : 
 		<Fragment>
 			<CanvasJSChart options = {options}	/>
+			{this.props.setWeekAvg((total/counter).toFixed(1))}
 			<button className="btn btn-outline-primary" style={{'position': 'absolute', 'left': '20%'}} onClick={this.weekBack}><h2>{back}</h2></button>
 			<button className="btn btn-outline-primary" style={{'position': 'absolute', 'right': '23%'}} onClick={this.weekForward}><h2>></h2></button>
 			<br></br> 
-			</Fragment>}
+			</Fragment>
 		</div>
 		);
 	}

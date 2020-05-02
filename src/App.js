@@ -31,49 +31,6 @@ class App extends React.Component{
       });
     }
   }
-  
-  // logout = () => {
-  //   localStorage.removeItem("token");
-  //   this.setState({
-  //     errors: null
-  //   });
-  //   this.props.onSetStudentUser({})
-  // };
-
-  // createTeacher = (event) => {
-  //   let newTeacher = {
-  //     username: event.target.username.value,
-  //     password: event.target.password.value,
-  //     admin: true
-  //   }
-  //   api.auth.createTeacher(newTeacher).then(data => {
-  //     console.log(data)
-  //      if (!!data.teacher.id){
-  //         this.login(data);
-  //         this.props.onSetTeacherUser(data)
-  //         this.setState({errors: false})
-  //     } else {
-  //         this.setState({errors: true})
-  //     }
-  // })
-  // }
-
-// createStudent = (event) => {
-//   let newStudent = {
-//     username: event.target.username.value,
-//     password: event.target.password.value
-//   }
-//   api.auth.createStudent(newStudent).then(res => {
-//     console.log(res)
-//      if (!!res.student.id){
-//         this.login(res);
-//         this.props.onSetStudentUser(res)
-//         this.setState({errors: false})
-//     } else {
-//         this.setState({errors: true})
-//     }
-// })
-// }
 
   render(){
     return (
@@ -85,7 +42,7 @@ class App extends React.Component{
               <span className="dot" id='yellow-dot'></span>
               <span className="dot" id='green-dot'></span>
             </div>
-            <NavBar className='navbar' logout={this.logout} user={this.props.current_user}/>
+            <NavBar className='navbar' user={this.props.current_user}/>
             <div className="traffic-bottom"></div>
           </header>
           <div className = "main">

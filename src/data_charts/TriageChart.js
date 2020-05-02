@@ -29,15 +29,7 @@ class TriageChart extends React.Component{
               }
         } 
     }
-    // componentDidUpdate(prevProps){
-    //     if (prevProps.class_responses !== this.props.class_responses || prevProps.current_course !== this.props.current_course){
-    //         this.setState({
-    //             ids: this.props.class_responses.map(resp => resp.student_id[0]),
-    //             students: this.props.current_course.students
-    //         })
-    //     }
-    // }
-
+    
     noAnswer = (course) => {
         if (!!course.id) {
             responses = course.responses.filter(resp => moment(parseInt(resp.day)).format("MMM D") == moment(date).format("MMM D"))
@@ -120,7 +112,7 @@ class TriageChart extends React.Component{
           <h5>Triage Chart:</h5>
           {this.props.class_responses !== undefined ?
             <table style={{width:"100%"}}>
-              <tobody>
+              <tbody>
                 <tr style={{'backgroundColor': 'rgb(255, 248, 40)', 'padding': '6px'}}>
                     <th style={{'padding': '6px'}}>HAVE NOT ANSWERED: </th>
                     <td style={{'padding': '12px 4px'}}>{this.noAnswer(this.props.current_course)}</td>
@@ -137,7 +129,7 @@ class TriageChart extends React.Component{
                     <th style={{'padding': '6px'}}>GREEN:</th>
                     <td style={{'padding': '12px 4px'}}>{this.green(this.props.current_course)}</td>
                 </tr>
-              </tobody>
+              </tbody>
             </table> : null }
           </div>
         )

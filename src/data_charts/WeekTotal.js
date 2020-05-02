@@ -15,30 +15,52 @@ class WeekTotal extends Component {
 	state = {loading: true}
 
 	componentDidMount() {
-		if (!this.props.current_course.id) {
-			try {
-				const current_course = localStorage.getItem('course_token');
-				if ('course_token' == null) {
-					return undefined;
-				}
-				api.getRequests.getCourses().then(data => {
-					let thisCourse = data.filter(course => course.id == parseInt(current_course));
-					this.props.setCurrentCourse(thisCourse)
-					this.setState({
-						loading: false
-					})
-				})
-				} catch (err) {
-				this.props.history.push("/profile");
-				}
-		} 
-
-		let now = moment()
+		if (!!this.props.current_course.id){
+			let now = moment()
 		this.setState({
 			beginning: now.clone().subtract(8, 'days').toDate(),
-			ending: now.clone().add(1, 'day').toDate()
+			ending: now.clone().add(1, 'day').toDate(),
+			loading: false
 		})
+		}
 	}
+
+	componentDidUpdate(prev){
+		if (prev.current_course !== this.props.current_course){
+			let now = moment()
+		this.setState({
+			beginning: now.clone().subtract(8, 'days').toDate(),
+			ending: now.clone().add(1, 'day').toDate(),
+			loading: false
+		})
+		}
+	}
+	// 	if (!this.props.current_course.id) {
+	// 		try {
+	// 			const current_course = localStorage.getItem('course_token');
+	// 			if ('course_token' == null) {
+	// 				return undefined;
+	// 			}
+	// 			api.getRequests.getCourses().then(data => {
+	// 				let thisCourse = data.filter(course => course.id == parseInt(current_course));
+	// 				this.props.setCurrentCourse(thisCourse[0])
+	// 				this.setState({
+	// 					loading: false
+	// 				})
+	// 			})
+	// 			} catch (err) {
+	// 			this.props.history.push("/profile");
+	// 			}
+	// 	} else {
+	// 		this.setState({ loading: false })
+	// 	}
+
+	// 	let now = moment()
+	// 	this.setState({
+	// 		beginning: now.clone().subtract(8, 'days').toDate(),
+	// 		ending: now.clone().add(1, 'day').toDate()
+	// 	})
+	// }
 
 	fillData = (dataset, color) => {
 		myData = this.props.current_course.id && dataset ? (dataset.filter(response => response.datatype == 'light').filter(response => (moment(parseInt(response.day)) >= moment(this.state.beginning)) && (moment(parseInt(response.day)) <= moment(this.state.ending)))) : []

@@ -35,7 +35,6 @@ console.log("auth check")
         } else {
             api.auth.getCurrentUser()
             .then(resp => {
-                console.log(resp)
                 if (resp.error){
                     this.setState({
                         received: true,
