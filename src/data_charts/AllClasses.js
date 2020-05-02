@@ -14,16 +14,16 @@ class AllClasses extends Component {
 	constructor(){
 		super();
 		this.state = {
-			beginning: moment().clone().subtract(8, 'days').toDate(),
-			ending: moment().clone().add(1, 'day').toDate()
+			beginning: moment().clone().subtract(7, 'days').toDate(),
+			ending: moment().clone().toDate()
 		}
 	}
 
 	componentDidMount(){
 		let now = moment()
 		this.setState({
-			beginning: now.clone().subtract(8, 'days').toDate(),
-			ending: now.clone().add(1, 'day').toDate()
+			beginning: now.clone().subtract(7, 'days').toDate(),
+			ending: now.clone().toDate()
 		})
 	}
 
@@ -31,8 +31,7 @@ class AllClasses extends Component {
 		this.setState(prev => {
 			return ({
 				beginning: moment(prev.beginning).subtract(7, 'days').toDate(),
-				ending: moment(prev.beginning).add(1, 
-					'day')
+				ending: moment(prev.beginning)
 			})
 	    })
 	}
@@ -40,7 +39,7 @@ class AllClasses extends Component {
 	weekForward = () => {
 		this.setState(prev => {
 			return ({
-				beginning: moment(prev.ending).subtract(1, 'day'),
+				beginning: moment(prev.ending),
 				ending: moment(prev.ending).add(7, 'days').toDate()
 			})
 	    })
@@ -77,7 +76,15 @@ class AllClasses extends Component {
 			markerSize: 35
 		}
 		))
-		return myData;
+		let arr = []
+		for (let i=0; i<8; i++){
+			let point = {};
+			point.x = `${moment(this.state.beginning).clone().add(i, 'days').format("MMM D")}`;
+			point.y = 0
+			point.z = 0
+			arr.push(point)	
+		}
+		return myData.concat(arr);
 	}
 
     render() {
@@ -96,6 +103,10 @@ class AllClasses extends Component {
 				text: "Responses from All Classes",
 			fontSize: 26
 			},
+			subtitles: [{
+				text: `Week of ${moment(this.state.beginning).clone().format("MMM D")} - ${moment(this.state.ending).format("MMM D")}`,
+				fontSize: 22
+			}],
 			axisX: {
 				title: '\n Date',
 				logarithmic: false,

@@ -16,8 +16,8 @@ class IndividualData extends Component {
 	componentDidMount(){
 		let now = moment()
 		this.setState({
-			beginning: now.clone().subtract(8, 'days').toDate(),
-			ending: now.clone().add(1, 'day').toDate()
+			beginning: now.clone().subtract(7, 'days').toDate(),
+			ending: now.clone().toDate()
 		})
 	}
 	
@@ -25,8 +25,7 @@ class IndividualData extends Component {
 		this.setState(prev => {
 			return ({
 				beginning: moment(prev.beginning).subtract(7, 'days').toDate(),
-				ending: moment(prev.beginning).add(1, 
-					'day')
+				ending: moment(prev.beginning)
 			})
 	    })
 	}
@@ -34,7 +33,7 @@ class IndividualData extends Component {
 	weekForward = () => {
 		this.setState(prev => {
 			return ({
-				beginning: moment(prev.ending).subtract(1, 'day'),
+				beginning: moment(prev.ending),
 				ending: moment(prev.ending).add(7, 'days').toDate()
 			})
 	    })
@@ -75,9 +74,9 @@ class IndividualData extends Component {
 			));
 		}
 		let arr = []
-		for (let i=0; i<7; i++){
+		for (let i=0; i<8; i++){
 			let point = {};
-			point.x = `${moment(this.state.ending).clone().add(i-7, 'days').format("MMM D")}`;
+			point.x = `${moment(this.state.beginning).clone().add(i, 'days').format("MMM D")}`;
 			point.y = 0
 			point.z = 0
 			arr.push(point)	

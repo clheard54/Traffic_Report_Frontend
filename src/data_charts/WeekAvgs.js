@@ -37,8 +37,8 @@ class WeekAvgs extends Component {
 			} 
 		let now = moment()
 		this.setState({
-			beginning: now.clone().subtract(8, 'days').toDate(),
-			ending: now.clone().add(1, 'day').toDate()
+			beginning: now.clone().subtract(7, 'days').toDate(),
+			ending: now.clone().toDate()
 		})
 	}
               
@@ -47,8 +47,7 @@ class WeekAvgs extends Component {
 		this.setState(prev => {
 			return ({
 				beginning: moment(prev.beginning).subtract(7, 'days').toDate(),
-				ending: moment(prev.beginning).add(1, 
-					'day')
+				ending: moment(prev.beginning)
 			})
 	    })
 	}
@@ -56,7 +55,7 @@ class WeekAvgs extends Component {
 	weekForward = () => {
 		this.setState(prev => {
 			return ({
-				beginning: moment(prev.ending).subtract(1, 'day'),
+				beginning: moment(prev.ending),
 				ending: moment(prev.ending).add(7, 'days').toDate()
 			})
 	    })
@@ -70,13 +69,15 @@ class WeekAvgs extends Component {
 
 	//seven times, filter by date and take average
 		let arr = []
-		for (let i=0; i<7; i++){
+		for (let i=0; i<8; i++){
 			let point = {};
-			point.label = `${moment(this.state.ending).clone().add(i-7, 'days').format("MMM D")}`
+			point.label = `${moment(this.state.beginning).clone().add(i, 'days').format("MMM D")}`
 			point.x = moment(this.state.beginning).clone().add(i, 'days').toDate()
 			point.date = moment(this.state.beginning).clone().add(i, 'days').format("dddd")
-			point.y = parseFloat(this.computeAverage(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == moment(this.state.ending).clone().add(i-7, 'days').format("MMM D"))))
-			if (!!this.computeAverage(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == moment(this.state.ending).clone().add(i-7, 'days').format("MMM D")))) {
+			point.y = parseFloat(this.computeAverage(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == moment(this.state.beginning).clone().add(i, 'days').format("MMM D"))))
+			point.responses = (myData.filter(response => moment(parseInt(response.day)).format("MMM D") == moment(this.state.beginning).clone().add(i, 'days').format("MMM D"))).length
+			point.reds = this.findReds(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == moment(this.state.beginning).clone().add(i, 'days').format("MMM D")))
+			if (!!this.computeAverage(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == moment(this.state.beginning).clone().add(i, 'days').format("MMM D")))) {
 				total += point.y
 				counter += 1
 			} 
@@ -84,6 +85,24 @@ class WeekAvgs extends Component {
 			}
 		return arr
 	}}
+
+	findReds = (arr) => {
+        let allReds = []
+		let reds = arr.filter(entry => entry.answer == 'red').map(entry => entry.student_id)
+            reds.forEach(id => {
+				let toAdd = this.props.current_course.students
+				.find(student => student.id == id)
+                if (!allReds.includes(toAdd.name)){
+                    allReds.push(toAdd.name)
+                }
+            })
+        if (allReds.length == 0){
+            return <i>None recorded</i>
+        } else {
+            return allReds.join(', ')
+        }
+    }
+
 
     computeAverage = (daysResponses) => {
       if (daysResponses.length !==0 ){
@@ -106,7 +125,7 @@ class WeekAvgs extends Component {
 			fontSize: 26
 			},
 			subtitles: [
-				{text: `Week of ${moment().clone().subtract(7, 'days').format("MMM D")} - ${moment().clone().format("MMM D")}`,
+				{text: `Week of ${moment().clone().subtract(8, 'days').format("MMM D")} - ${moment().clone().subtract(1, 'day').format("MMM D")}`,
 				fontSize: 22}
 			],
 			axisX: {
@@ -127,7 +146,7 @@ class WeekAvgs extends Component {
 				markerType: "circle",
 				type: "line",
 				connectNullData: true,
-				toolTipContent: "<b>{label}</b><br>Date: {date}<br>Day's Average: {y}<br>",
+				toolTipContent: "<b>{label}</b><br>Date: {date}<br>Number of Responses: {responses}<br>Day's Average: {y}<br>Reds: {reds}",
 				dataPoints: this.fillData(this.props.current_course)
 			}]
 		}

@@ -5,6 +5,7 @@ import ClassAssignmentsContainer from '../components/ClassAssignmentsContainer'
 import IndividualData from '../data_charts/IndividualData'
 import TrafficForm from '../components/TrafficForm'
 import QuestionBoard from '../containers/QuestionBoard'
+import AuthHOC from '../HOCs/AuthHOC'
 
 let student_responses = []
 let numerical
@@ -193,4 +194,4 @@ const mapStateToProps = state => {
 }
 
 
-export default connect(mapStateToProps)(StudentClass)
+export default AuthHOC(connect(mapStateToProps)(StudentClass))

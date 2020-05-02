@@ -25,11 +25,12 @@ export default class TodaysData extends Component {
 	}
 	return myData
 	}
+	
     render() {
         const options = {
 			animationEnabled: true,
 			exportEnabled: true,
-			theme: "light2", // "light1", "light2", "dark1", "dark2"
+			theme: "light2", 
 			title:{
 				text: "Todays' Bubble Chart",
 			fontSize: 26
@@ -39,7 +40,9 @@ export default class TodaysData extends Component {
 			logarithmic: false
 			},
 			axisY: {
-				title: "Traffic Temperature"
+				title: "Traffic Temperature",
+				viewportMinimum: 0,
+        		viewportMaximum: 10
 			},
 			data: [{
 				type: "bubble",
@@ -54,7 +57,7 @@ export default class TodaysData extends Component {
 			<CanvasJSChart options = {options}
 				/* onRef={ref => this.chart = ref} */
 			/>
-			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+			
 		</div>
 		);
 	}

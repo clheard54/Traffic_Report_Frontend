@@ -18,8 +18,8 @@ class WeekTotal extends Component {
 		if (!!this.props.current_course.id){
 			let now = moment()
 		this.setState({
-			beginning: now.clone().subtract(8, 'days').toDate(),
-			ending: now.clone().add(1, 'day').toDate(),
+			beginning: now.clone().subtract(7, 'days').toDate(),
+			ending: now.clone().toDate(),
 			loading: false
 		})
 		}
@@ -29,8 +29,8 @@ class WeekTotal extends Component {
 		if (prev.current_course !== this.props.current_course){
 			let now = moment()
 		this.setState({
-			beginning: now.clone().subtract(8, 'days').toDate(),
-			ending: now.clone().add(1, 'day').toDate(),
+			beginning: now.clone().subtract(7, 'days').toDate(),
+			ending: now.clone().toDate(),
 			loading: false
 		})
 		}
@@ -65,10 +65,10 @@ class WeekTotal extends Component {
 	fillData = (dataset, color) => {
 		myData = this.props.current_course.id && dataset ? (dataset.filter(response => response.datatype == 'light').filter(response => (moment(parseInt(response.day)) >= moment(this.state.beginning)) && (moment(parseInt(response.day)) <= moment(this.state.ending)))) : []
 		let arr = []
-		for (let i=0; i<7; i++){
+		for (let i=0; i<8; i++){
 			let point = {};
-			point.label = `${moment(this.state.ending).clone().add(i-7, 'days').format("MMM D")}`
-			point.y = (myData.filter(resp => resp.answer == color).filter( resp => moment(parseInt(resp.day)).format("MMM D") == moment().clone().add(i-7, 'days').format("MMM D"))).length
+			point.label = `${moment(this.state.beginning).clone().add(i, 'days').format("MMM D")}`
+			point.y = (myData.filter(resp => resp.answer == color).filter( resp => moment(parseInt(resp.day)).format("MMM D") == moment(this.state.beginning).clone().add(i, 'days').format("MMM D"))).length
 			arr.push(point)	
 		}
 		return arr
@@ -78,8 +78,7 @@ class WeekTotal extends Component {
 		this.setState(prev => {
 			return ({
 				beginning: moment(prev.beginning).subtract(7, 'days').toDate(),
-				ending: moment(prev.beginning).add(1, 
-					'day')
+				ending: moment(prev.beginning)
 			})
 	    }, () => {this.props.changeDates(this.state.beginning, this.state.ending)})
 	}
@@ -87,7 +86,7 @@ class WeekTotal extends Component {
 	weekForward = () => {
 		this.setState(prev => {
 			return ({
-				beginning: moment(prev.ending).subtract(1, 'day'),
+				beginning: moment(prev.ending),
 				ending: moment(prev.ending).add(7, 'days').toDate()
 			})
 	    }, () => {this.props.changeDates(this.state.beginning, this.state.ending)})
@@ -109,7 +108,7 @@ class WeekTotal extends Component {
 			},
 			subtitles: [
 				{
-					text: `${now.clone().subtract(7, 'days').format("MMM D")} - ${now.clone().format("MMM D")}`,
+					text: `${moment(this.state.beginning).format("MMM D")} - ${moment(this.state.ending).format("MMM D")}`,
 					fontSize: 22
 				}
 				],
