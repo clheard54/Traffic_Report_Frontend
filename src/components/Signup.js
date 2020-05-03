@@ -70,8 +70,8 @@ export default class Signup extends React.Component {
 render(){
     
     return (  
-      <div className='container' style={{'borderStyle': 'solid', 'borderWidth': '7px', 'borderColor': '#ffc107','padding': '20px 20px', 'width': '60%'}}>
-        <div className='container border-top-0 border-bottom-0' style={{'borderStyle': 'solid', 'borderWidth': '12px', 'borderColor': '#dc3545', 'padding':'30px 0'}}>
+      <div className='container' id='signup'>
+        <div className='container border-top-0 border-bottom-0' id="signup-inset">
         {this.state.adminError ? <h5 style={{'color': 'red', 'fontWeight': 'bolder', 'width': '90%', 'margin': 'auto'}}>The admin access code you entered was not accepted! Please try again.</h5> : null}
         
         {!this.state.success ? (

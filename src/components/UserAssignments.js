@@ -9,34 +9,6 @@ class UserAssignments extends React.Component{
         assignments: []
     }
 
-    // componentDidMount(){
-    //     let classHW = []
-    //     api.getRequests.getAssignments()
-    //         .then(data => {
-    //             if (!this.props.current_user.id){
-    //                if (this.props.user_courses){
-    //                    console.log(this.props.user_courses)
-    //                 let ids =this.props.user_courses.map(course => course.id)
-    //                 classHW = data.filter(hw => ids.includes(hw.course_id))
-    //                } else {
-    //                 classHW = data
-    //                }
-    //             }
-    //         this.setState({
-    //             assignments: classHW
-    //         })
-    //      })
-    // }
-
-
-    // renderAssignments = () => {
-    //     if (this.state.assignments.length > 0){
-    //         return this.state.assignments.map(hw => {
-    //         return <li key={hw.id}>{hw.details}</li>
-    //         })
-    //     }
-    // }
-
     renderAssignments = () => {
         return this.props.user_courses.map(course => {
             return (
@@ -49,7 +21,7 @@ class UserAssignments extends React.Component{
         })
     }
 
-
+//Teacher can add new assignments
     handleSubmit = (event) => {
         event.preventDefault();
         let newHW = {

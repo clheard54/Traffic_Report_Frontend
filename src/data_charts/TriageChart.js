@@ -43,65 +43,23 @@ class TriageChart extends React.Component{
         }
     }
 
-    red = (course) => {
-        let allReds = []
+    findColors = (course, color) => {
+        let allOfColor = []
         if (!!course.id){
-            responses = course.responses.filter(resp => moment(parseInt(resp.day)).format("MMM D") == moment(date).format("MMM D"))
+          responses = course.responses.filter(resp => moment(parseInt(resp.day)).format("MMM D") == moment(date).format("MMM D"))
 
-            let reds = responses.filter(entry => entry.answer == 'red').map(entry => entry.student_id)
-            reds.forEach(id => {
+          let thisColor = responses.filter(entry => entry.answer == color).map(entry => entry.student_id)
+            thisColor.forEach(id => {
                 let toAdd = course.students.find(student => student.id == id)
-                if (!allReds.includes(toAdd.name)){
-                    allReds.push(toAdd.name)
+                if (!allOfColor.includes(toAdd.name)){
+                    allOfColor.push(toAdd.name)
                 }
             })
         }
-        if (allReds.length == 0){
+        if (allOfColor.length == 0){
             return <i>None recorded</i>
         } else {
-            return allReds.join(', ')
-        }
-    }
-
-    yellow = (course) => {
-        let allyellows = []
-        if (!!course.id) {
-            responses = course.responses.filter(resp => moment(parseInt(resp.day)).format("MMM D") == moment(date).format("MMM D"))
-        
-            let yellows = responses.filter(entry => entry.answer == 'yellow').map(entry => entry.student_id)
-            yellows.forEach(id => {
-                let toAdd = course.students.find(student => student.id == id)
-                if (toAdd){
-                if (!allyellows.includes(toAdd.name)){
-                    allyellows.push(toAdd.name)
-                }
-            }
-            })
-        }
-        if (allyellows.length == 0){
-            return <i>None recorded</i>
-        } else {
-        return allyellows.join(', ')
-        }
-    }
-
-    green = (course) => {
-        let allgreens = []
-        if (!!course.id) {
-            responses = course.responses.filter(resp => moment(parseInt(resp.day)).format("MMM D") == moment(date).format("MMM D"))
-        
-            let greens = responses.filter(entry => entry.answer == 'green').map(entry => entry.student_id)
-            greens.forEach(id => {
-                let toAdd = course.students.find(student => student.id == id)
-                if (!allgreens.includes(toAdd.name)){
-                    allgreens.push(toAdd.name)
-                }
-            })
-        }
-        if (allgreens.length == 0){
-            return <i>None recorded</i>
-        } else {
-        return allgreens.join(', ')
+            return allOfColor.join(', ')
         }
     }
 
@@ -109,25 +67,25 @@ class TriageChart extends React.Component{
     render(){
         return (
           <div>
-          <h5>Triage Chart:</h5>
+          <h5>Today's Triage Chart:</h5>
           {this.props.class_responses !== undefined ?
             <table style={{width:"100%"}}>
               <tbody>
                 <tr style={{'backgroundColor': '#007bffc9', 'padding': '6px'}}>
-                    <th style={{'padding': '6px'}}>HAVE NOT ANSWERED: </th>
-                    <td style={{'padding': '12px 4px'}}>{this.noAnswer(this.props.current_course)}</td>
+                    <th>HAVE NOT ANSWERED: </th>
+                    <td>{this.noAnswer(this.props.current_course)}</td>
                 </tr>
                 <tr>
-                    <th style={{'padding': '6px', 'height': '20px'}}>RED LIGHT: </th>
-                    <td style={{'padding': '12px 4px'}}>{this.red(this.props.current_course)}</td>
+                    <th>RED LIGHT: </th>
+                    <td>{this.findColors(this.props.current_course, 'red')}</td>
                 </tr>
                 <tr>
-                    <th style={{'padding': '6px'}}>YELLOW:</th>
-                     <td style={{'padding': '12px 4px'}}>{this.yellow(this.props.current_course)}</td>
+                    <th>YELLOW:</th>
+                     <td>{this.findColors(this.props.current_course, 'yellow')}</td>
                 </tr>
                 <tr>
-                    <th style={{'padding': '6px'}}>GREEN:</th>
-                    <td style={{'padding': '12px 4px'}}>{this.green(this.props.current_course)}</td>
+                    <th>GREEN:</th>
+                    <td>{this.findColors(this.props.current_course, 'green')}</td>
                 </tr>
               </tbody>
             </table> : null }

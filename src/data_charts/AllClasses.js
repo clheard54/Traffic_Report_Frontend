@@ -14,8 +14,8 @@ class AllClasses extends Component {
 	constructor(){
 		super();
 		this.state = {
-			beginning: moment().clone().subtract(7, 'days').toDate(),
-			ending: moment().clone().toDate()
+			beginning: moment().clone().subtract(7, 'days'),
+			ending: moment().clone()
 		}
 	}
 
@@ -71,7 +71,7 @@ class AllClasses extends Component {
 			y: hash[response.answer],
 			student: response.student_id,
 			course: response.course_id,
-			// z: 80*(Math.sqrt(2))^2,
+			// z: 80*(Math.sqrt(2))**2,
 			markerColor: matchColor[response.answer],
 			markerSize: 35
 		}
@@ -109,10 +109,9 @@ class AllClasses extends Component {
 			}],
 			axisX: {
 				title: '\n Date',
-				logarithmic: false,
 				intervalType: 'day',
 				labelWrap: true,
-				labelAngle: -25,
+				labelAngle: -15,
 				labelFormatter: function (e) {
 					return CanvasJS.formatDate( e.value, "MMM D")}
 			},
@@ -124,7 +123,6 @@ class AllClasses extends Component {
 				type: "scatter",
 				fillOpacity: 0.7,
 				xValueType: "dateTime",
-				// indexLabel: "{label}",
 				toolTipContent: "<b>{label}</b><br>Date: {date}<br>Class: {course}<br>Student: {student}",
 				indexLabelWrap: true,
 				dataPoints: this.fillData()
@@ -135,8 +133,8 @@ class AllClasses extends Component {
 			<CanvasJSChart id='indiv-data' options = {options} style={{'backgroundImage':"linear-gradient(green, yellow, red)", 'opacity': '0.2'}}
 			/>
 			<br></br>
-			<button className="btn btn-outline-primary" style={{'position': 'absolute', 'left': '25%'}} onClick={this.weekBack}><h2>{back}</h2></button>
-			<button className="btn btn-outline-primary" style={{'position': 'absolute', 'right': '20%'}} onClick={this.weekForward}><h2>></h2></button>
+			<button className="btn btn-outline-primary weekBack" onClick={this.weekBack}><h2>{back}</h2></button>
+			<button className="btn btn-outline-primary weekForward" onClick={this.weekForward}><h2>></h2></button>
 			<br></br>
 			<br></br>
 		</div>

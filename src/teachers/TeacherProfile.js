@@ -81,7 +81,7 @@ class TeacherProfile extends React.Component{
                 <br></br>
                 <br></br>
                 <br></br>
-                    <img style={{'backgroundColor': 'white', 'opacity': '0.8', 'maxWidth': '80%', 'height': '140px'}} src='https://wisedriving.s3.amazonaws.com/1557481400.96992aba487fcea3053ff9c455f2f905.png' alt='driving'></img>
+                    <img className='cars' src='https://wisedriving.s3.amazonaws.com/1557481400.96992aba487fcea3053ff9c455f2f905.png' alt='driving'></img>
                 </div>
                 
             </Fragment>

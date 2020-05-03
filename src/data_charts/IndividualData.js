@@ -67,7 +67,7 @@ class IndividualData extends Component {
 					date: moment(parseInt(response.day)).format("MMM Do"),
 					x: moment(parseInt(response.day)),
 					y: hash[response.answer], 
-					z: 80*n^2,
+					z: 20*(n**2),
 					feeling: feeling[response.answer],
 					markerColor: matchColor[response.answer],
 				}
@@ -114,8 +114,8 @@ class IndividualData extends Component {
 			<CanvasJSChart id='indiv-data' options = {options} style={{'backgroundImage':"linear-gradient(green, yellow, red)", 'opacity': '0.2'}}
 				/* onRef={ref => this.chart = ref} */
 			/>
-			<button className="btn btn-outline-primary" style={{'position': 'absolute', 'left': '20%'}} onClick={this.weekBack}><h2>{back}</h2></button>
-			<button className="btn btn-outline-primary" style={{'position': 'absolute', 'right': '23%'}} onClick={this.weekForward}><h2>></h2></button>
+			<button className="btn btn-outline-primary weekBack" onClick={this.weekBack}><h2>{back}</h2></button>
+			<button className="btn btn-outline-primary weekForward" onClick={this.weekForward}><h2>></h2></button>
 			<br></br>
 		</div>
 		);

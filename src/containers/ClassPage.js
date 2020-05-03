@@ -1,11 +1,10 @@
 import React from 'react'
-// import { api } from '../services/api'
 import TeacherClass from '../teachers/TeacherClass'
 import StudentClass from '../students/StudentClass'
 import { connect } from 'react-redux'
 import AuthHOC from "../HOCs/AuthHOC";
 import {currentCourse, setCurrentCourse } from '../redux'
-import { api } from '../services/api';
+// import { api } from '../services/api';
 
 class ClassPage extends React.Component{
 //conditionally render either Teacher View or Student view for a class
@@ -43,7 +42,6 @@ class ClassPage extends React.Component{
     render(){
         return (
             <div>{this.showClass()}</div>
-            /* <StudentClass current_course={this.props.history.location.state.course}/> */
         )
     }
 }

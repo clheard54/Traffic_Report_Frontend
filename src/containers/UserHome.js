@@ -9,12 +9,8 @@ import AuthHOC from "../HOCs/AuthHOC";
 
 class UserHome extends React.Component{
 
-//depending on who is logged in, conditionally render either the StudentProfile page or the TeacherProfile page
-// componentDidMount(){
-//   if (!!this.props.current_user.admin){
-//     this.props.setTeachersResponses(this.props.current_user)
-//   }
-// }
+//Depending on who is logged in, conditionally render either the StudentProfile page or the TeacherProfile page
+
 
     render(){
         return (
@@ -32,7 +28,5 @@ const mapStateToProps = state => {
         user_courses: state.courses.user_courses
     }
 }
-
-
 
 export default connect(mapStateToProps)(UserHome);

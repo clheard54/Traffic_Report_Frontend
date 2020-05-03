@@ -135,7 +135,7 @@ class TeacherClass extends React.Component{
             <Fragment>
                 <br></br>
                 <div className="container" style={{'maxWidth': '100%', 'minHeight': '530px'}}>
-                <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center', 'width': '100%', 'marginLeft': '0', 'marginRight': '0'}}>
+                <div className="row flex-row-1">
                     <div className='col-sm-.5'></div>
                     <div className ="col-md-4" >
                       <button className='btn btn-outline-success' onClick={this.addingAssignment}><h6>View / Add Assignments</h6></button>
@@ -156,14 +156,14 @@ class TeacherClass extends React.Component{
                         </Fragment>
                         : 
                         <Fragment>
-                          <div style={{'borderStyle': 'solid', 'borderWidth': '1px', 'borderColor': 'var(--gray-dark)', 'padding': '16px', 'alignText': 'center', 'height': 'fit-content'}}>
+                          <div id='triage'>
                             <TriageChart {...this.props} />
                           </div>
                         <br></br>
-                        <button className="btn btn-outline-danger" style={{'maxWidth': '120px', 'margin': 'auto', 'alignContent': 'center'}} onClick={this.goBack}><h6>Go Back</h6></button>
+                        <button className="btn btn-outline-danger goBack"  onClick={this.goBack}><h6>Go Back</h6></button>
                         </Fragment> )}
                     </div>
-                    <div className='col-md-6' style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '25px 40px', 'alignText': 'center', 'maxHeight': '80%'}}>
+                    <div className='col-md-6' id='addHW'>
                     {this.state.addingAssignment ?
                     <AddAssignmentForm hwAdded={this.hwPosted}/>
                      : (this.state.seeQuestions ? 
@@ -178,25 +178,9 @@ class TeacherClass extends React.Component{
                   <hr></hr>
                   <br></br><br></br>
 
-                  {/* <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center', 'width': '100%', 'marginLeft': '0', 'marginRight': '0'}}>
-                  <div className="col-sm-1"></div>
-                  <div className="col-md-4">
-                    <ClassAssignmentsContainer />
-                  </div>
-                  <div className="col-md-6">
-                    <QuestionBoard />
-                  </div>
-                  <div className="col-sm-1"></div>
-
-                </div>
-
-                  <br></br><br></br><br></br>
-                  <hr></hr>
-                  <br></br><br></br><br></br> */}
-
-                  <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center', 'width': '100%', 'marginLeft': '0', 'marginRight': '0'}}>
+                  <div className="row flex-row-1">
                     <div className='col-sm-.5'></div>
-                    <div className ="col-md-8" style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center'}}>
+                    <div className ="col-md-8 week-totals">
                         <WeekTotal changeDates={this.changeDates}/>
                         <br></br><br></br>
                         </div>
@@ -220,9 +204,9 @@ class TeacherClass extends React.Component{
                 <hr></hr>
                 <br></br><br></br><br></br>
 
-                <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center', 'width': '100%', 'marginLeft': '0', 'marginRight': '0'}}>
+                <div className="row flex-row-1">
                     <div className='col-md-1'></div>
-                    <div className ="col-md-8" style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center'}}>
+                    <div className ="col-md-8 week-totals">
                     {this.props.current_course !== undefined ?
                         <WeekAvgs setWeekAvg={this.setWeekAvg}/> : null}
                         <br></br><br></br>

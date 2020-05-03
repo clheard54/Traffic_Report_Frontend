@@ -9,40 +9,6 @@ class ClassAssignmentsContainer extends React.Component{
         assignments: []
     }
 
-    // componentDidMount(){
-    //     let classHW = []
-    //     api.getRequests.getAssignments()
-    //         .then(data => {
-    //             if (!this.props.current_course.id){
-    //                if (this.props.user_courses){
-    //                 let ids =this.props.user_courses.map(course => course.id)
-    //                 classHW = data.filter(hw => ids.includes(hw.course_id))
-    //                } else {
-    //                 classHW = data
-    //                }
-    //             } else {
-    //                 if (data.length > 0){
-    //                 classHW = data.filter(hw => hw.course_id == this.props.current_course.id)
-    //             }
-    //         }
-    //         this.setState({
-    //             assignments: classHW
-    //         })
-    //      })
-    // }
-
-    // renderAssignments = () => {
-    //     if (this.state.assignments.length > 0){
-    //         return this.state.assignments.map(hw => {
-    //         return <li key={hw.id}>{hw.details}</li>
-    //         })
-    //     }
-    // }
-
-    // // componentDidUpdate(){
-    // //     console.log(this.props.current_course)
-    // // }
-
     renderAssignments = (course) => {
         if (!!course.id){
         if (this.props.current_course.assignments.length == 0) {
@@ -54,6 +20,7 @@ class ClassAssignmentsContainer extends React.Component{
     }
     }
 
+    // To add a new assignment (teachers only)
     handleSubmit = (event) => {
         event.preventDefault();
         let newHW = {
@@ -72,12 +39,11 @@ class ClassAssignmentsContainer extends React.Component{
     // List of most recent assignments posted
     render(){
         return (
-            <div style={{'borderStyle': 'solid', 'borderWidth': '2px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'minHeight': '200px', 'alignText': 'center', 'height': 'fit-content'}}>
+            <div className='borderBox'>
             <h5 style={{'overflowWrap': 'normal' }}>Assignments & Announcements</h5>
             <div>
                 <ul style={{'textAlign': 'left'}}>{this.renderAssignments(this.props.current_course)}</ul>
             </div>
-            {/* {this.props.current_user ? (this.props.current_user.admin ? <button onClick={() => this.setState({showForm: true})}>Add Question</button> : null) : null} */}
             {this.state.showForm ? <div>{this.showForm()}</div> : null}
             </div>
         )

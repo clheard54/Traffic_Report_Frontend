@@ -32,7 +32,7 @@ function TimeframeData(props){
 				label: moment(parseInt(response.day)).format("MMM D"),
 				x: moment(parseInt(response.day)).toDate(),
                 y: hash[response.answer],
-				// z: 80*(Math.sqrt(2))^2,
+				// z: 80*(Math.sqrt(2))**2,
                 markerColor: matchColor[response.answer],
                 fillOpacity: 0.7,
                 markerSize: 35,

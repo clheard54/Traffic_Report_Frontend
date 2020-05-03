@@ -35,32 +35,7 @@ class WeekTotal extends Component {
 		})
 		}
 	}
-	// 	if (!this.props.current_course.id) {
-	// 		try {
-	// 			const current_course = localStorage.getItem('course_token');
-	// 			if ('course_token' == null) {
-	// 				return undefined;
-	// 			}
-	// 			api.getRequests.getCourses().then(data => {
-	// 				let thisCourse = data.filter(course => course.id == parseInt(current_course));
-	// 				this.props.setCurrentCourse(thisCourse[0])
-	// 				this.setState({
-	// 					loading: false
-	// 				})
-	// 			})
-	// 			} catch (err) {
-	// 			this.props.history.push("/profile");
-	// 			}
-	// 	} else {
-	// 		this.setState({ loading: false })
-	// 	}
 
-	// 	let now = moment()
-	// 	this.setState({
-	// 		beginning: now.clone().subtract(8, 'days').toDate(),
-	// 		ending: now.clone().add(1, 'day').toDate()
-	// 	})
-	// }
 
 	fillData = (dataset, color) => {
 		myData = this.props.current_course.id && dataset ? (dataset.filter(response => response.datatype == 'light').filter(response => (moment(parseInt(response.day)) >= moment(this.state.beginning)) && (moment(parseInt(response.day)) <= moment(this.state.ending)))) : []
@@ -93,9 +68,6 @@ class WeekTotal extends Component {
 	}
 	
 	render() {
-		// const red = this.props.current_course.responses.filter(resp => resp.answer == 'red')
-		// const yellow = this.props.current_course.responses.filter(resp => resp.answer == 'yellow')
-		// const green = this.props.current_course.responses.filter(resp => resp.answer == 'green');
 		const now = moment()
 
         const options = {
@@ -148,8 +120,8 @@ class WeekTotal extends Component {
 		{this.state.loading ? null :
 		<Fragment>
 			<CanvasJSChart options = {options}	/>
-			<button className="btn btn-outline-primary" style={{'position': 'absolute', 'left': '20%'}} onClick={this.weekBack}><h2>{back}</h2></button>
-			<button className="btn btn-outline-primary" style={{'position': 'absolute', 'right': '23%'}} onClick={this.weekForward}><h2>></h2></button>
+			<button className="btn btn-outline-primary weekBack" onClick={this.weekBack}><h2>{back}</h2></button>
+			<button className="btn btn-outline-primary weekForward" onClick={this.weekForward}><h2>></h2></button>
 			<br></br>
 		</Fragment> }
 		</div>

@@ -20,6 +20,13 @@ class NavBar extends React.Component{
         }
     }
 
+    listCourses = () => {
+        return this.props.user_courses.map(course => {
+            return (<Link className="dropdown-item" onClick={() => this.setCourse(course)} key={course.id} to={{pathname: `/courses/current`,
+                state: {course}
+            }}>{course.title}</Link>)})
+    }
+
     handleLogout = () => {
         this.props.userLogout();
     }
@@ -35,6 +42,7 @@ class NavBar extends React.Component{
             <nav className="navbar navbar-light bg-light">
             <Link to={localStorage.getItem('token') ? '/profile' : '/'}><h2 className="navbar-brand">Traffic Controller</h2></Link>
             
+            {/* Access to Course List if signed in */}
             <div className="navbar-expand" id="navbarNavDropdown">
                 <ul className="navbar-nav">
                 {this.props.current_user ?
@@ -44,10 +52,7 @@ class NavBar extends React.Component{
                     </a>
                     <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     
-                    {this.props.user_courses ? this.props.user_courses.map(course => {
-                        return (<Link className="dropdown-item" onClick={() => this.setCourse(course)} key={course.id} to={{pathname: `/courses/current`,
-                            state: {course}
-                        }}>{course.title}</Link>)}) : "No courses yet entered"}
+                    {this.props.user_courses ? this.listCourses() : "No courses yet entered"}
                     </div>
                 </li> : <li className="nav-item active">
                     <a className="nav-link" href="https://flatironschool.com/">School Website <span className="sr-only">(current)</span></a>

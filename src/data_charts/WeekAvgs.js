@@ -69,15 +69,16 @@ class WeekAvgs extends Component {
 
 	//seven times, filter by date and take average
 		let arr = []
+		let week_day = moment(this.state.beginning).clone().add(i, 'days')
 		for (let i=0; i<8; i++){
 			let point = {};
-			point.label = `${moment(this.state.beginning).clone().add(i, 'days').format("MMM D")}`
-			point.x = moment(this.state.beginning).clone().add(i, 'days').toDate()
-			point.date = moment(this.state.beginning).clone().add(i, 'days').format("dddd")
-			point.y = parseFloat(this.computeAverage(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == moment(this.state.beginning).clone().add(i, 'days').format("MMM D"))))
-			point.responses = (myData.filter(response => moment(parseInt(response.day)).format("MMM D") == moment(this.state.beginning).clone().add(i, 'days').format("MMM D"))).length
-			point.reds = this.findReds(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == moment(this.state.beginning).clone().add(i, 'days').format("MMM D")))
-			if (!!this.computeAverage(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == moment(this.state.beginning).clone().add(i, 'days').format("MMM D")))) {
+			point.label = `${week_day.format("MMM D")}`
+			point.x = week_day.toDate()
+			point.date = week_day.format("dddd")
+			point.y = parseFloat(this.computeAverage(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == week_day.format("MMM D"))))
+			point.responses = (myData.filter(response => moment(parseInt(response.day)).format("MMM D") == week_day.format("MMM D"))).length
+			point.reds = this.findReds(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == week_day.format("MMM D")))
+			if (!!this.computeAverage(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == week_day.format("MMM D")))) {
 				total += point.y
 				counter += 1
 			} 
@@ -155,8 +156,8 @@ class WeekAvgs extends Component {
 		<Fragment>
 			<CanvasJSChart options = {options}	/>
 			{this.props.setWeekAvg((total/counter).toFixed(1))}
-			<button className="btn btn-outline-primary" style={{'position': 'absolute', 'left': '20%'}} onClick={this.weekBack}><h2>{back}</h2></button>
-			<button className="btn btn-outline-primary" style={{'position': 'absolute', 'right': '23%'}} onClick={this.weekForward}><h2>></h2></button>
+			<button className="btn btn-outline-primary weekBack" onClick={this.weekBack}><h2>{back}</h2></button>
+			<button className="btn btn-outline-primary weekForward" onClick={this.weekForward}><h2>></h2></button>
 			<br></br> 
 			</Fragment>
 		</div>

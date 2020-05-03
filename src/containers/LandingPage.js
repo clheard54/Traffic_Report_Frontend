@@ -22,7 +22,7 @@ export default class LandingPage extends React.Component{
             <div className="container">
             <div className="row">
                 <div className ="col-md-8">
-                    <div className="container" style={{'borderStyle': 'solid', 'borderWidth': '7px', 'borderColor': '#dc3545', 'position': 'relative', 'right': '10%'}}>
+                    <div className="container" id='landing'>
                     <img id="schoool" src="https://www.voicesofyouth.org/sites/default/files/images/2019-03/school.jpg" alt='school'></img>
                 </div>
                 </div>

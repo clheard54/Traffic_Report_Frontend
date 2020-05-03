@@ -106,8 +106,8 @@ class TodaysData extends Component {
 			<CanvasJSChart options = {options}
 				/* onRef={ref => this.chart = ref} */
 			/>
-			<button className="btn btn-outline-primary" style={{'position': 'absolute', 'left': '25%'}} onClick={this.dayBack}><h4>{back}</h4></button>
-			<button className="btn btn-outline-primary" style={{'position': 'absolute', 'right': '20%'}} onClick={this.dayForward}><h4>></h4></button>
+			<button className="btn btn-outline-primary weekBack" onClick={this.dayBack}><h4>{back}</h4></button>
+			<button className="btn btn-outline-primary weekForward" onClick={this.dayForward}><h4>></h4></button>
 			<br></br> 
 		</div>
 		);

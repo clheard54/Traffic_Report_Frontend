@@ -86,14 +86,14 @@ class QuestionBoard extends React.Component{
     render(){
       return (
         <div className="container" style={{'maxWidth': '100%'}}>
-          <div className="row" style={{'display': 'flex', 'justifyContent': 'center', 'width': '100%',  'marginLeft': '0', 'marginRight': '0'}}>
-          {!this.props.current_user.admin ?
-            <Fragment>   
-              <div className ="col-md-8" style={{'borderStyle': 'solid', 'borderWidth': '1px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center'}}>
+          <div className="row flex-row">   
+              <div className ="col-md-8" id="question-border">
               <h2>All Questions:</h2>
               {this.renderQuestions()}
             </div>  
-               
+
+            {!this.props.current_user.admin ?
+            <Fragment>
             <div className='col-md-3'>
               <br></br>
               <h5>Do YOU have a question about something?</h5>
@@ -102,13 +102,7 @@ class QuestionBoard extends React.Component{
             </div> 
             <br></br>  
             <div className='col-sm-.5'></div>
-          </Fragment> : 
-          <Fragment>
-            <div className="col-md-12" style={{'borderStyle': 'solid', 'borderWidth': '1px', 'borderColor': 'var(--gray-dark)', 'padding': '15px', 'alignText': 'center'}}>
-              <h2>All Questions:</h2>
-              {this.renderQuestions()}
-            </div> 
-          </Fragment>}
+            </Fragment> : null }
         </div>
         </div>
         );
