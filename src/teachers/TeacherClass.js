@@ -57,10 +57,12 @@ class TeacherClass extends React.Component{
               } catch (err) {
                 this.props.history.push("/profile");
               }
-        } 
+        }
+        this.computeAverage(this.props.current_course)
     }
 
     computeAverage = (course) => {
+      console.log("average calculation")
       if (!!course.id){
         weekData = course.responses.filter(response => response.datatype == 'light').filter(response => (moment(parseInt(response.day)) >= moment(this.state.startDate)) && (moment(parseInt(response.day)) <= moment(this.state.endDate)))
         
@@ -95,6 +97,19 @@ class TeacherClass extends React.Component{
         weekAvg: x
       })
     }
+
+    setMin = (x) => {
+      this.setState({
+        min: x
+      })
+    }
+    
+    
+      setMax = (x) => {
+        this.setState({
+          max: x
+        })
+      }
     
     goBack = () => {
       this.props.history.push('/profile')
@@ -150,10 +165,10 @@ class TeacherClass extends React.Component{
                           <button className="btn btn-outline-danger" onClick={this.resetPage}>Just Kidding, Go Back</button>
                         </Fragment>
                         : (this.state.seeQuestions ? 
-                        <Fragment>
+                        <div className='user-hw'>
                           <AddCPForm/>
                           <button className="btn btn-outline-danger" onClick={this.resetPage}>Just Kidding, Go Back</button>
-                        </Fragment>
+                        </div>
                         : 
                         <Fragment>
                           <div id='triage'>
@@ -163,7 +178,7 @@ class TeacherClass extends React.Component{
                         <button className="btn btn-outline-danger goBack"  onClick={this.goBack}><h6>Go Back</h6></button>
                         </Fragment> )}
                     </div>
-                    <div className='col-md-6' id='addHW'>
+                    <div className='col-md-6' id='addHw'>
                     {this.state.addingAssignment ?
                     <AddAssignmentForm hwAdded={this.hwPosted}/>
                      : (this.state.seeQuestions ? 
@@ -185,15 +200,15 @@ class TeacherClass extends React.Component{
                         <br></br><br></br>
                         </div>
                     <div className='col-md-1'>
-                    {this.state.loading ? null :
+                    {/* {this.state.loading ? null : */}
                     <div className='container' style={{'alignItems': 'center', 'paddingLeft':'0px'}}>
                         <div id="gradient" style={{'height': '500'}}>
                           <div className='circle' style={this.state.avgStyle}></div>
                         </div>
-                    </div> }
+                    </div> 
                   </div>
                   <div className='col-md-2'>
-                    <div style={{'border': '1px solid black', 'padding': '7px'}}>
+                    <div className='avg-box'>
                         <h5>Average Feels: </h5>
                         <h4>{this.state.avg}</h4>
                         </div>
@@ -206,19 +221,24 @@ class TeacherClass extends React.Component{
 
                 <div className="row flex-row-1">
                     <div className='col-md-1'></div>
-                    <div className ="col-md-8 week-totals">
+                    <div className ="col-md-8 week-avgs">
                     {this.props.current_course !== undefined ?
-                        <WeekAvgs setWeekAvg={this.setWeekAvg}/> : null}
+                        <WeekAvgs setMin={this.setMin} setMax={this.setMax} setWeekAvg={this.setWeekAvg}/> : null}
                         <br></br><br></br>
                         </div>
-                    <div className='col-md-1'>
-                    <div className='container' style={{'alignItems': 'center', 'paddingLeft':'0px'}}>
-                        <div id="gradient" style={{'height': '500px'}}>
-                          <div className='circle' style={this.state.avgStyle}></div>
+                    <div className='col-md-2'>
+                    <div className='container' style={{'display': 'flex', 'flexDirection': 'column'}}>
+                        <div className='avg-box'>
+                          <h5>Week's High:</h5>
+                          <h6>{this.state.max}</h6>
+                        </div>
+                        <br></br><br></br>
+                        <div className='avg-box'>
+                          <h5>Week's Low:</h5>
+                          <h6>{this.state.min}</h6>
                         </div>
                     </div>  
                   </div>
-                  <div className='col-md-1'><br></br><br></br></div>
                 </div>
                 <br></br><br></br><br></br>
               </div>

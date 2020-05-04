@@ -41,7 +41,7 @@ const createTeacher = data => {
       Accept: "application/json"
       },
     body: JSON.stringify({teacher: data})
-  }).then(res => res.json());
+  }).then(res => res.json())
 };
 
 const createStudent = data => {
@@ -52,7 +52,7 @@ const createStudent = data => {
       Accept: "application/json"
       },
     body: JSON.stringify({student: data})
-  }).then(res => res.json());
+  }).then(res => res.json())
 };
 
 const postResponse = (newResponse) => {
@@ -69,6 +69,15 @@ const postQuestion = (newQuestion) => {
     method: 'POST',
     headers: headers(),
     body: JSON.stringify(newQuestion)
+  })
+  .then(resp => resp.json())
+}
+
+const postCpq = (newCpq) => {
+  return fetch(`${API_ROOT}/cpqs`, {
+    method: 'POST',
+    headers: headers(),
+    body: JSON.stringify(newCpq)
   })
   .then(resp => resp.json())
 }
@@ -97,6 +106,13 @@ const getQuestions = () => {
   .then(resp => resp.json())
 }
 
+const getCPQs = () => {
+  return fetch(`${API_ROOT}/cpqs`, {
+    headers: headers()
+  })
+  .then(resp => resp.json())
+}
+
 const getTeachersResponses = () => {
   return fetch(`${API_ROOT}/responses`, {
     headers: headers()
@@ -112,7 +128,7 @@ const deleteQuestion = (id) => {
   .then(resp => resp.json())
 }
 
-const getCourses = (user) => {
+const getCourses = () => {
   return fetch(`${API_ROOT}/courses`, {
     headers: headers()
   })
@@ -126,6 +142,14 @@ const findCoursesStudent = () => {
   .then(resp => resp.json())
 }
 
+const addStudentClass = (newClass) => {
+  return fetch(`${API_ROOT}/courses_students`, {
+    method: 'POST',
+    headers: headers(),
+    body: JSON.stringify(newClass)
+  })
+  .then(resp => resp.json())
+}
 
 export const api = {
   auth: {
@@ -140,12 +164,15 @@ export const api = {
     getCourses,
     findCoursesStudent,
     getTeachersResponses,
-    getQuestions
+    getQuestions,
+    getCPQs
   },
   posts: {
     postResponse,
     postQuestion,
     postAssignment,
-    deleteQuestion
+    deleteQuestion,
+    postCpq,
+    addStudentClass
   }
 };

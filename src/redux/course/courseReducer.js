@@ -1,6 +1,7 @@
 const INITIAL_STATE = {
-    current_course: {assignments: [], responses: [], students:[]},
+    current_course: {cpqs: [], assignments: [], responses: [], students:[]},
     user_courses: [],
+    cpqs: [],
     assignments: [],
     questions: [],
     courses: [],

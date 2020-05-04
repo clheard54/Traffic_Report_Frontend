@@ -21,16 +21,21 @@ class StudentProfile extends React.Component{
                     <div className='col-md-2'></div>
                     <div className='col-md-3' style={{'display': 'flex', 'flexDirection': 'column', 'textAlign':'center'}}>
                         <h4 style={{'color': '#007bff', 'lineHeight': '200%'}}>Your Classes</h4>
-                        {this.props.user_courses ? this.props.user_courses.map(course => {
+                        {this.props.user_courses.length !== 0 ? this.props.user_courses.map(course => {
                         return (
                             <div><br></br><li key={course.id}><button className="btn btn-outline-primary" style={{'maxWidth': '350px'}} onClick={() => this.setCourse(course)}><Link onClick={() => this.setCourse(course)} key={course.id} to={{pathname: "/courses/current",
                             state: {course}
                         }}>{course.title}</Link></button></li></div>)})
-                     : "No courses yet entered"}
+                     : 
+                     <Fragment>
+                      No courses yet entered
+                      <br></br><br></br><br></br>
+                      <a className="btn btn-outline-warning" style={{'maxWidth': '135px', 'alignSelf': 'center'}} href="/add_course" role="button">Add Classes</a>
+                     </Fragment>}
 
                     </div>
                     <div className='col-md-3'></div>
-                    <div className ="col-md-4" id="user-hw">
+                    <div className ="col-md-4 user-hw">
                         <UserAssignments/>
                     </div>
                 </div>

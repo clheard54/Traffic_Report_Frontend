@@ -69,8 +69,8 @@ class WeekAvgs extends Component {
 
 	//seven times, filter by date and take average
 		let arr = []
-		let week_day = moment(this.state.beginning).clone().add(i, 'days')
 		for (let i=0; i<8; i++){
+			let week_day = moment(this.state.beginning).clone().add(i, 'days')
 			let point = {};
 			point.label = `${week_day.format("MMM D")}`
 			point.x = week_day.toDate()
@@ -112,12 +112,16 @@ class WeekAvgs extends Component {
       })
 	  let avg = (numerical.reduce((a,b)=>a+b)/daysResponses.length).toFixed(1)
 	  return avg
-	} else { return null}
-}
+	  } else { return null}
+	}
+
+	sendAvg = () => {
+		this.props.setWeekAvg((total/counter).toFixed(1))
+	}
     	
 	render() {
-        const n = Math.sqrt(2)
         const options = {
+			backgroundColor: "transparent",
 			animationEnabled: true,
 			exportEnabled: true,
 			theme: "light2", 
@@ -126,7 +130,7 @@ class WeekAvgs extends Component {
 			fontSize: 26
 			},
 			subtitles: [
-				{text: `Week of ${moment().clone().subtract(8, 'days').format("MMM D")} - ${moment().clone().subtract(1, 'day').format("MMM D")}`,
+				{text: `Week of ${moment(this.state.beginning).format("MMM D")} - ${moment(this.state.ending).format("MMM D")}`,
 				fontSize: 22}
 			],
 			axisX: {
@@ -143,6 +147,7 @@ class WeekAvgs extends Component {
 			},
 			data: [{
 				type: "spline",
+				lineColor: 'black',
 				xValueType: 'dateTime',
 				markerType: "circle",
 				type: "line",
@@ -154,8 +159,8 @@ class WeekAvgs extends Component {
 		return (
 		<div>
 		<Fragment>
-			<CanvasJSChart options = {options}	/>
-			{this.props.setWeekAvg((total/counter).toFixed(1))}
+			<CanvasJSChart id="chartContainer" options = {options}	/>
+			{this.sendAvg()}
 			<button className="btn btn-outline-primary weekBack" onClick={this.weekBack}><h2>{back}</h2></button>
 			<button className="btn btn-outline-primary weekForward" onClick={this.weekForward}><h2>></h2></button>
 			<br></br> 

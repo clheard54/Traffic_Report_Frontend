@@ -4156,6 +4156,12 @@ input[type="button"].btn-block {
   padding:30px 0
 }
 
+.avg-box {
+  border: 1px solid black;
+  padding: 7px;
+
+}
+
 #landing {
   border: 7px solid #dc3545;
   position: relative;
@@ -4170,6 +4176,7 @@ input[type="button"].btn-block {
 #question-border {
   border: 1px solid var(--gray-dark);
   padding: 15px;
+  width: 100%;
   text-align: center
 }
 
@@ -4187,7 +4194,7 @@ input[type="button"].btn-block {
   display: flex;
   justify-content: center;
   width: 100%;
-  align-items: center;
+  /* align-items: center; */
   margin-left: 0;
   margin-right: 0;
 }
@@ -4199,6 +4206,13 @@ input[type="button"].btn-block {
   width: 100%;
   margin-left: 0;
   margin-right: 0
+}
+
+.week-avgs {
+  background-image: linear-gradient(rgb(72, 170, 47), rgb(248, 200, 54), rgb(255, 60, 0));
+  border: 2px solid var(--gray-dark);
+  padding: 15px;
+  text-align: center
 }
 
 .week-totals {
@@ -4227,11 +4241,25 @@ input[type="button"].btn-block {
   height: fit-content
 }
 
-#user-hw {
+.user-hw {
   border: 3px solid var(--gray-dark);
   position: relative;
   right: 10%;
   padding: 15px
+}
+
+.cpq {
+  border: 3px solid #ffc107;
+  padding: 15px;
+  position: relative;
+  right: 10%;
+}
+
+.cpq-box {
+  border: 3px solid #ffc107;
+  padding: 15px;
+  margin: auto;
+  text-align: center;
 }
 
 .cars {
@@ -4409,6 +4437,11 @@ tr {
   opacity: 0.7;
 }
 
+#chartContainer {
+  background-image: linear-gradient( rgb(255, 60, 0), rgb(248, 200, 54), rgb(72, 170, 47));
+  opacity: 0.3;
+}
+
 .nav {
   display: -ms-flexbox;
   display: flex;
@@ -4534,7 +4567,7 @@ tr {
   display: inline-block;
   padding-top: 0.3125rem;
   padding-bottom: 0.3125rem;
-  font-size: 1.75rem;
+  font-size: 2rem;
   color: #007bff;
   line-height: inherit;
   white-space: nowrap;

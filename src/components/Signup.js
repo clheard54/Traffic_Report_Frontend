@@ -53,11 +53,11 @@ export default class Signup extends React.Component {
     } 
     if (this.state.adminCode == '') {
         api.auth.createStudent(this.state.user)
-        .then(res => {
-           if (!!res.student.id){
+        .then(data => {
+           if (data.user.id){
               this.setState({...INITIAL_STATE, success: true})
           } else {
-              this.setState({...INITIAL_STATE, errors: res.error})
+              this.setState({...INITIAL_STATE, errors: data.error})
           }
       })
       }

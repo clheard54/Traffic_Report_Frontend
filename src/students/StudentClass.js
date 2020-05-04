@@ -12,7 +12,8 @@ let student_responses = []
 let numerical
 class StudentClass extends React.Component{
   state = {
-		avg: 0
+    avg: 0,
+    cpqs: []
   }
   
   componentDidMount(){
@@ -33,7 +34,7 @@ class StudentClass extends React.Component{
           this.props.history.push("/profile");
         }
       } 
-     
+    this.showCPQs(this.props.current_course)
     api.getRequests.findCoursesStudent()
       .then(data => {
         let x = data.find(entry => entry['student_id']==this.props.current_user.id && entry['course_id']==this.props.current_course.id)
@@ -71,6 +72,24 @@ class StudentClass extends React.Component{
   }
   }
 
+  showCPQs = (course) => {
+    api.getRequests.getCPQs().then(data => {
+      this.setState({
+        cpqs: data.filter(q => q.course_id == course.id)
+    })
+  })
+}
+
+  listCPQs = () => {
+    if (this.state.cpqs.length !== 0){
+      let mostRecent = this.state.cpqs.sort((a,b) => b.created_at - a.created_at)
+    for (let i=0; i<3; i++){
+      return <li style={{'margin': 'auto'}}>{mostRecent[i].question}</li>
+    }
+  }
+  }
+
+
   goBack = () => {
     this.props.history.push('/profile')
   }
@@ -81,21 +100,35 @@ class StudentClass extends React.Component{
           <div>
             <div>
             <h3>{this.props.current_course.title}</h3>
+            <hr style={{'maxWidth': '30%'}}></hr>
             <Fragment>
                 <br></br>
                 <div className="container" style={{'maxWidth': '100%', 'minHeight': '530px'}}>
                 <div className="row flex-row">
                     <div className='col-sm-.5'></div>
                     <div className ="col-md-4" id="class-assigns">
+                    <br></br>
                         <ClassAssignmentsContainer/>
                         <br></br>
+                        <div className='borderBox'>
+                      <h5 style={{'overflowWrap': 'normal' }}>Class Participation Questions:</h5>
+                        <div><ul style={{'textAlign': 'left'}}>{this.listCPQs(this.props.current_course)}</ul></div>
+                        <br></br>
+                </div>
+                <br></br>
                         <button className="btn btn-secondary" style={{'maxWidth': '120px', 'margin': 'auto'}} onClick={this.goBack}>Go Back</button>
                     </div>
-                    <div className='col-md-8' style={{'maxWidth': '55%', 'margin': '18px'}}>
+                    <div className='col-md-8' style={{'maxWidth': '55%', 'margin': '28px 20px'}}>
                       <TrafficForm course_student={this.state.course_student}/>
                     </div>  
                     <div className='col-sm-.5'></div>
                   </div>
+                  <br></br>
+                  <br></br>
+                
+                <br></br>
+                <br></br>
+
                 </div>
                 <img style={{'backgroundColor': 'white', 'opacity': '0.8', 'width': '80%', 'height': '140px'}} src='https://wisedriving.s3.amazonaws.com/1557481400.96992aba487fcea3053ff9c455f2f905.png' alt='driving'></img>
             </Fragment>

@@ -68,7 +68,6 @@ class WeekTotal extends Component {
 	}
 	
 	render() {
-		const now = moment()
 
         const options = {
 			animationEnabled: true,

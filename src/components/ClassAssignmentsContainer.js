@@ -1,7 +1,6 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import { api } from '../services/api'
 import { connect } from 'react-redux'
-import {fitty} from 'fitty'
 
 class ClassAssignmentsContainer extends React.Component{
     state = {

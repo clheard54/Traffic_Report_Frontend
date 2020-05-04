@@ -11,6 +11,7 @@ import Login from './containers/Login'
 import Signup from './components/Signup';
 import UserHome from './containers/UserHome';
 import ClassPage from './containers/ClassPage';
+import AddCourseForm from './components/AddCourseForm'
 import TrafficForm from './components/TrafficForm';
 import { setTeacherUser, setTeacher, setStudentUser, setStudent } from './redux';
 
@@ -78,6 +79,13 @@ class App extends React.Component{
               exact
               path='/traffic' 
               render={props => <TrafficForm {...props}/>}
+
+              />
+
+            <Route 
+              exact
+              path='/add_course' 
+              render={props => <AddCourseForm {...props}/>}
 
               />
 

@@ -34,6 +34,7 @@ class TrafficForm extends React.Component{
 		return (
 			<div className='light-container' style={{'border': '2px solid black', 'margin': 'auto'}}>
 			{this.state.form ? <Fragment>
+			<br></br>
 				<h4>Traffic Check:</h4>
 				How do you feel about the material covered in class today?<br></br>
 					<span style={{'color': '#EA4335'}}>Red:</span> STOP, I am so confused.<br></br>
@@ -49,12 +50,14 @@ class TrafficForm extends React.Component{
 						<label className="light-label" htmlFor="radio-3"></label>
 					<br></br><br></br>
 					<input className="btn btn-secondary" type="submit" value="Submit"></input>
+					<br></br><br></br>
 					</form>
 				</Fragment> : <Fragment>
 					<br></br>
 					<h4>Your answer has been submitted.</h4>
 					<p>Submit another response?</p><br></br>
 					<button className='btn btn-secondary' onClick={() => this.setState({form: true})}>Show Form</button>
+					<br></br>
 				</Fragment> }
 			</div>
 		)

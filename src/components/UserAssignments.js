@@ -54,7 +54,7 @@ class UserAssignments extends React.Component{
     render(){
         return (
             <Fragment>
-            <h5 style={{'fontSize': '115%'}}>Assignments/Announcements</h5>
+            <h5 style={{'fontSize': '130%'}}>Assignments/Announcements</h5>
             <div>
                 <ul style={{'textAlign': 'left'}}>{this.renderAssignments()}</ul>
             </div>

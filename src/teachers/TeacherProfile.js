@@ -50,7 +50,7 @@ class TeacherProfile extends React.Component{
 
                     </div>
                     <div className='col-md-3'></div>
-                    <div className ="col-md-4" style={{'borderStyle': 'solid', 'borderWidth': '3px', 'borderColor': 'var(--gray-dark)', 'position': 'relative', 'right': '10%', 'padding': '15px'}}>
+                    <div className ="col-md-4 cpq">
                         <AddCPQuestion/>
                     </div>
                 </div>

@@ -25,7 +25,7 @@ class QuestionBoard extends React.Component{
     event.preventDefault()
     let newQuestion = {
       text: event.target.text.id,
-      courses_student: this.props.current_course
+      course_id: this.props.current_course.id
       }
     api.posts.postQuestion(newQuestion).then(data => {
       console.log(data)
@@ -86,7 +86,7 @@ class QuestionBoard extends React.Component{
     render(){
       return (
         <div className="container" style={{'maxWidth': '100%'}}>
-          <div className="row flex-row">   
+          <div className="row flex-row" id="question-border">   
               <div className ="col-md-8" id="question-border">
               <h2>All Questions:</h2>
               {this.renderQuestions()}
