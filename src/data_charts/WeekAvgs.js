@@ -137,13 +137,15 @@ class WeekAvgs extends Component {
 				title: `Date`,
 				intervalType: 'day',
 				interval: 1,
-				valueFormatString: "MMM D"
+				valueFormatString: "MMM D",
+				minimum: this.state.beginning,
+				maximum: this.state.ending,
 
 			},
 			axisY: {
 				title: "Traffic Temperature",
-				viewportMinimum: 0,
-        		viewportMaximum: 10
+				minimum: 0,
+        		maximum: 12
 			},
 			data: [{
 				type: "spline",

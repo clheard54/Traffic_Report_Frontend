@@ -67,7 +67,7 @@ class IndividualData extends Component {
 					date: moment(parseInt(response.day)).format("MMM Do"),
 					x: moment(parseInt(response.day)),
 					y: hash[response.answer], 
-					z: 20*(n**2),
+					z: 4,
 					feeling: feeling[response.answer],
 					markerColor: matchColor[response.answer],
 				}
@@ -78,7 +78,7 @@ class IndividualData extends Component {
 			let point = {};
 			point.x = `${moment(this.state.beginning).clone().add(i, 'days').format("MMM D")}`;
 			point.y = 0
-			point.z = 0
+			point.z = Math.random()*10
 			arr.push(point)	
 		}
 		let finalData = myWeeksData.concat(arr)
@@ -94,11 +94,17 @@ class IndividualData extends Component {
 			axisX: {
 				title: 'Date',
 				labelWrap: true,
-				labelAngle: -15
+				labelAngle: -15,
+				interval: 1,
+				intervalType: 'day',
+				minimum: this.state.beginning,
+				maximum: this.state.ending
 			},
 			axisY: {
 				title: "Traffic Temperature",
-				gridThickness: 2
+				gridThickness: 2,
+				minimum: 0,
+				maximum: 12
 			},
 			data: [{
 				type: "bubble",

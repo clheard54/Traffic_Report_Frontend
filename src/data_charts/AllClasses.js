@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, Fragment} from 'react'
 import CanvasJSReact from '../assets/canvasjs.react';
 import '@popperjs/core'
 import { connect } from 'react-redux';
@@ -9,13 +9,15 @@ var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 const back = '<'
 let allData = []
+let student; let course
 
 class AllClasses extends Component {	
 	constructor(){
 		super();
 		this.state = {
 			beginning: moment().clone().subtract(7, 'days'),
-			ending: moment().clone()
+			ending: moment().clone(),
+			detail: false
 		}
 	}
 
@@ -61,6 +63,7 @@ class AllClasses extends Component {
 			'yellow': 'rgb(248, 200, 54)',
 			'green': '#34A853'
 		}
+
 		
 		allData = this.props.teachers_responses ? (this.props.teachers_responses.filter(response => response.datatype == 'light')) : []
 		let myData = this.weekFilter(allData).map(response => (
@@ -80,7 +83,7 @@ class AllClasses extends Component {
 		for (let i=0; i<8; i++){
 			let point = {};
 			point.x = `${moment(this.state.beginning).clone().add(i, 'days').format("MMM D")}`;
-			point.y = 0
+			point.y = 0.1
 			point.z = 0
 			arr.push(point)	
 		}
@@ -88,7 +91,6 @@ class AllClasses extends Component {
 	}
 
     render() {
-		
 		const feeling = {
 			2: "really confused",
 			6: "shaky",
@@ -109,7 +111,10 @@ class AllClasses extends Component {
 			}],
 			axisX: {
 				title: '\n Date',
+				interval: 1,
 				intervalType: 'day',
+				minimum: this.state.beginning,
+				maximum: this.state.ending,
 				labelWrap: true,
 				labelAngle: -15,
 				labelFormatter: function (e) {
@@ -117,34 +122,43 @@ class AllClasses extends Component {
 			},
 			axisY: {
 				title: "Traffic Temperature",
-				gridThickness: 2
+				gridThickness: 2,
+				viewportMinimum: 0,
+				viewportMaximum: 12
 			},
 			data: [{
 				type: "scatter",
 				fillOpacity: 0.7,
 				xValueType: "dateTime",
+				click: function(e){
+					student = e.dataPoint.student
+					course = e.dataPoint.course
+					// date: e.dataPoint.date,
+					// color: e.dataPoint.y
+				  },
 				toolTipContent: "<b>{label}</b><br>Date: {date}<br>Class: {course}<br>Student: {student}",
 				indexLabelWrap: true,
 				dataPoints: this.fillData()
 			}]
 		}
 		return (
-		<div>
-			<CanvasJSChart id='indiv-data' options = {options} style={{'backgroundImage':"linear-gradient(green, yellow, red)", 'opacity': '0.2'}}
-			/>
-			<br></br>
-			<button className="btn btn-outline-primary weekBack" onClick={this.weekBack}><h2>{back}</h2></button>
-			<button className="btn btn-outline-primary weekForward" onClick={this.weekForward}><h2>></h2></button>
-			<br></br>
-			<br></br>
-		</div>
+			<div>
+				<CanvasJSChart id='indiv-data' options = {options} style={{'backgroundImage':"linear-gradient(green, yellow, red)", 'opacity': '0.2'}}
+				/>
+				<br></br>
+				<button className="btn btn-outline-primary weekBack" onClick={this.weekBack}><h2>{back}</h2></button>
+				<button className="btn btn-outline-primary weekForward" onClick={this.weekForward}><h2>></h2></button>
+				<br></br>
+				<br></br>
+			</div>
 		);
 	}
 }
 	
 const mapStateToProps = state => {
 	return {
-		teachers_responses: state.responses.teachers_responses
+		teachers_responses: state.responses.teachers_responses,
+		user_courses: state.courses.user_courses
 	}
 }
 

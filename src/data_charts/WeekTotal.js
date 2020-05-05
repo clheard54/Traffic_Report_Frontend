@@ -84,10 +84,16 @@ class WeekTotal extends Component {
 				}
 				],
 			axisX: {
-				title: `Date`
+				title: `Date`,
+				interval: 1,
+				intervalType: 'day',
+				minimum: this.state.beginning,
+				maximum: this.state.ending,
 			},
 			axisY: {
-				title: "Traffic Temperature"
+				title: "Traffic Temperature",
+				minimum: 0,
+				maximum: 12
 			},
 
 			data: [
