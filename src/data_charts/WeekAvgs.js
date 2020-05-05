@@ -13,6 +13,8 @@ let total = 0; let counter = 0;
 class WeekAvgs extends Component {	
 	state = {
 		loading: true,
+		beginning: moment().clone().subtract(7, 'days').toDate(),
+		ending: moment().clone().toDate(),
 		current_course: this.props.current_course,
 	}
 
@@ -34,12 +36,7 @@ class WeekAvgs extends Component {
 				} catch (err) {
 				this.props.history.push("/profile");
 				}
-			} 
-		let now = moment()
-		this.setState({
-			beginning: now.clone().subtract(7, 'days').toDate(),
-			ending: now.clone().toDate()
-		})
+			}
 	}
               
 	
@@ -78,10 +75,10 @@ class WeekAvgs extends Component {
 			point.y = parseFloat(this.computeAverage(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == week_day.format("MMM D"))))
 			point.responses = (myData.filter(response => moment(parseInt(response.day)).format("MMM D") == week_day.format("MMM D"))).length
 			point.reds = this.findReds(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == week_day.format("MMM D")))
-			if (!!this.computeAverage(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == week_day.format("MMM D")))) {
-				total += point.y
-				counter += 1
-			} 
+			// if (!!this.computeAverage(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == week_day.format("MMM D")))) {
+			// 	total += point.y
+			// 	counter += 1
+			// } 
 			arr.push(point)
 			}
 		return arr
@@ -112,12 +109,9 @@ class WeekAvgs extends Component {
       })
 	  let avg = (numerical.reduce((a,b)=>a+b)/daysResponses.length).toFixed(1)
 	  return avg
-	  } else { return null}
+	  } else { return 0}
 	}
 
-	sendAvg = () => {
-		this.props.setWeekAvg((total/counter).toFixed(1))
-	}
     	
 	render() {
         const options = {
@@ -162,7 +156,6 @@ class WeekAvgs extends Component {
 		<div>
 		<Fragment>
 			<CanvasJSChart id="chartContainer" options = {options}	/>
-			{this.sendAvg()}
 			<button className="btn btn-outline-primary weekBack" onClick={this.weekBack}><h2>{back}</h2></button>
 			<button className="btn btn-outline-primary weekForward" onClick={this.weekForward}><h2>></h2></button>
 			<br></br> 

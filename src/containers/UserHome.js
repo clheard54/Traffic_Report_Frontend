@@ -16,6 +16,7 @@ class UserHome extends React.Component{
         return (
           <Fragment>
             <h2>Welcome {this.props.current_user ? `, ${this.props.current_user.username}!` : "!"}</h2>
+            <hr style={{'maxWidth': '30%', 'color': 'red'}}></hr>
             <div>{this.props.current_user !== null ? (this.props.current_user.admin ? <TeacherProfile/> : <StudentProfile/>) : null}</div>
           </Fragment>
         )

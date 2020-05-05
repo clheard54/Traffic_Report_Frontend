@@ -2,13 +2,22 @@ import React, {Fragment } from 'react'
 import '../assets/traffic_form.css'
 import { connect } from 'react-redux'
 import { postResponse } from '../redux'
+import { api } from '../services/api'
 
 class TrafficForm extends React.Component{
 	constructor(){
 		super();
 		this.state = {
-			form: true
+			form: true,
+			feedback: '',
+			error: null
 		}
+	}
+
+	handleChange = (event) => {
+		this.setState({
+			feedback: event.target.value
+		})
 	}
 
 	handleSubmit = (event) => {
@@ -19,14 +28,27 @@ class TrafficForm extends React.Component{
 				answer: myAnswer,
 				datatype: 'color',
 				day: '',
+				feedback: this.state.feedback,
 				courses_student_id: this.props.course_student.id,
 				student_id: this.props.current_user.id,
 				course_id: this.props.current_course.id
 			}
 		}
-		this.props.onPostResponse(newResponse)
-		this.setState({
-			form: false
+		api.posts.postResponse(newResponse)
+		.then(data => {
+			if (data.error){
+			this.setState({
+				form: false,
+				error: data.error,
+				feedback: ''})
+		} else {
+			this.setState({
+				form: false,
+				feedback: '',
+				error: null,
+				feedback: ''
+			})
+		  }
 		})
 	}
 
@@ -49,15 +71,27 @@ class TrafficForm extends React.Component{
 						<input className="radio" type='radio' name='color' id='radio-3' value='green'></input>&emsp;&emsp;
 						<label className="light-label" htmlFor="radio-3"></label>
 					<br></br><br></br>
-					<input className="btn btn-secondary" type="submit" value="Submit"></input>
+					<label>Optional Comments:&nbsp;</label>
+					<input type='text' name='feedback' value={this.state.feedback} placeholder='...feedback' onChange={this.handleChange}></input>&nbsp;&nbsp;
+ 					<input className="btn btn-secondary" type="submit" value="Submit"></input>
 					<br></br><br></br>
 					</form>
 				</Fragment> : <Fragment>
 					<br></br>
-					<h4>Your answer has been submitted.</h4>
-					<p>Submit another response?</p><br></br>
-					<button className='btn btn-secondary' onClick={() => this.setState({form: true})}>Show Form</button>
-					<br></br>
+					{!!this.state.error ? 
+						<Fragment>
+						<h4>{this.state.error}</h4>
+						<p>Please try again</p><br></br>
+						<button className='btn btn-secondary' onClick={() => this.setState({form: true})}>Return to Form</button>
+						<br></br>
+					</Fragment>
+					:
+					<Fragment>
+						<h4>Your answer has been submitted.</h4>
+						<p>Submit another response?</p><br></br>
+						<button className='btn btn-secondary' onClick={() => this.setState({form: true})}>Show Form</button>
+						<br></br>
+					</Fragment> }
 				</Fragment> }
 			</div>
 		)
@@ -67,7 +101,8 @@ class TrafficForm extends React.Component{
 const mapStateToProps = state => {
 	return {
 		current_user: state.students.current_user,
-		current_course: state.courses.current_course
+		current_course: state.courses.current_course,
+		error: state.responses.error
 	}
 }
 

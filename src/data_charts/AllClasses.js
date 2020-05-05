@@ -1,10 +1,9 @@
-import React, {Component, Fragment} from 'react'
+import React, {Component} from 'react'
 import CanvasJSReact from '../assets/canvasjs.react';
 import '@popperjs/core'
 import { connect } from 'react-redux';
 import * as moment from 'moment'
 import AuthHOC from '../HOCs/AuthHOC'
-import { api } from '../services/api'
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 const back = '<'

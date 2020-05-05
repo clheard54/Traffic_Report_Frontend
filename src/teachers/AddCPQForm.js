@@ -5,17 +5,28 @@ import { api } from '../services/api'
 
 class AddCPQuestion extends React.Component{
     state = {
+        newCPQ: {
+            question: '',
+            course_id: null,
+            day: null
+        },
         posted: false
     }
 
+    handleChange = (event) => {
+        let newState = {
+            ...this.state,
+            newCPQ: {
+              ...this.state.CPQ,
+              [event.target.name]: event.target.value
+          } 
+        }
+          this.setState(newState)
+    }
 
     addQuestion = (event) => {
         event.preventDefault();
-        let newCPQ = {
-            question: event.target.question.value,
-            course_id: event.target.course.value
-        }
-        api.posts.postCpq(newCPQ).then(data => {
+        api.posts.postCpq(this.state.newCPQ).then(data => {
             if (!!data.error) {
                 console.log(data.error)
             } else {
@@ -37,16 +48,19 @@ class AddCPQuestion extends React.Component{
                 <br></br>
                 <form onSubmit={this.addQuestion}>
                 <label>What class?&ensp;</label>
-                <select id="courses" name="course">
+                <select onChange={this.handleChange} id="courses" name="course_id">
                     <option value="all">All Courses</option>
                     {this.props.user_courses.map(course => {
                         return <option key={course.id} value={course.id}>{course.title}</option>
                     })}
                 </select>
                 <br></br>
+                <label>Day to be posted?&nbsp;&nbsp;</label>
+                <input type='date' name='day' onChange={this.handleChange} ></input>
+                <br></br><br></br>
                 <div style={{'display': 'flex', 'flexDirection': 'row', 'justifyContent': 'center'}}>
                 <label style={{'lineHeight': '60px'}}>Enter question: &ensp;</label>
-                <textarea rows="3" name='question'></textarea>
+                <textarea rows="3" name='question' onChange={this.handleChange}></textarea>
                 </div>
                 <br></br>
                 <input className='btn btn-outline-success' type='submit' value="Post Question"></input>

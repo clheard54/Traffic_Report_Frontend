@@ -4418,11 +4418,13 @@ input[type="button"].btn-block {
 }
 
 .circle {
-  height: 30px;
-  width: 30px;
-  border: 2px solid black;
+  position: relative;
+  z-index: 1;
+  width: 75px;
+  border: 1px solid black;
   border-radius: 50%;
-  z-index: 86;
+  height: 20px;
+  border-bottom: 5px solid black;
 }
 
 tr {

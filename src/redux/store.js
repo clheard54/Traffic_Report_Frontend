@@ -15,7 +15,7 @@ export const rootReducer = combineReducers({
     courses: courseReducer,
 })
 
-export const store = createStore(rootReducer)
+export const store = createStore(rootReducer, applyMiddleware(logger))
 
 export default store;
 

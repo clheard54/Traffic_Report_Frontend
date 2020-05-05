@@ -49,8 +49,8 @@ class TeacherProfile extends React.Component{
                         : "No courses yet entered"}
 
                     </div>
-                    <div className='col-md-3'></div>
-                    <div className ="col-md-4 cpq">
+                    <div className='col-md-2'></div>
+                    <div className ="col-md-5 cpq">
                         <AddCPQuestion/>
                     </div>
                 </div>
@@ -60,7 +60,7 @@ class TeacherProfile extends React.Component{
 
                 
 
-                <hr></hr>
+                <hr style={{'borderColor': '#dc3545'}}></hr>
                 <div className="row" style={{'display': 'flex','flexDirection': 'column', 'justifyContent': 'center', 'marginTop': '90px'}}>
                 <div><br></br></div>
                 <div><br></br></div>

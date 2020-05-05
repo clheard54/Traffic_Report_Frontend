@@ -35,20 +35,25 @@ class StudentClass extends React.Component{
         }
       } 
     this.showCPQs(this.props.current_course)
-    api.getRequests.findCoursesStudent()
-      .then(data => {
-        let x = data.find(entry => entry['student_id']==this.props.current_user.id && entry['course_id']==this.props.current_course.id)
-        this.setState({
-          course_student: x
-        })
-      });
+    this.getCoursesStudentID()
 		student_responses = this.props.current_course.responses.map(resp => resp.student_id == this.props.current_user.id ? resp : null).filter(e => e!==null)
 		this.computeAverage()
-	}
+  }
+  
+  getCoursesStudentID = () => {
+    api.getRequests.findCoursesStudent()
+    .then(data => {
+      let x = data.find(entry => entry['student_id']==this.props.current_user.id && entry['course_id']==this.props.current_course.id)
+      this.setState({
+        course_student: x
+      })
+    });
+  }
 
 	componentDidUpdate(prevProps){
 		if (prevProps.current_course !== this.props.current_course){
-			this.computeAverage()
+      this.computeAverage()
+      this.getCoursesStudentID()
 		}
 	}
 
@@ -62,11 +67,7 @@ class StudentClass extends React.Component{
 		this.setState({
       avg: avg,
       avgStyle: {
-            'position': 'relative',
-            'zIndex': '1',
             'top': 400 - (avg*40).toString() + "px",
-            'width': '75px',
-            'borderBottom': "5px solid black"
           }
     })
   }
@@ -146,7 +147,7 @@ class StudentClass extends React.Component{
                     <div className='col-md-2'>
                         <div className='container' style={{'alignItems': 'center'}}>
                         <div id="gradient">
-                          <div  style={this.state.avgStyle}></div>
+                          <div className='circle' style={this.state.avgStyle}></div>
                         </div>
                         </div>
                     </div>

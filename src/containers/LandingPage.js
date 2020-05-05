@@ -7,10 +7,7 @@ export default class LandingPage extends React.Component{
     handleClick = () => {
         this.props.history.push('/signup')
         }
-      
-    componentDidMount(){
-      console.log(this.props)
-    }
+
 
   render(){
     return (

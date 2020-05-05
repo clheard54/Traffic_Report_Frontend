@@ -34,11 +34,11 @@ class TeacherClass extends React.Component{
       }
     }
 
-    componentDidUpdate(prevProps){
-      if (prevProps.current_course !== this.props.current_course){
-        (this.computeAverage(this.props.current_course))
-      }
-    }
+    // componentDidUpdate(prevProps){
+    //   if (prevProps.current_course !== this.props.current_course){
+    //     (this.computeAverage(this.props.current_course))
+    //   }
+    // }
 
     componentDidMount(){
         if (!this.props.current_course.id) {
@@ -62,7 +62,6 @@ class TeacherClass extends React.Component{
     }
 
     computeAverage = (course) => {
-      console.log("average calculation")
       if (!!course.id){
         weekData = course.responses.filter(response => response.datatype == 'light').filter(response => (moment(parseInt(response.day)) >= moment(this.state.startDate)) && (moment(parseInt(response.day)) <= moment(this.state.endDate)))
         
@@ -74,11 +73,7 @@ class TeacherClass extends React.Component{
         this.setState({
           avg: avg,
           avgStyle: {
-                'position': 'relative',
-                'zIndex': '1',
                 'top': 500 - (avg*50).toString() + "px",
-                'width': '75px',
-                'borderBottom': "5px solid black"
               }
           })
         }
@@ -91,25 +86,6 @@ class TeacherClass extends React.Component{
         endDate: newEnd
       })
     }
-
-    setWeekAvg = (x) => {
-      this.setState({
-        weekAvg: x
-      })
-    }
-
-    setMin = (x) => {
-      this.setState({
-        min: x
-      })
-    }
-    
-    
-      setMax = (x) => {
-        this.setState({
-          max: x
-        })
-      }
     
     goBack = () => {
       this.props.history.push('/profile')
@@ -190,13 +166,13 @@ class TeacherClass extends React.Component{
                   </div>  
 
                 <br></br><br></br><br></br>
-                  <hr></hr>
+                  <hr ></hr>
                   <br></br><br></br>
 
                   <div className="row flex-row-1">
                     <div className='col-sm-.5'></div>
                     <div className ="col-md-8 week-totals">
-                        <WeekTotal changeDates={this.changeDates}/>
+                        {/* <WeekTotal changeDates={this.changeDates}/> */}
                         <br></br><br></br>
                         </div>
                     <div className='col-md-1'>
@@ -222,12 +198,12 @@ class TeacherClass extends React.Component{
                 <div className="row flex-row-1">
                     <div className='col-md-1'></div>
                     <div className ="col-md-8 week-avgs">
-                    {this.props.current_course !== undefined ?
-                        <WeekAvgs setMin={this.setMin} setMax={this.setMax} setWeekAvg={this.setWeekAvg}/> : null}
+                    {/* {this.props.current_course !== undefined ?
+                        <WeekAvgs /> : null} */}
                         <br></br><br></br>
                         </div>
                     <div className='col-md-2'>
-                    <div className='container' style={{'display': 'flex', 'flexDirection': 'column'}}>
+                    {/* <div className='container' style={{'display': 'flex', 'flexDirection': 'column'}}>
                         <div className='avg-box'>
                           <h5>Week's High:</h5>
                           <h6>{this.state.max}</h6>
@@ -237,7 +213,7 @@ class TeacherClass extends React.Component{
                           <h5>Week's Low:</h5>
                           <h6>{this.state.min}</h6>
                         </div>
-                    </div>  
+                    </div>   */}
                   </div>
                 </div>
                 <br></br><br></br><br></br>

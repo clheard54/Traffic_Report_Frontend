@@ -15,6 +15,7 @@ class WeekTotal extends Component {
 	state = {loading: true}
 
 	componentDidMount() {
+		console.log('mouting')
 		if (!!this.props.current_course.id){
 			let now = moment()
 		this.setState({
@@ -122,7 +123,7 @@ class WeekTotal extends Component {
 			  }
 		return (
 		<div>
-		{this.state.loading ? null :
+		{!this.props.current_course.id ? null :
 		<Fragment>
 			<CanvasJSChart options = {options}	/>
 			<button className="btn btn-outline-primary weekBack" onClick={this.weekBack}><h2>{back}</h2></button>
