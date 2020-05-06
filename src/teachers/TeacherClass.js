@@ -150,7 +150,6 @@ class TeacherClass extends React.Component{
                     <div className='col-sm-.5'></div>
                     <div className ="col-md-8 week-totals">
                         <WeekTotal changeDates={this.changeDates}/>
-                        {/* <TimeframeData/> */}
                         <br></br><br></br>
                         </div>
                     <div className='col-md-1'>

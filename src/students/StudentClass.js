@@ -2,20 +2,23 @@ import React, {Fragment} from 'react'
 import { api } from '../services/api'
 import { connect } from 'react-redux'
 import ClassAssignmentsContainer from '../components/ClassAssignmentsContainer'
+import * as moment from 'moment'
 import { currentCourse } from '../redux'
 import IndividualData from '../data_charts/IndividualData'
 import TrafficForm from '../components/TrafficForm'
 import QuestionBoard from '../containers/QuestionBoard'
 import AuthHOC from '../HOCs/AuthHOC'
 import LoaderHOC_ from '../HOCs/LoaderHOC'
-
-
+let weekData = []
 let student_responses = []
 let numerical
+
 class StudentClass extends React.Component{
   state = {
     avg: 0,
-    cpqs: []
+    cpqs: [],
+    startDate: moment().clone().subtract(1, 'week'),
+    endDate: moment().clone()
   }
   
   componentDidMount(){
@@ -44,18 +47,28 @@ class StudentClass extends React.Component{
 
 	computeAverage = () => {
     if (student_responses.length !==0 ){
-		numerical = student_responses.filter(response => response.datatype == 'light').map(entry => {
-			return entry.answer == 'red' ?  2 : (entry.answer == 'yellow' ? 6 : 10)
-    })
-    let average = numerical.reduce((a,b)=>a+b)/student_responses.length
-    let avg = average.toFixed(1)
-		this.setState({
-      avg: avg,
-      avgStyle: {
-            'top': 400 - (avg*40).toString() + "px",
-          }
-    })
+      weekData = student_responses.filter(response => (moment(parseInt(response.day)) >= moment(this.state.startDate)) && (moment(parseInt(response.day)) <= moment(this.state.endDate)))
+      if (weekData.length !==0 ){
+        numerical = weekData.map(entry => {
+          return entry.answer == 'red' ?  2 : (entry.answer == 'yellow' ? 6 : 10)
+        })
+      let average = numerical.reduce((a,b)=>a+b)/weekData.length
+      let avg = average.toFixed(1)
+      this.setState({
+        avg: avg,
+        avgStyle: {
+              'top': 400 - (avg*40).toString() + "px",
+            }
+        })
+      }
+    }
   }
+
+  changeDates = (newStart, newEnd) => {
+    this.setState({
+      startDate: newStart,
+      endDate: newEnd
+    })
   }
 
   showCPQs = (course) => {
@@ -70,7 +83,7 @@ class StudentClass extends React.Component{
     if (this.state.cpqs.length !== 0){
       let todays = this.state.cpqs.filter(question => question.day == new Date().toISOString().slice(0,10))
     for (let i=0; i<todays.length; i++){
-      return <li style={{'margin': 'auto'}}>{todays[i].question}</li>
+      return <li style={{'margin': 'auto'}}>{moment(new Date((todays[i].day).replace('-', ' '))).format("MMM D")}: {todays[i].question}</li>
     }
   }
   }
@@ -122,7 +135,7 @@ class StudentClass extends React.Component{
                 <div className="container">
                 <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center'}}>
                     <div className='col-md-8'>
-                      <IndividualData />
+                      <IndividualData changeDates={this.changeDates}/>
                     </div> 
                     <div className='col-md-2'>
                         <div className='container' style={{'alignItems': 'center'}}>

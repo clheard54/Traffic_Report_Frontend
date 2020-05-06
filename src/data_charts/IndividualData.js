@@ -10,24 +10,20 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 let myWeeksData = []
 class IndividualData extends Component {	
-	state = {}
-
-	componentDidMount(){
-		let now = moment()
-		this.setState({
-			beginning: now.clone().subtract(7, 'days').toDate(),
-			ending: now.clone().toDate()
-		})
+	state = {
+		beginning: moment().clone().subtract(7, 'days').toDate(),
+		ending: moment().clone().toDate()
 	}
-	
+
+
 	weekBack = () => {
 		this.setState(prev => {
 			return ({
 				beginning: moment(prev.beginning).subtract(7, 'days').toDate(),
 				ending: moment(prev.beginning)
 			})
-	    })
-	}
+	    }, () => {this.props.changeDates(this.state.beginning, this.state.ending)})
+	}	
 	
 	weekForward = () => {
 		this.setState(prev => {
@@ -35,7 +31,7 @@ class IndividualData extends Component {
 				beginning: moment(prev.ending),
 				ending: moment(prev.ending).add(7, 'days').toDate()
 			})
-	    })
+	    }, () => {this.props.changeDates(this.state.beginning, this.state.ending)})
 	}
 
     render() {
@@ -93,7 +89,7 @@ class IndividualData extends Component {
 			axisX: {
 				title: 'Date',
 				labelWrap: true,
-				labelAngle: -15,
+				valueFormatString: "MMM D",
 				interval: 1,
 				intervalType: 'day',
 				minimum: this.state.beginning,
