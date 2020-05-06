@@ -7,13 +7,12 @@ import {BrowserRouter as Router, Route } from 'react-router-dom'
 import { api } from './services/api'
 import LandingPage from './containers/LandingPage'
 import NavBar from './containers/NavBar'
-import Login from './containers/Login'
+import LoginContainer from './containers/LoginContainer'
 import Signup from './components/Signup';
 import UserHome from './containers/UserHome';
 import ClassPage from './containers/ClassPage';
 import AddCourseForm from './components/AddCourseForm'
 import TrafficForm from './components/TrafficForm';
-import CurrentCourseReport from './CurrentCourseReport';
 import DailyAvgs from './teachers/DailyAvgs'
 import { setTeacherUser, setTeacher, setStudentUser, setStudent, currentCourse } from './redux';
 
@@ -46,7 +45,6 @@ class App extends React.Component{
     return (
         <div className="App">
         <Router>
-        <CurrentCourseReport/>
           <header>
             <div className="traffic-top" style={{'margin': '0'}}>
               <span className="dot" id='red-dot'></span>
@@ -61,7 +59,7 @@ class App extends React.Component{
             <Route
               exact
               path="/login"
-              render={props => <Login {...props} />}/>
+              render={props => <LoginContainer {...props} />}/>
 
             <Route
               exact

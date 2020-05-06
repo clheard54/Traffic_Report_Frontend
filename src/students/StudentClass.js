@@ -102,7 +102,7 @@ class StudentClass extends React.Component{
                         <br></br>
                 </div>
                 <br></br>
-                        <button className="btn btn-secondary" style={{'maxWidth': '120px', 'margin': 'auto'}} onClick={this.goBack}>Go Back</button>
+                        <button className="btn btn-outline-primary" style={{'maxWidth': '120px', 'margin': 'auto'}} onClick={this.goBack}>Go Back</button>
                     </div>
                     <div className='col-md-8' style={{'maxWidth': '55%', 'margin': '28px 20px'}}>
                       <TrafficForm course_student={this.state.course_student}/>

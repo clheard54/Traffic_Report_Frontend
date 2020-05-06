@@ -9,11 +9,12 @@ import LoaderHOC_ from '../HOCs/LoaderHOC'
 // var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 const back = '<'
-let total = 0; let counter = 0;
+let avgs=[]
+let maxColor; let minColor
 
 class WeekAvgs extends Component {	
 	state = {
-		loading: true,
+		avgs: [],
 		beginning: moment().clone().subtract(7, 'days').toDate(),
 		ending: moment().clone().toDate(),
 		current_course: this.props.current_course,
@@ -58,6 +59,7 @@ class WeekAvgs extends Component {
 			// 	total += point.y
 			// 	counter += 1
 			// } 
+			avgs.push(point.y)
 			arr.push(point)
 			}
 		return arr
@@ -91,6 +93,34 @@ class WeekAvgs extends Component {
 	  } else { return 0}
 	}
 
+	
+	calculateHigh = () => {
+		let high = Math.max(...avgs)
+		if (high <= 4){
+			maxColor = 'red'
+		} else if (high > 4 && high < 7.5){
+			maxColor = 'yellow'
+		} else{
+			maxColor = 'green'
+		} 
+		return high
+	}
+
+	calculateLow = () => {
+		let low = Math.max(...avgs)
+		if (low <= 4){
+			minColor = 'red'
+		} else if (low > 4 && low < 7.5){
+			minColor = 'yellow'
+		} else{
+			minColor = 'green'
+		} 
+		return low
+	}
+
+	backgroundColor = (value) => {
+		return value <= 4 ? {'backgroundColor': '#eb2438b4'} : (value > 4 && value < 7.5 ? {'backgroundColor': '##f3db21de'} : {'backgroundColor': '##2bdd55b7'})
+	}
     	
 	render() {
         const options = {
@@ -132,13 +162,27 @@ class WeekAvgs extends Component {
 			}]
 		}
 		return (
-		<div>
-		<Fragment>
-			<CanvasJSChart id="chartContainer" options = {options}	/>
-			<button className="btn btn-outline-primary weekBack" onClick={this.weekBack}><h2>{back}</h2></button>
-			<button className="btn btn-outline-primary weekForward" onClick={this.weekForward}><h2>></h2></button>
-			<br></br> 
-			</Fragment>
+		  <div className="row flex-row-1">
+			<div className='col-md-1'></div>
+			<div className ="col-md-8 week-avgs">
+				<CanvasJSChart id="chartContainer" options = {options}	/>
+				<button className="btn btn-outline-primary weekBack" onClick={this.weekBack}><h2>{back}</h2></button>
+				<button className="btn btn-outline-primary weekForward" onClick={this.weekForward}><h2>></h2></button>
+				<br></br><br></br><br></br>
+			</div>
+			<div className='col-md-2' style={{'position': 'relative', 'right': '30px'}}>
+			<div className='container' style={{'display': 'flex', 'flexDirection': 'column'}}>
+				<div className={`avg-box ${maxColor}`}>
+					<h5>Week's High:</h5>
+					<h6>{this.calculateHigh()}</h6>
+				</div>
+				<br></br><br></br>
+				<div className={`avg-box ${minColor}`}>
+					<h5>Week's Low:</h5>
+					<h6>{this.calculateLow()}</h6>
+				</div>
+			</div>  
+			</div>
 		</div>
 		);
 	}

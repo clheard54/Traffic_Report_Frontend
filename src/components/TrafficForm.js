@@ -59,9 +59,9 @@ class TrafficForm extends React.Component{
 			<br></br>
 				<h4>Traffic Check:</h4>
 				How do you feel about the material covered in class today?<br></br>
-					<span style={{'color': '#EA4335'}}>Red:</span> STOP, I am so confused.<br></br>
-					<span style={{'color': 'rgb(248, 200, 54)'}}>Yellow:</span> Meh, I kind of know what's going on, but I'm not sure I really understand this.<br></br>
-					<span style={{'color': '#34A853'}}>Green:</span> Great! Feeling good and ready to move on.<br></br>
+					<span style={{'color': '#EA4335', 'fontWeight': 'bold' }}>Red:</span> STOP, I am so confused.<br></br>
+					<span style={{'color': 'rgb(248, 200, 54)', 'fontWeight': 'bold' }}>Yellow:</span> Meh, I kind of know what's going on, but I'm not sure I really understand this.<br></br>
+					<span style={{'color': '#34A853', 'fontWeight': 'bold' }}>Green:</span> Great! Feeling good and ready to move on.<br></br>
 				<form onSubmit={this.handleSubmit}>
 					<br></br>
 						<input className="radio" type='radio' id='radio-1' name='color' value=' red '></input>&emsp;&emsp;
@@ -72,8 +72,9 @@ class TrafficForm extends React.Component{
 						<label className="light-label" htmlFor="radio-3"></label>
 					<br></br><br></br>
 					<label>Optional Comments:&nbsp;</label>
-					<input type='text' name='feedback' value={this.state.feedback} placeholder='...feedback' onChange={this.handleChange}></input>&nbsp;&nbsp;
- 					<input className="btn btn-secondary" type="submit" value="Submit"></input>
+					<input type='text' name='feedback' value={this.state.feedback} placeholder='...feedback' onChange={this.handleChange}></input>
+					<br></br><br></br>
+ 					<input className="btn btn-outline-primary" type="submit" value="Submit"></input>
 					<br></br><br></br>
 					</form>
 				</Fragment> : <Fragment>
@@ -82,14 +83,14 @@ class TrafficForm extends React.Component{
 						<Fragment>
 						<h4>{this.state.error}</h4>
 						<p>Please try again</p><br></br>
-						<button className='btn btn-secondary' onClick={() => this.setState({form: true})}>Return to Form</button>
+						<button className='btn btn-outline-primary' onClick={() => this.setState({form: true})}>Return to Form</button>
 						<br></br>
 					</Fragment>
 					:
 					<Fragment>
 						<h4>Your answer has been submitted.</h4>
 						<p>Submit another response?</p><br></br>
-						<button className='btn btn-secondary' onClick={() => this.setState({form: true})}>Show Form</button>
+						<button className='btn btn-outline-primary' onClick={() => this.setState({form: true})}>Show Form</button>
 						<br></br>
 					</Fragment> }
 				</Fragment> }

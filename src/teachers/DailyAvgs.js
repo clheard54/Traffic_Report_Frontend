@@ -11,7 +11,7 @@ class DailyAvgs extends React.Component{
     min: ''
   }
 
-  
+
   goBack = () => {
     localStorage.setItem('course_token', this.props.current_course.id)
     this.props.setCurrentCourse(this.props.current_course);
@@ -21,29 +21,9 @@ class DailyAvgs extends React.Component{
   render(){
     return (
       <Fragment>
-      <div className="row flex-row-1">
-        <div className='col-md-1'></div>
-          <div className ="col-md-8 week-avgs">
-          {this.props.current_course !== undefined ?
-              <WeekAvgs loaded={!!this.props.current_course.id}/> : null}
-              <br></br><br></br>
-              </div>
-          <div className='col-md-2'>
-          <div className='container' style={{'display': 'flex', 'flexDirection': 'column'}}>
-              <div className='avg-box'>
-                <h5>Week's High:</h5>
-                <h6>{this.state.max}</h6>
-              </div>
-              <br></br><br></br>
-              <div className='avg-box'>
-                <h5>Week's Low:</h5>
-                <h6>{this.state.min}</h6>
-              </div>
-          </div>  
-        </div>
-      </div>
+      <WeekAvgs loaded={!!this.props.current_course.id}/>
       <div className="row flex-row">
-        <a style={{'marginTop': '50px'}} className='btn btn-outline-warning btn-lg' onClick={() => this.setCourse(this.props.current_course)} href="/courses/current">Go Back</a>
+        <a style={{'marginTop': '50px'}} className='btn btn-outline-dark btn-lg' onClick={() => this.setCourse(this.props.current_course)} href="/courses/current">Go Back</a>
       </div>
       </Fragment>
     )

@@ -36,7 +36,7 @@ class Login extends React.Component{
 
     render(){
         return(
-            <div className='container' id='login-box'>
+            <div className='container'>
                 <form onSubmit={this.handleSubmit}>
                 {!!this.props.error ? <p style={{'color': 'red'}}>{this.props.error}. Please try again.</p> : null}
                     <h3 className="font-weight-bolder">Log In:&nbsp;</h3><br></br>

@@ -1,13 +1,11 @@
 import React, { Fragment } from 'react'
-import Login from './Login'
-import { Redirect } from 'react-router-dom'
+import Login from '../components/Login'
 
 export default class LandingPage extends React.Component{
 
     handleClick = () => {
         this.props.history.push('/signup')
         }
-
 
   render(){
     return (
@@ -33,10 +31,11 @@ export default class LandingPage extends React.Component{
                 <button className='btn btn-outline-success btn-lg font-weight-bolder' onClick={() => this.props.history.push('/profile')} >Go to Profile</button>
                 </Fragment> :
                 <Fragment>
-                  <Login {...this.props} />
+                <div id='login-box'>
+                  <Login {...this.props} /></div>
                   <br></br>
                   <span style={{'fontSize': '110%'}} >No Account?  </span>
-                  <button className='btn btn-outline-success btn-sm font-weight-bolder' onClick={this.handleClick}>Create One Here</button>
+                  <button className='btn btn-outline-success' onClick={this.handleClick}>Create One Here</button>
                 </Fragment> }
                 </div>
                 <div className="col-sm-1"></div>

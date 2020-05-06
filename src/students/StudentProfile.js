@@ -17,8 +17,8 @@ class StudentProfile extends React.Component{
             <Fragment>
                 <br></br>
                 <div className="container" style={{'maxWidth': '100%'}}>
-                <div className="row" style={{'width': '100%', 'marginLeft': '0', 'marginRight': '0'}}>
-                    <div className='col-md-2'></div>
+                <div className="row" style={{'width': '90%', 'marginLeft': '0', 'marginRight': '0'}}>
+                    <div className='col-md-3'></div>
                     <div className='col-md-3' style={{'display': 'flex', 'flexDirection': 'column', 'textAlign':'center'}}>
                         <h4 style={{'color': '#007bff', 'lineHeight': '200%'}}>Your Classes</h4>
                         {this.props.user_courses.length !== 0 ? this.props.user_courses.map(course => {
@@ -34,7 +34,7 @@ class StudentProfile extends React.Component{
                      </Fragment>}
 
                     </div>
-                    <div className='col-md-3'></div>
+                    <div className='col-md-2'></div>
                     <div className ="col-md-4 user-hw">
                         <UserAssignments/>
                     </div>
