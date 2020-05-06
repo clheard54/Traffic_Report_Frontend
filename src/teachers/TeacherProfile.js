@@ -30,6 +30,10 @@ class TeacherProfile extends React.Component{
         localStorage.setItem('course_token', course.id)
         this.props.setCurrentCourse(course)
     }
+
+    listFeedback = () => {
+
+    }
     
 
     render(){
@@ -64,14 +68,9 @@ class TeacherProfile extends React.Component{
                 <div className="row" style={{'display': 'flex','flexDirection': 'column', 'justifyContent': 'center', 'marginTop': '90px'}}>
                 <div><br></br></div>
                 <div><br></br></div>
-                <div className="row">
-                    <div className='col-md-2'></div>
-                    <div className='col-md-8'>
+                <Fragment>
                     <AllClasses />
-                    </div>
-                    <div className='col-md-2'></div>
-
-                </div>
+                </Fragment>
                 </div>
                 <div><br></br></div>
 

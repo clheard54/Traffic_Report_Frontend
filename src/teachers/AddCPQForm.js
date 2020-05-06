@@ -16,10 +16,8 @@ class AddCPQuestion extends React.Component{
     handleChange = (event) => {
         let newState = {
             ...this.state,
-            newCPQ: {
-              ...this.state.CPQ,
-              [event.target.name]: event.target.value
-          } 
+            newCPQ: Object.assign({}, this.state.newCPQ,
+              {[event.target.name]: event.target.value})
         }
           this.setState(newState)
     }
@@ -32,12 +30,14 @@ class AddCPQuestion extends React.Component{
             } else {
             this.setState({ posted: true })
             TimerMixin.setTimeout(
-                () => this.setState({ posted: false }),
-                3000)
+                () => this.setState({
+                    question: '',
+                    course_id: 'all',
+                    day: null,
+                    posted: false,  }),
+                2000)
             }
         })
-        event.target.course.value = "all"
-        event.target.question.value = ''
     }
     
 
@@ -56,11 +56,11 @@ class AddCPQuestion extends React.Component{
                 </select>
                 <br></br>
                 <label>Day to be posted?&nbsp;&nbsp;</label>
-                <input type='date' name='day' onChange={this.handleChange} ></input>
+                <input type='date' name='day' onChange={this.handleChange} value={this.state.day}></input>
                 <br></br><br></br>
                 <div style={{'display': 'flex', 'flexDirection': 'row', 'justifyContent': 'center'}}>
                 <label style={{'lineHeight': '60px'}}>Enter question: &ensp;</label>
-                <textarea rows="3" name='question' onChange={this.handleChange}></textarea>
+                <textarea rows="3" name='question' onChange={this.handleChange} value={this.state.question}></textarea>
                 </div>
                 <br></br>
                 <input className='btn btn-outline-success' type='submit' value="Post Question"></input>

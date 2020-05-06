@@ -3,8 +3,7 @@ import CanvasJSReact from '../assets/canvasjs.react';
 import '@popperjs/core'
 import * as moment from 'moment'
 import { connect } from 'react-redux';
-import { api } from '../services/api'
-//var CanvasJSReact = require('./canvasjs.react');
+import LoaderHOC_ from '../HOCs/LoaderHOC'
 // var CanvasJS = CanvasJSReact.CanvasJS;
 const back = '<'
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -118,7 +117,6 @@ class IndividualData extends Component {
 		return (
 		<div>
 			<CanvasJSChart id='indiv-data' options = {options} style={{'backgroundImage':"linear-gradient(green, yellow, red)", 'opacity': '0.2'}}
-				/* onRef={ref => this.chart = ref} */
 			/>
 			<button className="btn btn-outline-primary weekBack" onClick={this.weekBack}><h2>{back}</h2></button>
 			<button className="btn btn-outline-primary weekForward" onClick={this.weekForward}><h2>></h2></button>
@@ -132,9 +130,8 @@ const mapStateToProps = state => {
 	return {
 		current_user: state.auths.current_user,
 		current_course: state.courses.current_course,
-		// student_responses: state.responses.student_responses
 	}
 }
 
 
-export default connect(mapStateToProps)(IndividualData)
+export default LoaderHOC_(connect(mapStateToProps)(IndividualData));

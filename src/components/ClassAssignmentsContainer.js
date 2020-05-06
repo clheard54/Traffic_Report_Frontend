@@ -1,6 +1,7 @@
 import React from 'react'
 import { api } from '../services/api'
 import { connect } from 'react-redux'
+import LoaderHOC_ from '../HOCs/LoaderHOC'
 
 class ClassAssignmentsContainer extends React.Component{
     state = {
@@ -9,14 +10,12 @@ class ClassAssignmentsContainer extends React.Component{
     }
 
     renderAssignments = (course) => {
-        if (!!course.id){
         if (this.props.current_course.assignments.length == 0) {
             return <div><br></br><p>It's your lucky day! There are currently no assignments.</p></div>
         } else {
         return this.props.current_course.assignments.map(hw => {
             return <li key={hw.id}>{hw.details}</li>})
         }
-    }
     }
 
     // To add a new assignment (teachers only)
@@ -58,4 +57,4 @@ const mapStateToProps = state => {
     }
   }
   
-  export default connect(mapStateToProps)(ClassAssignmentsContainer);
+  export default LoaderHOC_(connect(mapStateToProps)(ClassAssignmentsContainer));

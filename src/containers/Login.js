@@ -40,7 +40,7 @@ class Login extends React.Component{
                 <form onSubmit={this.handleSubmit}>
                 {!!this.props.error ? <p style={{'color': 'red'}}>{this.props.error}. Please try again.</p> : null}
                     <h3 className="font-weight-bolder">Log In:&nbsp;</h3><br></br>
-                    <label>Username: </label>
+                    <label>Username:&nbsp;</label>
                     <input type="text" name="username" value={this.state.username} onChange={this.handleChange}></input><br></br>
                     <label>Password:&nbsp;</label>
                     <input type="password" name="password" value={this.state.password} onChange={this.handleChange}></input>

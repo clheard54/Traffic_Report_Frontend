@@ -9,33 +9,14 @@ import {currentCourse, setCurrentCourse } from '../redux'
 class ClassPage extends React.Component{
 //conditionally render either Teacher View or Student view for a class
 
-    // componentDidMount() {
-    //     if (!this.props.current_course.id) {
-    //         try {
-    //             const current_course = localStorage.getItem('course_token');
-    //             if ('course_token' == null) {
-    //               return undefined;
-    //             }
-    //             api.getRequests.getCourses().then(data => {
-    //                 let thisCourse = data.filter(course => course.id == parseInt(current_course));
-    //                 this.props.setCurrentCourse(thisCourse)
-    //             })
-    //           } catch (err) {
-    //             this.props.history.push("/profile");
-    //           }
-    //     } 
-    // }
-
-
     componentDidUpdate(prevProps){
         if (prevProps.current_user !== this.props.current_user || prevProps.current_course != this.props.current_course){
             this.showClass()
-        }
-        
+        } 
     }
 
     showClass = () => {
-       return this.props.current_user !== null ? (this.props.current_user.admin ? <TeacherClass {...this.props}/> : <StudentClass/>) : null
+       return this.props.current_user !== null ? (this.props.current_user.admin ? <TeacherClass {...this.props}/> : <StudentClass {...this.props}/>) : null
     }
 
 

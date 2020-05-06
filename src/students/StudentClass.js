@@ -7,6 +7,8 @@ import IndividualData from '../data_charts/IndividualData'
 import TrafficForm from '../components/TrafficForm'
 import QuestionBoard from '../containers/QuestionBoard'
 import AuthHOC from '../HOCs/AuthHOC'
+import LoaderHOC_ from '../HOCs/LoaderHOC'
+
 
 let student_responses = []
 let numerical
@@ -17,23 +19,6 @@ class StudentClass extends React.Component{
   }
   
   componentDidMount(){
-    if (!this.props.current_course.id) {
-      try {
-          const current_course = localStorage.getItem('course_token');
-          if ('course_token' == null) {
-            return undefined;
-          }
-          api.getRequests.getCourses().then(data => {
-              let thisCourse = data.filter(course => course.id == parseInt(current_course));
-              this.props.setCurrentCourse(thisCourse[0])
-              this.setState({
-                loading: false
-              }, () => this.computeAverage(thisCourse[0]))
-          })
-        } catch (err) {
-          this.props.history.push("/profile");
-        }
-      } 
     this.showCPQs(this.props.current_course)
     this.getCoursesStudentID()
 		student_responses = this.props.current_course.responses.map(resp => resp.student_id == this.props.current_user.id ? resp : null).filter(e => e!==null)
@@ -83,13 +68,12 @@ class StudentClass extends React.Component{
 
   listCPQs = () => {
     if (this.state.cpqs.length !== 0){
-      let mostRecent = this.state.cpqs.sort((a,b) => b.created_at - a.created_at)
-    for (let i=0; i<3; i++){
-      return <li style={{'margin': 'auto'}}>{mostRecent[i].question}</li>
+      let todays = this.state.cpqs.filter(question => question.day == new Date().toISOString().slice(0,10))
+    for (let i=0; i<todays.length; i++){
+      return <li style={{'margin': 'auto'}}>{todays[i].question}</li>
     }
   }
   }
-
 
   goBack = () => {
     this.props.history.push('/profile')
@@ -111,6 +95,7 @@ class StudentClass extends React.Component{
                     <br></br>
                         <ClassAssignmentsContainer/>
                         <br></br>
+                        <br></br>
                         <div className='borderBox'>
                       <h5 style={{'overflowWrap': 'normal' }}>Class Participation Questions:</h5>
                         <div><ul style={{'textAlign': 'left'}}>{this.listCPQs(this.props.current_course)}</ul></div>
@@ -124,25 +109,20 @@ class StudentClass extends React.Component{
                     </div>  
                     <div className='col-sm-.5'></div>
                   </div>
-                  <br></br>
-                  <br></br>
-                
-                <br></br>
-                <br></br>
-
+                  <br></br><br></br><br></br>
                 </div>
-                <img style={{'backgroundColor': 'white', 'opacity': '0.8', 'width': '80%', 'height': '140px'}} src='https://wisedriving.s3.amazonaws.com/1557481400.96992aba487fcea3053ff9c455f2f905.png' alt='driving'></img>
+                
             </Fragment>
+            <span style={{'position': 'relative', 'left': '40%'}}>Stats below...</span>
             <hr></hr>
             <br></br>
             <br></br>
                 <br></br>
-                <h5>Check out your recent traffic data in this course.</h5><br></br>
+                <h5>Check out your recent traffic data in this course.</h5><br></br><br></br>
                 <div className="container">
                 <div className="row" style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center'}}>
                     <div className='col-md-8'>
-                    {this.props.current_course.id ?
-                      <IndividualData /> : null}
+                      <IndividualData />
                     </div> 
                     <div className='col-md-2'>
                         <div className='container' style={{'alignItems': 'center'}}>
@@ -161,11 +141,13 @@ class StudentClass extends React.Component{
                     </div>
                 </div>
               </div>
-              <br></br><br></br><br></br>
+              <br></br><br></br><br></br><br></br>
                 <hr></hr>
               <br></br>
                 <QuestionBoard/>
             </div>
+            <br></br><br></br><br></br>
+            <img style={{'backgroundColor': 'white', 'opacity': '0.8', 'width': '80%', 'height': '140px'}} src='https://wisedriving.s3.amazonaws.com/1557481400.96992aba487fcea3053ff9c455f2f905.png' alt='driving'></img>
           </div>
         )
     }
@@ -185,4 +167,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default AuthHOC(connect(mapStateToProps, mapDispatchToProps)(StudentClass))
+export default LoaderHOC_(AuthHOC(connect(mapStateToProps, mapDispatchToProps)(StudentClass)));

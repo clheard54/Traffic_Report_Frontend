@@ -13,7 +13,9 @@ import UserHome from './containers/UserHome';
 import ClassPage from './containers/ClassPage';
 import AddCourseForm from './components/AddCourseForm'
 import TrafficForm from './components/TrafficForm';
-import { setTeacherUser, setTeacher, setStudentUser, setStudent } from './redux';
+import CurrentCourseReport from './CurrentCourseReport';
+import DailyAvgs from './teachers/DailyAvgs'
+import { setTeacherUser, setTeacher, setStudentUser, setStudent, currentCourse } from './redux';
 
 class App extends React.Component{
   constructor(){
@@ -31,12 +33,20 @@ class App extends React.Component{
         user.admin ? this.props.onSetTeacherUser(user) : this.props.onSetStudentUser(user)
       });
     }
-  }
+    const course_token = localStorage.getItem('course_token');
+    if (course_token) {
+          api.getRequests.getCourses().then(data => {
+              let thisCourse = data.find(course => course.id == parseInt(course_token));
+              this.props.setCurrentCourse(thisCourse) 
+          })
+        }
+    }
 
   render(){
     return (
         <div className="App">
         <Router>
+        <CurrentCourseReport/>
           <header>
             <div className="traffic-top" style={{'margin': '0'}}>
               <span className="dot" id='red-dot'></span>
@@ -62,6 +72,12 @@ class App extends React.Component{
             exact 
             path="/profile" 
             render={props => <UserHome {...props}  user={this.props.current_user}/>}
+            />
+
+            <Route 
+            exact 
+            path="/daily_avgs" 
+            render={props => <DailyAvgs {...props}/>}
             />
  
             <Route 
@@ -101,6 +117,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onSetTeacherUser: teacher => dispatch(setTeacher(teacher), ()=> dispatch(setTeacherUser(teacher))),
     onSetStudentUser: student => dispatch(setStudent(student), () => dispatch(setStudentUser(student))),
+    setCurrentCourse: course => dispatch(currentCourse(course))
     // fetchCourses: user => dispatch(fetchCourses(user))
   }
 }

@@ -3,43 +3,21 @@ import CanvasJSReact from '../assets/canvasjs.react';
 import '@popperjs/core'
 import * as moment from 'moment'
 import { connect } from 'react-redux'
-import { currentCourse } from '../redux'
-import { api } from '../services/api'
+import LoaderHOC_ from '../HOCs/LoaderHOC'
 // var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 const back = '<'
 
 
-let myData = []
 class WeekTotal extends Component {
-	state = {loading: true}
-
-	componentDidMount() {
-		console.log('mouting')
-		if (!!this.props.current_course.id){
-			let now = moment()
-		this.setState({
-			beginning: now.clone().subtract(7, 'days').toDate(),
-			ending: now.clone().toDate(),
-			loading: false
-		})
-		}
+	state = {
+		beginning: moment().clone().subtract(7, 'days'),
+		ending: moment()
 	}
 
-	componentDidUpdate(prev){
-		if (prev.current_course !== this.props.current_course){
-			let now = moment()
-		this.setState({
-			beginning: now.clone().subtract(7, 'days').toDate(),
-			ending: now.clone().toDate(),
-			loading: false
-		})
-		}
-	}
-
-
-	fillData = (dataset, color) => {
-		myData = this.props.current_course.id && dataset ? (dataset.filter(response => response.datatype == 'light').filter(response => (moment(parseInt(response.day)) >= moment(this.state.beginning)) && (moment(parseInt(response.day)) <= moment(this.state.ending)))) : []
+	fillData = (color) => {
+		let myData = this.props.current_course.responses.filter(response => moment(parseInt(response.day)) >= this.state.beginning && (moment(parseInt(response.day)) <= this.state.ending))
+		
 		let arr = []
 		for (let i=0; i<8; i++){
 			let point = {};
@@ -56,8 +34,9 @@ class WeekTotal extends Component {
 				beginning: moment(prev.beginning).subtract(7, 'days').toDate(),
 				ending: moment(prev.beginning)
 			})
-	    }, () => {this.props.changeDates(this.state.beginning, this.state.ending)})
+		}, () => {this.props.changeDates(this.state.beginning, this.state.ending)})
 	}
+	
 	
 	weekForward = () => {
 		this.setState(prev => {
@@ -68,15 +47,16 @@ class WeekTotal extends Component {
 	    }, () => {this.props.changeDates(this.state.beginning, this.state.ending)})
 	}
 	
+
 	render() {
 
         const options = {
 			animationEnabled: true,
 			exportEnabled: true,
-			theme: "light2",
+			theme: "light2", 
 			title:{
-				text: "Week's Traffic:",
-				fontSize: 26
+				text: "Week's Traffic",
+			fontSize: 26
 			},
 			subtitles: [
 				{
@@ -88,54 +68,57 @@ class WeekTotal extends Component {
 				title: `Date`,
 				interval: 1,
 				intervalType: 'day',
-				minimum: this.state.beginning,
-				maximum: this.state.ending,
+				// minimum: this.state.beginning,
+				// maximum: this.state.ending,
 			},
 			axisY: {
-				title: "Traffic Temperature",
+				title: "Number of Responses",
 				minimum: 0,
-				maximum: 12
+				interval: 1
 			},
+			legend: {
+				horizontalAlign: "center",
+				verticalAlign: "bottom",  // "top" , "bottom"
+				fontSize: 15
+			  },
 
 			data: [
 				{
 					type: "column",
 					showInLegend: true,
-					legendText: "Red",
+					legendText: "Utterly confused",
 					color: "#EA4335",
-					dataPoints: this.fillData(this.props.current_course.responses,'red')
+					dataPoints: this.fillData('red')
 				  },
 				  {
 					type: "column",
 					showInLegend: true,
-					legendText: "Yellow",
+					legendText: "Little shaky",
 					color: "rgb(248, 200, 54)",
-					dataPoints: this.fillData(this.props.current_course.responses, 'yellow')
+					dataPoints: this.fillData('yellow')
 				  },
 				  {
 					type: "column",
 					showInLegend: true,
-					legendText: "Green",
+					legendText: "I understand!",
 					color: "#34A853",
-					dataPoints: this.fillData(this.props.current_course.responses, 'green')
+					dataPoints: this.fillData('green')
 				  }
 			]
 			  }
 		return (
 		<div>
-		{!this.props.current_course.id ? null :
 		<Fragment>
 			<CanvasJSChart options = {options}	/>
 			<button className="btn btn-outline-primary weekBack" onClick={this.weekBack}><h2>{back}</h2></button>
 			<button className="btn btn-outline-primary weekForward" onClick={this.weekForward}><h2>></h2></button>
 			<br></br>
-		</Fragment> }
+		</Fragment> 
 		</div>
 		);
 	}
 }
 	
-
 const mapStateToProps = state => {
     return {
         current_user: state.auths.current_user,
@@ -145,10 +128,5 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        setCurrentCourse: course => dispatch(currentCourse(course))
-    }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(WeekTotal)
+export default LoaderHOC_(connect(mapStateToProps)(WeekTotal))

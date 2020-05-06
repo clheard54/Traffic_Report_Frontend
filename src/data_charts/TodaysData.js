@@ -5,35 +5,16 @@ import { connect } from 'react-redux'
 import { currentCourse } from '../redux'
 import * as moment from 'moment'
 import { api } from '../services/api'
+import LoaderHOC_ from '../HOCs/LoaderHOC'
 //var CanvasJSReact = require('./canvasjs.react');
 // var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 const back = '<'
+let finalDataset
 
 class TodaysData extends Component {
 	state = {
 		selectedDay: moment()
-	}
-
-	componentDidMount() {
-        if (!this.props.current_course.id) {
-            try {
-                const current_course = localStorage.getItem('course_token');
-                if ('course_token' == null) {
-                  return undefined;
-                }
-                api.getRequests.getCourses().then(data => {
-                    let thisCourse = data.filter(course => course.id == parseInt(current_course));
-                    this.props.setCurrentCourse(thisCourse)
-                    this.setState({
-						current_course: thisCourse[0],
-						selectedDay: moment()
-                    })
-                })
-              } catch (err) {
-                this.props.history.push("/profile");
-              }
-        } 
 	}
 	
 	dayBack = () => {
@@ -52,11 +33,10 @@ class TodaysData extends Component {
 		})
 	}
 
-	fillData = (course) => {
+	fillData = () => {
 		let myData = []
         const n = Math.sqrt(2)
-		if (!!course.id){
-			let dataset = course.responses.filter(resp => moment(parseInt(resp.day)).format("MMM D") == moment(this.state.selectedDay).format("MMM D"))
+			let dataset = this.props.current_course.responses.filter(resp => moment(parseInt(resp.day)).format("MMM D") == moment(this.state.selectedDay).format("MMM D"))
 			let r = dataset.filter(resp => resp.answer == 'red').length
 			let y = dataset.filter(resp => resp.answer == 'yellow').length
 			let g = dataset.filter(resp => resp.answer == 'green').length
@@ -65,7 +45,6 @@ class TodaysData extends Component {
 			{ label: "Yellow", x: moment(this.state.selectedDay), y: 6, z: 20*(n**y), markerColor: 'rgb(248, 200, 54)', number: y, feeling: "Little shaky, mostly fine"},
 			{ label: "Green", x: moment(this.state.selectedDay), y: 10, z: 20*(n**g), markerColor: '#34A853', number: g, feeling: "Confident"}
 		]
-	}
 	return myData
 	}
 
@@ -98,7 +77,7 @@ class TodaysData extends Component {
 				valueFormatString: "DDDD",
 				legendMarkerType: "circle",
 				toolTipContent: "<b>{label}</b><br>Understanding: {feeling}<br>Number of Responses: {number}",
-				dataPoints: this.fillData(this.props.current_course)
+				dataPoints: this.fillData()
 			}]
 		}
 		return (
@@ -127,4 +106,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TodaysData)
+export default LoaderHOC_(connect(mapStateToProps, mapDispatchToProps)(TodaysData))

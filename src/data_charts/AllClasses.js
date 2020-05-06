@@ -50,6 +50,16 @@ class AllClasses extends Component {
 		return dataset.filter(response => moment(parseInt(response.day)) >= moment(this.state.beginning))
 		.filter(response => moment(parseInt(response.day)) <= moment(this.state.ending))
 	}
+	
+	listFeedback = () => {
+		return this.weekFilter(this.props.teachers_responses).map(resp => {
+			if (!!resp.feedback){
+				return <li key={resp.id}>{resp.feedback}</li>
+			} else {
+				return null
+			}
+		})
+	}
 
 	fillData = () => {
 		const hash = {
@@ -63,6 +73,11 @@ class AllClasses extends Component {
 			'green': '#34A853'
 		}
 
+		const feeling = {
+			'red': "really confused",
+			'yellow': "shaky",
+			'green': "great!"
+		}
 		
 		allData = this.props.teachers_responses ? (this.props.teachers_responses.filter(response => response.datatype == 'light')) : []
 		let myData = this.weekFilter(allData).map(response => (
@@ -73,6 +88,7 @@ class AllClasses extends Component {
 			y: hash[response.answer],
 			student: response.student_id,
 			course: response.course_id,
+			feeling: feeling[response.answer],
 			// z: 80*(Math.sqrt(2))**2,
 			markerColor: matchColor[response.answer],
 			markerSize: 35
@@ -90,12 +106,7 @@ class AllClasses extends Component {
 	}
 
     render() {
-		const feeling = {
-			2: "really confused",
-			6: "shaky",
-			10: "great!"
-		}
-		const n = Math.sqrt(2)
+	
         const options = {
 			animationEnabled: true,
 			exportEnabled: true,
@@ -132,8 +143,6 @@ class AllClasses extends Component {
 				click: function(e){
 					student = e.dataPoint.student
 					course = e.dataPoint.course
-					// date: e.dataPoint.date,
-					// color: e.dataPoint.y
 				  },
 				toolTipContent: "<b>{label}</b><br>Date: {date}<br>Class: {course}<br>Student: {student}",
 				indexLabelWrap: true,
@@ -141,7 +150,9 @@ class AllClasses extends Component {
 			}]
 		}
 		return (
-			<div>
+			<div className="row" style={{'justifyContent': 'center'}}>
+                {/* <div className='col-md-1'></div> */}
+                <div className='col-md-8'>
 				<CanvasJSChart id='indiv-data' options = {options} style={{'backgroundImage':"linear-gradient(green, yellow, red)", 'opacity': '0.2'}}
 				/>
 				<br></br>
@@ -149,6 +160,14 @@ class AllClasses extends Component {
 				<button className="btn btn-outline-primary weekForward" onClick={this.weekForward}><h2>></h2></button>
 				<br></br>
 				<br></br>
+				</div>
+                    <div className='col-md-2' >
+						<div className='avg-box'>
+						<h5>Recent Feedback</h5>
+						{this.listFeedback()}
+						</div>
+					<div className='col-md-1' ></div>
+					</div>
 			</div>
 		);
 	}
@@ -161,4 +180,5 @@ const mapStateToProps = state => {
 	}
 }
 
-export default AuthHOC(connect(mapStateToProps)(AllClasses))
+
+export default connect(mapStateToProps)(AllClasses)

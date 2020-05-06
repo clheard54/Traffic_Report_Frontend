@@ -1,9 +1,8 @@
 const INITIAL_STATE = {
     current_course: {cpqs: [], assignments: [], responses: [], students:[]},
     user_courses: [],
-    cpqs: [],
-    assignments: [],
-    questions: [],
+    // assignments: [],
+    // questions: [],
     courses: [],
     loading: false
 }

@@ -3,32 +3,11 @@ import { api } from '../services/api'
 import { connect } from 'react-redux';
 import { currentCourse } from '../redux'
 import * as moment from 'moment'
+import LoaderHOC_ from '../HOCs/LoaderHOC'
 
 let responses
 let date
 class TriageChart extends React.Component{
-
-    componentDidMount() {
-        date = moment()
-        if (!this.props.current_course.id) {
-            try {
-                const current_course = localStorage.getItem('course_token');
-                if ('course_token' == null) {
-                  return undefined;
-                }
-                api.getRequests.getCourses().then(data => {
-                    let thisCourse = data.filter(course => course.id == parseInt(current_course));
-                    this.props.setCurrentCourse(thisCourse)
-                    this.setState({
-                        loading: false,
-                        current_course: thisCourse[0]
-                    })
-                })
-              } catch (err) {
-                this.props.history.push("/profile");
-              }
-        } 
-    }
     
     noAnswer = (course) => {
         if (!!course.id) {
@@ -107,4 +86,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TriageChart)
+export default LoaderHOC_(connect(mapStateToProps, mapDispatchToProps)(TriageChart));

@@ -5,6 +5,7 @@ import * as moment from 'moment'
 import { currentCourse } from '../redux'
 import { api } from '../services/api'
 import { connect } from 'react-redux'
+import LoaderHOC_ from '../HOCs/LoaderHOC'
 // var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 const back = '<'
@@ -16,27 +17,6 @@ class WeekAvgs extends Component {
 		beginning: moment().clone().subtract(7, 'days').toDate(),
 		ending: moment().clone().toDate(),
 		current_course: this.props.current_course,
-	}
-
-	componentDidMount(){
-		if (!this.props.current_course.id) {
-			try {
-				const current_course = localStorage.getItem('course_token');
-				if ('course_token' == null) {
-					return undefined;
-				}
-				api.getRequests.getCourses().then(data => {
-					let thisCourse = data.filter(course => course.id == parseInt(current_course));
-					this.props.setCurrentCourse(thisCourse[0])
-					this.setState({
-						loading: false,
-						current_course: thisCourse[0]
-					})
-				})
-				} catch (err) {
-				this.props.history.push("/profile");
-				}
-			}
 	}
               
 	
@@ -59,9 +39,8 @@ class WeekAvgs extends Component {
 	}
 
 
-	fillData = (course) => {
-		if (!!course.id){
-		let myData = course.responses.filter(response => response.datatype == 'light')
+	fillData = () => {
+		let myData = this.props.current_course.responses.filter(response => response.datatype == 'light')
 		.filter(response => (moment(parseInt(response.day)) >= moment(this.state.beginning)) && (moment(parseInt(response.day)) <= moment(this.state.ending)))
 
 	//seven times, filter by date and take average
@@ -82,7 +61,7 @@ class WeekAvgs extends Component {
 			arr.push(point)
 			}
 		return arr
-	}}
+	}
 
 	findReds = (arr) => {
         let allReds = []
@@ -149,7 +128,7 @@ class WeekAvgs extends Component {
 				type: "line",
 				connectNullData: true,
 				toolTipContent: "<b>{label}</b><br>Date: {date}<br>Number of Responses: {responses}<br>Day's Average: {y}<br>Reds: {reds}",
-				dataPoints: this.fillData(this.props.current_course)
+				dataPoints: this.fillData()
 			}]
 		}
 		return (
@@ -179,4 +158,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WeekAvgs)
+export default LoaderHOC_(connect(mapStateToProps, mapDispatchToProps)(WeekAvgs))

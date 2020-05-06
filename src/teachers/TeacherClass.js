@@ -4,11 +4,12 @@ import AuthHOC from '../HOCs/AuthHOC'
 import TriageChart from '../data_charts/TriageChart'
 import WeekAvgs from '../data_charts/WeekAvgs'
 import WeekTotal from '../data_charts/WeekTotal'
+import TimeframeData from '../highcharts/WeeksData'
 import QuestionBoard from '../containers/QuestionBoard'
 import ClassAssignmentsContainer from '../components/ClassAssignmentsContainer'
 import AddCPForm from './AddCPQForm'
 import AddAssignmentForm from './AddAssignmentForm'
-import { api } from '../services/api'
+import LoaderHOC_ from '../HOCs/LoaderHOC'
 import { currentCourse } from '../redux'
 import { connect } from 'react-redux'
 import * as moment from 'moment'
@@ -34,30 +35,7 @@ class TeacherClass extends React.Component{
       }
     }
 
-    // componentDidUpdate(prevProps){
-    //   if (prevProps.current_course !== this.props.current_course){
-    //     (this.computeAverage(this.props.current_course))
-    //   }
-    // }
-
     componentDidMount(){
-        if (!this.props.current_course.id) {
-            try {
-                const current_course = localStorage.getItem('course_token');
-                if ('course_token' == null) {
-                  return undefined;
-                }
-                api.getRequests.getCourses().then(data => {
-                    let thisCourse = data.filter(course => course.id == parseInt(current_course));
-                    this.props.setCurrentCourse(thisCourse[0])
-                    this.setState({
-                      loading: false
-                    }, () => this.computeAverage(thisCourse[0]))
-                })
-              } catch (err) {
-                this.props.history.push("/profile");
-              }
-        }
         this.computeAverage(this.props.current_course)
     }
 
@@ -167,16 +145,16 @@ class TeacherClass extends React.Component{
 
                 <br></br><br></br><br></br>
                   <hr ></hr>
-                  <br></br><br></br>
+                <br></br><br></br>
 
                   <div className="row flex-row-1">
                     <div className='col-sm-.5'></div>
                     <div className ="col-md-8 week-totals">
-                        {/* <WeekTotal changeDates={this.changeDates}/> */}
+                        <WeekTotal changeDates={this.changeDates}/>
+                        {/* <TimeframeData/> */}
                         <br></br><br></br>
                         </div>
                     <div className='col-md-1'>
-                    {/* {this.state.loading ? null : */}
                     <div className='container' style={{'alignItems': 'center', 'paddingLeft':'0px'}}>
                         <div id="gradient" style={{'height': '500'}}>
                           <div className='circle' style={this.state.avgStyle}></div>
@@ -191,36 +169,15 @@ class TeacherClass extends React.Component{
                         <br></br><br></br>
                     </div>
                 </div>
-                <br></br><br></br><br></br><br></br>
+                <br></br><br></br>
+                  <button className='btn btn-outline-danger btn-lg' onClick={() => this.props.history.push('/daily_avgs')}>See Daily Averages</button>
+                <br></br><br></br>
                 <hr></hr>
-                <br></br><br></br><br></br>
-
-                <div className="row flex-row-1">
-                    <div className='col-md-1'></div>
-                    <div className ="col-md-8 week-avgs">
-                    {/* {this.props.current_course !== undefined ?
-                        <WeekAvgs /> : null} */}
-                        <br></br><br></br>
-                        </div>
-                    <div className='col-md-2'>
-                    {/* <div className='container' style={{'display': 'flex', 'flexDirection': 'column'}}>
-                        <div className='avg-box'>
-                          <h5>Week's High:</h5>
-                          <h6>{this.state.max}</h6>
-                        </div>
-                        <br></br><br></br>
-                        <div className='avg-box'>
-                          <h5>Week's Low:</h5>
-                          <h6>{this.state.min}</h6>
-                        </div>
-                    </div>   */}
-                  </div>
-                </div>
-                <br></br><br></br><br></br>
+                <br></br><br></br><br></br><br></br>
+                <img className="cars" src='https://wisedriving.s3.amazonaws.com/1557481400.96992aba487fcea3053ff9c455f2f905.png' alt='driving'></img>
               </div>
             </Fragment>
           </div>
-
         )
     }
 }
@@ -238,5 +195,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-
-export default AuthHOC(connect(mapStateToProps, mapDispatchToProps)(TeacherClass))
+export default LoaderHOC_(connect(mapStateToProps, mapDispatchToProps)(TeacherClass));

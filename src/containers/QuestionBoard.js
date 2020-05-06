@@ -19,8 +19,6 @@ class QuestionBoard extends React.Component{
     })
   }
 
-
-
   handleSubmit = (event) => {
     event.preventDefault()
     let newQuestion = {

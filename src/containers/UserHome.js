@@ -6,11 +6,9 @@ import StudentProfile from '../students/StudentProfile'
 import { connect } from 'react-redux'
 import AuthHOC from "../HOCs/AuthHOC";
 
-
 class UserHome extends React.Component{
 
 //Depending on who is logged in, conditionally render either the StudentProfile page or the TeacherProfile page
-
 
     render(){
         return (
@@ -30,4 +28,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(UserHome);
+export default AuthHOC(connect(mapStateToProps)(UserHome));
