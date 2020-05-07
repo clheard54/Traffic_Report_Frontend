@@ -60,6 +60,7 @@ class TeacherProfile extends React.Component{
                 
 
                 <hr style={{'borderColor': '#dc3545'}}></hr>
+				<br></br><br></br><br></br>
                 <div className="flex-row">
                 <Fragment>
                     <AllClasses />

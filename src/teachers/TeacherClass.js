@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import TodaysData from '../data_charts/TodaysData'
 import AuthHOC from '../HOCs/AuthHOC'
 import TriageChart from '../data_charts/TriageChart'
-import DailyAvgs from './DailyAvgs'
+import WeekBubble from '../data_charts/WeekBubble'
 import WeekTotal from '../data_charts/WeekTotal'
 import QuestionBoard from '../containers/QuestionBoard'
 import ClassAssignmentsContainer from '../components/ClassAssignmentsContainer'
@@ -88,18 +88,18 @@ class TeacherClass extends React.Component{
       })
     }
         
-  listFeedback = () => {
-      return this.props.current_course.responses
-      .filter(response => moment(parseInt(response.day)) >= moment(this.state.startDate))
-      .filter(response => moment(parseInt(response.day)) <= moment(this.state.endDate))
-      .map(resp => {
-          if (!!resp.feedback){
-            return <>&emsp;<li key={resp.id}>{resp.feedback}</li></>
-          } else {
-            return null
-          }
-        })
-      }
+  // listFeedback = () => {
+  //     return this.props.current_course.responses
+  //     .filter(response => moment(parseInt(response.day)) >= moment(this.state.startDate))
+  //     .filter(response => moment(parseInt(response.day)) <= moment(this.state.endDate))
+  //     .map(resp => {
+  //         if (!!resp.feedback){
+  //           return <>&emsp;<li key={resp.id}>{resp.feedback}</li></>
+  //         } else {
+  //           return null
+  //         }
+  //       })
+  //     }
 
     resetPage = () => {
       this.setState({
@@ -156,9 +156,16 @@ class TeacherClass extends React.Component{
                   </div>  
 
                 <br></br><br></br><br></br>
-                  <hr ></hr>
+                <hr className='yellow-hr'></hr>
                 <br></br><br></br>
-
+                <div className='container' id='div1'>
+                <br></br>
+                <WeekBubble /><br></br><br></br>
+                <div id='div2'></div>
+                </div>
+                <br></br><br></br>
+                <hr className='red-hr'></hr>
+                <br></br><br></br><br></br>
                   <div className="row flex-row-1">
                     <div className='col-sm-1' style={{'maxWidth': '5%'}}></div>
                     <div className ="col-md-8 week-totals">
@@ -182,16 +189,18 @@ class TeacherClass extends React.Component{
                     <div className='col-sm-1'></div>
 
                 </div>
+                <br></br><br></br>
+                  
                 <br></br><br></br><br></br>
                 <hr className='yellow-hr'></hr>
                 <br></br><br></br>
-              <div className='flex-row'>
+              {/* <div className='flex-row'>
                 <div className='col-md-9 feedback'>
                   <h5>Recent Feedback:</h5>
                     <ul className='three-columns'>{this.listFeedback()}</ul>
-                  {/* <a style={{'maxWidth': '60%', 'alignSelf': 'center', 'fontSize': '18px', 'color': 'white'}} className='btn btn-warning' onClick={() => this.setCourse(this.props.current_course)} href="/courses/current">Go Back</a> */}
+                  {/* <a style={{'maxWidth': '60%', 'alignSelf': 'center', 'fontSize': '18px', 'color': 'white'}} className='btn btn-warning' onClick={() => this.setCourse(this.props.current_course)} href="/courses/current">Go Back</a>
                   </div>
-                </div>
+                </div> */} */}
                 <br></br><br></br><br></br>
                 <button className='btn btn-outline-danger btn-lg' onClick={() => this.props.history.push('/daily_avgs')}>See Daily Averages</button>
               <br></br><br></br><br></br><br></br><br></br>

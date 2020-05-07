@@ -55,7 +55,7 @@ class WeekTotal extends Component {
 			exportEnabled: true,
 			theme: "light2", 
 			title:{
-				text: "Week's Traffic",
+				text: "Week's Traffic: Breakdown by Color",
 			fontSize: 26
 			},
 			subtitles: [

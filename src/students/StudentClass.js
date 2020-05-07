@@ -42,6 +42,7 @@ class StudentClass extends React.Component{
 		if (prevProps.current_course !== this.props.current_course){
       this.computeAverage()
       this.getCoursesStudentID()
+      this.showCPQs()
 		}
 	}
 

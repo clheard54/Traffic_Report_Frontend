@@ -19,15 +19,15 @@ class WeekAvgs extends Component {
 		current_course: this.props.current_course,
 	}
               
-	
 	weekBack = () => {
 		this.setState(prev => {
 			return ({
 				beginning: moment(prev.beginning).subtract(7, 'days').toDate(),
 				ending: moment(prev.beginning)
 			})
-	    })
+		}, () => {this.props.changeDates(this.state.beginning, this.state.ending)})
 	}
+	
 	
 	weekForward = () => {
 		this.setState(prev => {
@@ -35,9 +35,9 @@ class WeekAvgs extends Component {
 				beginning: moment(prev.ending),
 				ending: moment(prev.ending).add(7, 'days').toDate()
 			})
-	    })
+	    }, () => {this.props.changeDates(this.state.beginning, this.state.ending)})
 	}
-
+	
 
 	fillData = () => {
 		let myData = this.props.current_course.responses.filter(response => response.datatype == 'light')
@@ -54,7 +54,9 @@ class WeekAvgs extends Component {
 			point.y = parseFloat(this.computeAverage(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == week_day.format("MMM D"))))
 			point.responses = (myData.filter(response => moment(parseInt(response.day)).format("MMM D") == week_day.format("MMM D"))).length
 			point.reds = this.findReds(myData.filter(response => moment(parseInt(response.day)).format("MMM D") == week_day.format("MMM D")))
-			avgs.push(point.y)
+			if (!!point.y){
+				avgs.push(point.y)
+			}
 			arr.push(point)
 			}
 		return arr
@@ -84,7 +86,7 @@ class WeekAvgs extends Component {
       })
 	  let avg = (numerical.reduce((a,b)=>a+b)/daysResponses.length).toFixed(1)
 	  return avg
-	  } else { return 0}
+	  } else { return null}
 	}
 
 	
@@ -180,7 +182,7 @@ class WeekAvgs extends Component {
 						<span style={{'color': '#343a40'}}>Week's Low:  {this.calculateLow()}</span>
 					</div>
 					<br></br><br></br><br></br><br></br>
-					<a className='btn btn-outline-warning aa' onClick={() => this.setCourse(this.props.current_course)} href="/courses/current">Go Back</a>
+					<a className='btn btn-outline-danger aa' onClick={() => this.setCourse(this.props.current_course)} href="/courses/current">Go Back</a>
 			  </div>
 			</div>
 			</div>

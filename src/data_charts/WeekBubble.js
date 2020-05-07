@@ -3,29 +3,17 @@ import CanvasJSReact from '../assets/canvasjs.react';
 import '@popperjs/core'
 import { connect } from 'react-redux';
 import * as moment from 'moment'
-import AuthHOC from '../HOCs/AuthHOC'
-var CanvasJS = CanvasJSReact.CanvasJS;
+import LoaderHOC_ from '../HOCs/LoaderHOC'
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 const back = '<'
-let allData = []
-let student; let course
 
-class AllClasses extends Component {	
+class WeekBubble extends Component {	
 	constructor(){
 		super();
 		this.state = {
 			beginning: moment().clone().subtract(7, 'days'),
 			ending: moment().clone(),
-			detail: false
 		}
-	}
-
-	componentDidMount(){
-		let now = moment()
-		this.setState({
-			beginning: now.clone().subtract(7, 'days').toDate(),
-			ending: now.clone().toDate()
-		})
 	}
 
 	weekBack = () => {
@@ -50,20 +38,6 @@ class AllClasses extends Component {
 		return dataset.filter(response => moment(parseInt(response.day)) >= moment(this.state.beginning))
 		.filter(response => moment(parseInt(response.day)) <= moment(this.state.ending))
 	}
-	
-	colorCount = (color) => {
-		return this.weekFilter(this.props.teachers_responses).filter(resp => resp.answer == color).length
-	}
-
-	listFeedback = () => {
-		return this.weekFilter(this.props.teachers_responses).map(resp => {
-			if (!!resp.feedback){
-				return <li key={resp.id}>{resp.feedback}</li>
-			} else {
-				return null
-			}
-		})
-	}
 
 	fillData = () => {
 		const hash = {
@@ -83,15 +57,13 @@ class AllClasses extends Component {
 			'green': "great!"
 		}
 		
-		allData = this.props.teachers_responses ? (this.props.teachers_responses.filter(response => response.datatype == 'light')) : []
-		let myData = this.weekFilter(allData).map(response => (
+		let myData = this.weekFilter(this.props.current_course.responses).map(response => (
 			{
 			label: moment(parseInt(response.day)).format("dddd"),
 			date: moment(parseInt(response.day)).format("MMM Do"),
 			x: moment(parseInt(response.day)).toDate(),
 			y: hash[response.answer],
-			student: response.student_id,
-			course: response.course_id,
+			student: this.props.current_course.students.find(kid => kid.id == response.student_id).name,
 			feeling: feeling[response.answer],
 			// z: 80*(Math.sqrt(2))**2,
 			markerColor: matchColor[response.answer],
@@ -116,7 +88,7 @@ class AllClasses extends Component {
 			exportEnabled: true,
 			theme: "light2",
 			title:{
-				text: "Responses from All Classes",
+				text: "Weekly Traffic Report",
 			fontSize: 26
 			},
 			subtitles: [{
@@ -129,10 +101,8 @@ class AllClasses extends Component {
 				intervalType: 'day',
 				minimum: this.state.beginning,
 				maximum: this.state.ending,
-				labelWrap: true,
-				labelAngle: -15,
-				labelFormatter: function (e) {
-					return CanvasJS.formatDate( e.value, "MMM D")}
+                labelWrap: true,
+                valueFormatString: "MMM D",
 			},
 			axisY: {
 				title: "Traffic Temperature",
@@ -144,10 +114,6 @@ class AllClasses extends Component {
 				type: "scatter",
 				fillOpacity: 0.7,
 				xValueType: "dateTime",
-				click: function(e){
-					student = e.dataPoint.student
-					course = e.dataPoint.course
-				  },
 				toolTipContent: "<b>{label}</b><br>Date: {date}<br>Class: {course}<br>Student: {student}",
 				indexLabelWrap: true,
 				dataPoints: this.fillData()
@@ -156,28 +122,15 @@ class AllClasses extends Component {
 		return (
 			<div className="flex-row" style={{'alignItems':'center', 'marginTop': '20px'}}>
                 {/* <div className='col-md-1'></div> */}
-                <div className='col-md-8 border-box-1'>
+				<br></br><br></br><br></br><br></br>
+                <div className='col-md-12' style={{'marginRight': '5px'}}>
+				<CanvasJSChart options = {options}	/>
 				<br></br>
-				<CanvasJSChart options = {options}
-				/>
+				{/* <button className="btn btn-outline-primary" style={{'position': 'absolute', 'left': '25%'}} onClick={this.weekBack}><h2>{back}</h2></button>
+				<button className="btn btn-outline-primary weekForward" onClick={this.weekForward}><h2>></h2></button> */}
 				<br></br>
-				<button className="btn btn-outline-primary weekBack" onClick={this.weekBack}><h2>{back}</h2></button>
-				<button className="btn btn-outline-primary weekForward" onClick={this.weekForward}><h2>></h2></button>
-				<br></br><br></br><br></br>
-				</div>
-                    <div className='col-md-2' >
-					<br></br>
-						<div className='feedback'>
-						<h5>Week's Color Counts</h5>
-						<b style={{'color': '#34A853', 'lineHeight': '1.2rem' }}>Greens:</b> <span style={{'fontSize': 'larger'}}>{this.colorCount('green')}</span>
-						<br></br><br></br>
-						<b style={{'color': 'rgb(248, 200, 54)', 'lineHeight': '1.2rem' }}>Yellows: </b><span style={{'fontSize': 'larger'}}>{this.colorCount('yellow')}</span>
-						<br></br>
-						<b style={{'color': '#EA4335', 'lineHeight': '1.2rem'}}>Reds: </b><span style={{'fontSize': 'larger'}}>{this.colorCount('red')}</span>
-						</div>
-						<div><br></br><br></br></div>
-					</div>
-					<div className='col-sm-1' ></div>
+                </div>
+                <br></br>
 			</div>
 		);
 	}
@@ -185,10 +138,10 @@ class AllClasses extends Component {
 	
 const mapStateToProps = state => {
 	return {
-		teachers_responses: state.responses.teachers_responses,
+		current_course: state.courses.current_course,
 		user_courses: state.courses.user_courses
 	}
 }
 
 
-export default connect(mapStateToProps)(AllClasses)
+export default LoaderHOC_(connect(mapStateToProps)(WeekBubble))

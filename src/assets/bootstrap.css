@@ -430,6 +430,14 @@ hr {
   border-top: 4px solid var(--warning);
 }
 
+.red-hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 4px solid var(--danger);
+  width: 50%
+}
+
 small,
 .small {
   font-size: 80%;
@@ -4178,6 +4186,7 @@ input[type="button"].btn-block {
 
 .feedback li {
   text-align: left;
+  margin-left: 10px;
 }
 
 .feedback h5 {
@@ -4198,7 +4207,7 @@ input[type="button"].btn-block {
 
 
 .yellow{
-  background-color: #f8dd46de;
+  background-color: #fdcf18f6;
   min-width: 190px;
   max-height: 50px;
   box-shadow: 2px 0px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24)
@@ -4234,6 +4243,30 @@ input[type="button"].btn-block {
   left: 22%
 }
 
+#div1 {
+  width:92%;
+  background-color:white;
+  border: 1px solid black;
+  height: 600px;
+  z-index: 0;
+  margin-bottom: 0;
+  padding: 0 0
+}
+
+
+#div2 {
+  position: relative;
+  top: -590px;
+  margin: auto;
+  margin-right: -1px;
+  /* margin-left: -1px; */
+  height: 601px;
+  /* width: 100%; */
+  background-color: transparent;
+  border: 5px solid white;
+  border-radius: 100px;
+}
+  
 .weekForward {
   position: absolute;
   right: 20%
@@ -4275,7 +4308,7 @@ input[type="button"].btn-block {
 }
 
 .week-totals {
-  border: 2px solid var(--gray-dark);
+  border: 1px solid var(--gray-dark);
   padding: 15px;
   text-align: center
 }
@@ -4342,6 +4375,15 @@ input[type="button"].btn-block {
   min-height: 200px;
   text-align: center;
   height: fit-content
+}
+
+.border-box-1 {
+  border: 2px solid var(--gray-dark);
+  padding: 15px;
+  min-height: 200px;
+  text-align: center;
+  height: fit-content;
+  margin: 0 35px
 }
 
 .custom-range::-ms-thumb {
