@@ -9,7 +9,6 @@ import AddCPQuestion from './AddCPQForm'
 import { currentCourse, loadTeachersResponses } from '../redux'
 import { connect } from 'react-redux'
 
-let allData = []
 class TeacherProfile extends React.Component{
 
     componentDidMount(){
@@ -31,10 +30,6 @@ class TeacherProfile extends React.Component{
         this.props.setCurrentCourse(course)
     }
 
-    listFeedback = () => {
-
-    }
-    
 
     render(){
         return (

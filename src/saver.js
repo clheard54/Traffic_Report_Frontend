@@ -111,6 +111,19 @@ class WeekAvgs extends Component {
 		} 
 		return low
 	}
+
+	listFeedback = () => {
+		return this.props.current_course.responses
+		.filter(response => moment(parseInt(response.day)) >= moment(this.state.beginning))
+		.filter(response => moment(parseInt(response.day)) <= moment(this.state.ending))
+		.map(resp => {
+				if (!!resp.feedback){
+					return <>&emsp;<li key={resp.id}>{resp.feedback}</li></>
+				} else {
+					return null
+				}
+			})
+		}
     	
 	render() {
         const options = {
@@ -153,8 +166,7 @@ class WeekAvgs extends Component {
 		}
 		return (
 			<Fragment>
-		  <div className="row flex-row">
-		  <div className='col-sm-1'></div>
+		  <div className="row flex-row-2">
 			  <div className ="col-md-8">
 				<div className="week-avgs">
 					<CanvasJSChart id="chartContainer" options = {options}	/>
@@ -162,23 +174,32 @@ class WeekAvgs extends Component {
 					<button className="btn btn-outline-primary weekForward" onClick={this.weekForward}><h2>></h2></button>
 			    </div>
 				<br></br><br></br>
-			  </div>
-			<div className='col-md-3'>
-				<div style={{'display': 'flex', 'flexDirection': 'column'}}>
-				<div className='container' style={{'marginTop': '100px'}}>
-					<div className={`aa btn ${maxColor}`}>
-						<span style={{'color': '#343a40'}}>Week's High:  {this.calculateHigh()}</span>
+				<div className='flex-row'>
+					<div className='col-md-1'></div>
+					<div className={`col-md-2 btn ${maxColor}`}>
+						<span className='aa' style={{'color': '#343a40'}}>Week's High:  {this.calculateHigh()}</span>
 					</div>
 					<br></br><br></br>
-					<div className={`aa btn ${minColor}`}>
-						<span style={{'color': '#343a40'}}>Week's Low:  {this.calculateLow()}</span>
+					<div className='col-md-2'></div>
+					<div className={`col-md-2 btn ${minColor}`}>
+						<span className='aa' style={{'color': '#343a40'}}>Week's Low:  {this.calculateLow()}</span>
 					</div>
+					<div className='col-md-1'></div>
 			  </div>
+				</div>
+			<div className='col-md-3'>
+				<div style={{'display': 'flex', 'flexDirection': 'column'}}>
+					<div className='feedback'>
+						<h5>Recent Feedback:</h5>
+						<ul>{this.listFeedback()}</ul>
+						<a style={{'maxWidth': '180px', 'alignSelf': 'center', 'fontSize': '18px', 'color': 'white'}} className='btn btn-warning' onClick={() => this.setCourse(this.props.current_course)} href="/courses/current">Go Back</a>
+					</div>
+				</div>
+
+				<br></br><br></br><br></br>
+			</div>  
 			</div>
-			</div>
-			<br></br><br></br>
-				
-			</div><br></br> 
+		<br></br><br></br>
 		</Fragment>
 		);
 	}

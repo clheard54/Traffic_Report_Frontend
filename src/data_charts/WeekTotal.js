@@ -107,9 +107,9 @@ class WeekTotal extends Component {
 			]
 			  }
 		return (
-		<div>
+		<div style = {{'maxWidth': '95%'}}>
 		<Fragment>
-			<CanvasJSChart options = {options}	/>
+			<CanvasJSChart options = {options} />
 			<button className="btn btn-outline-primary weekBack" onClick={this.weekBack}><h2>{back}</h2></button>
 			<button className="btn btn-outline-primary weekForward" onClick={this.weekForward}><h2>></h2></button>
 			<br></br>

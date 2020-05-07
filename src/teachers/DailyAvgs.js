@@ -11,7 +11,6 @@ class DailyAvgs extends React.Component{
     min: ''
   }
 
-
   goBack = () => {
     localStorage.setItem('course_token', this.props.current_course.id)
     this.props.setCurrentCourse(this.props.current_course);
@@ -21,10 +20,8 @@ class DailyAvgs extends React.Component{
   render(){
     return (
       <Fragment>
+      <br></br>
       <WeekAvgs loaded={!!this.props.current_course.id}/>
-      <div className="row flex-row">
-        <a style={{'marginTop': '50px'}} className='btn btn-outline-dark btn-lg' onClick={() => this.setCourse(this.props.current_course)} href="/courses/current">Go Back</a>
-      </div>
       </Fragment>
     )
   }
