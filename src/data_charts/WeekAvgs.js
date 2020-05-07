@@ -111,6 +111,12 @@ class WeekAvgs extends Component {
 		} 
 		return low
 	}
+
+	goBack = () => {
+		localStorage.setItem('course_token', this.props.current_course.id)
+		this.props.setCurrentCourse(this.props.current_course);
+		this.props.history.push('/current_course')
+	  }
     	
 	render() {
         const options = {
@@ -173,6 +179,8 @@ class WeekAvgs extends Component {
 					<div className={`aa btn ${minColor}`}>
 						<span style={{'color': '#343a40'}}>Week's Low:  {this.calculateLow()}</span>
 					</div>
+					<br></br><br></br><br></br><br></br>
+					<a className='btn btn-outline-warning aa' onClick={() => this.setCourse(this.props.current_course)} href="/courses/current">Go Back</a>
 			  </div>
 			</div>
 			</div>

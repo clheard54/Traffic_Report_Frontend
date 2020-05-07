@@ -11,12 +11,6 @@ class DailyAvgs extends React.Component{
     min: ''
   }
 
-  goBack = () => {
-    localStorage.setItem('course_token', this.props.current_course.id)
-    this.props.setCurrentCourse(this.props.current_course);
-    this.props.history.push('/current_course')
-  }
-
   render(){
     return (
       <Fragment>

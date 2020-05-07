@@ -52,6 +52,7 @@ class StudentClass extends React.Component{
         numerical = weekData.map(entry => {
           return entry.answer == 'red' ?  2 : (entry.answer == 'yellow' ? 6 : 10)
         })
+        console.log(numerical)
       let average = numerical.reduce((a,b)=>a+b)/weekData.length
       let avg = average.toFixed(1)
       this.setState({
@@ -68,7 +69,7 @@ class StudentClass extends React.Component{
     this.setState({
       startDate: newStart,
       endDate: newEnd
-    })
+    }, () => this.computeAverage())
   }
 
   showCPQs = (course) => {

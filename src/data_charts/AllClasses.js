@@ -51,6 +51,10 @@ class AllClasses extends Component {
 		.filter(response => moment(parseInt(response.day)) <= moment(this.state.ending))
 	}
 	
+	colorCount = (color) => {
+		return this.weekFilter(this.props.teachers_responses).filter(resp => resp.answer == color).length
+	}
+
 	listFeedback = () => {
 		return this.weekFilter(this.props.teachers_responses).map(resp => {
 			if (!!resp.feedback){
@@ -150,9 +154,10 @@ class AllClasses extends Component {
 			}]
 		}
 		return (
-			<div className="row" style={{'justifyContent': 'center'}}>
+			<div className="flex-row" style={{'alignItems':'center', 'marginTop': '20px'}}>
                 {/* <div className='col-md-1'></div> */}
                 <div className='col-md-8'>
+				<br></br><br></br><br></br><br></br>
 				<CanvasJSChart id='indiv-data' options = {options} style={{'backgroundImage':"linear-gradient(green, yellow, red)", 'opacity': '0.2'}}
 				/>
 				<br></br>
@@ -162,9 +167,15 @@ class AllClasses extends Component {
 				<br></br>
 				</div>
                     <div className='col-md-2' >
-						<div className='avg-box'>
-						<h5>Recent Feedback</h5>
-						{this.listFeedback()}
+					<br></br><br></br><br></br>
+						<div className='feedback'>
+						<h5>Week's Color Counts</h5>
+						<br></br>
+						<b style={{'color': '#34A853', 'lineHeight': '1.2rem' }}>Greens:</b> <span style={{'fontSize': 'larger'}}>{this.colorCount('green')}</span>
+						<br></br>
+						<b style={{'color': 'rgb(248, 200, 54)', 'lineHeight': '1.2rem' }}>Yellows: </b><span style={{'fontSize': 'larger'}}>{this.colorCount('yellow')}</span>
+						<br></br>
+						<b style={{'color': '#EA4335', 'lineHeight': '1.2rem'}}>Reds: </b><span style={{'fontSize': 'larger'}}>{this.colorCount('red')}</span>
 						</div>
 					<div className='col-md-1' ></div>
 					</div>

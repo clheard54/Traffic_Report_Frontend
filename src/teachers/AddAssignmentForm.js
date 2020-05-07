@@ -38,7 +38,7 @@ class AddAssignmentForm extends React.Component{
             <h5>Add a Class Assignment or Announcement</h5>
                 <form onSubmit={this.postAssignment}>
                 <label>Enter details: &ensp;</label><br></br>
-                <textarea rows="2" name='details' value={this.state.details} onChange={this.handleChange}></textarea><br></br>
+                <textarea rows="2" columns='6' name='details' value={this.state.details} onChange={this.handleChange}></textarea><br></br>
                 <br></br>
                 <label>Due Date:</label>
                 <input type="date" name='dueDate' value={this.state.dueDate} onChange={this.handleChange}></input>

@@ -60,9 +60,7 @@ class TeacherProfile extends React.Component{
                 
 
                 <hr style={{'borderColor': '#dc3545'}}></hr>
-                <div className="row" style={{'display': 'flex','flexDirection': 'column', 'justifyContent': 'center', 'marginTop': '90px'}}>
-                <div><br></br></div>
-                <div><br></br></div>
+                <div className="flex-row">
                 <Fragment>
                     <AllClasses />
                 </Fragment>
@@ -75,7 +73,9 @@ class TeacherProfile extends React.Component{
                 <br></br>
                 <br></br>
                 <br></br>
-                    <img className='cars' src='https://wisedriving.s3.amazonaws.com/1557481400.96992aba487fcea3053ff9c455f2f905.png' alt='driving'></img>
+                <div style={{'display': 'flex'}}>
+                    <img className="cars" src='https://wisedriving.s3.amazonaws.com/1557481400.96992aba487fcea3053ff9c455f2f905.png' alt='driving'></img><img className="cars" src='https://wisedriving.s3.amazonaws.com/1557481400.96992aba487fcea3053ff9c455f2f905.png' alt='driving'></img>
+                </div>
                 </div>
                 
             </Fragment>

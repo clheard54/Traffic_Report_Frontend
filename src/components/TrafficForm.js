@@ -14,6 +14,14 @@ class TrafficForm extends React.Component{
 		}
 	}
 
+	componentDidUpdate(prevProps){
+        if (prevProps.current_course !== this.props.current_course){
+			this.setState({
+				form: true
+			})
+		}
+	}
+
 	handleChange = (event) => {
 		this.setState({
 			feedback: event.target.value

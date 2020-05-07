@@ -60,9 +60,10 @@ class IndividualData extends Component {
 				{
 					label: moment(parseInt(response.day)).format("dddd"),
 					date: moment(parseInt(response.day)).format("MMM Do"),
+					time: moment(parseInt(response.day)).format("LT"),
 					x: moment(parseInt(response.day)),
 					y: hash[response.answer], 
-					z: 4,
+					z: 3,
 					feeling: feeling[response.answer],
 					markerColor: matchColor[response.answer],
 				}
@@ -105,7 +106,7 @@ class IndividualData extends Component {
 				type: "bubble",
 				xValueType: "dateTime",
 				// indexLabel: "{label}",
-				toolTipContent: "<b>{label}</b><br>Date: {date}<br>Traffic Temperature: {y}<br>Feeling: {feeling}",
+				toolTipContent: "<b>{label}</b><br>Date: {date}<br>Time: {time}<br>Traffic Temperature: {y}<br>Feeling: {feeling}",
 				indexLabelWrap: true,
 				dataPoints: finalData
 			}]

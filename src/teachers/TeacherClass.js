@@ -128,12 +128,12 @@ class TeacherClass extends React.Component{
                           <h4>Current List:</h4>
                           <ClassAssignmentsContainer/>
                           <br></br>
-                          <button className="aa btn btn-outline-danger" onClick={this.resetPage}>Just Kidding, Go Back</button>
+                          <button className="btn btn-outline-danger" onClick={this.resetPage}>Just Kidding, Go Back</button>
                         </Fragment>
                         : (this.state.seeQuestions ? 
-                        <div className='user-hw'>
+                        <div className='borderBox'>
                           <AddCPForm/>
-                          <button className="aa btn btn-outline-danger" onClick={this.resetPage}>Just Kidding, Go Back</button>
+                          <button className="btn btn-outline-danger" onClick={this.resetPage}>Just Kidding, Go Back</button>
                         </div>
                         : 
                         <Fragment>
@@ -148,7 +148,7 @@ class TeacherClass extends React.Component{
                     {this.state.addingAssignment ?
                     <AddAssignmentForm hwAdded={this.hwPosted}/>
                      : (this.state.seeQuestions ? 
-                     <QuestionBoard />
+                     <QuestionBoard/>
                      : <TodaysData />) }
                       <br></br>
                     </div>
