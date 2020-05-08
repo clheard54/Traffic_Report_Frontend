@@ -26,7 +26,6 @@ class TeacherClass extends React.Component{
       this.state = {
         avgStyle: null,
         avg: '',
-        loading: true,
         addingAssignment: false,
         seeQuestions: false,
         startDate: moment().clone().subtract(1, 'week'),
@@ -40,7 +39,8 @@ class TeacherClass extends React.Component{
 
     computeAverage = (course) => {
       if (!!course.id){
-        weekData = course.responses.filter(response => response.datatype == 'light').filter(response => (moment(parseInt(response.day)) >= moment(this.state.startDate)) && (moment(parseInt(response.day)) <= moment(this.state.endDate)))
+        weekData = course.responses
+        .filter(response => (moment(parseInt(response.day)) >= moment(this.state.startDate)) && (moment(parseInt(response.day)) <= moment(this.state.endDate)))
         
         if (weekData.length !==0 ){
         numerical = weekData.map(entry => {
@@ -53,15 +53,42 @@ class TeacherClass extends React.Component{
                 'top': 550 - (avg*55).toString() + "px",
               }
           })
+        } else {
+          this.setState({ avg: 0 })
         }
       }
+    }
+
+    troubleList = () => {
+      let troubleList=[]
+      let manyReds = []
+      let weekReds = this.props.current_course.responses
+      .filter(response => (moment(parseInt(response.day)) >= moment().clone().subtract(1, 'week') && moment(parseInt(response.day)) <= moment().clone()))
+      .filter(resp => resp.answer == 'red')
+      .map(resp => resp.student_id)
+      let counterObj = weekReds.reduce(function(obj, b) {
+        obj[b] = ++obj[b] || 1;
+        return obj;
+      }, {})
+      Object.keys(counterObj).forEach(id => {
+        if (counterObj[id] >=3 ){
+          troubleList.push(id)
+        }
+      })
+      troubleList.forEach(id => {
+        let kid = this.props.current_course.students.find(student => student.id == parseInt(id))
+        if (!!kid && !manyReds.includes(kid)){
+          manyReds.push(kid.name)
+        }
+      })
+      return <>{manyReds.join(', ')}</>
     }
 
     changeDates = (newStart, newEnd) => {
       this.setState({
         startDate: newStart,
         endDate: newEnd
-      })
+      }, () => this.computeAverage(this.props.current_course))
     }
     
     goBack = () => {
@@ -87,19 +114,6 @@ class TeacherClass extends React.Component{
         addingAssignment: false
       })
     }
-        
-  // listFeedback = () => {
-  //     return this.props.current_course.responses
-  //     .filter(response => moment(parseInt(response.day)) >= moment(this.state.startDate))
-  //     .filter(response => moment(parseInt(response.day)) <= moment(this.state.endDate))
-  //     .map(resp => {
-  //         if (!!resp.feedback){
-  //           return <>&emsp;<li key={resp.id}>{resp.feedback}</li></>
-  //         } else {
-  //           return null
-  //         }
-  //       })
-  //     }
 
     resetPage = () => {
       this.setState({
@@ -163,6 +177,14 @@ class TeacherClass extends React.Component{
                 <WeekBubble /><br></br><br></br>
                 <div id='div2'></div>
                 </div>
+                <br></br>
+                <div className='flex-row'>
+                  <div className='col-md-2'></div>
+                  <div className='col-md-6'>
+                  <h5><b>Students with 3+ REDS this week:&emsp;</b> {this.troubleList()}</h5>
+                  </div>
+                  <div className='col-md-4'></div>
+                </div>
                 <br></br><br></br>
                 <hr className='red-hr'></hr>
                 <br></br><br></br><br></br>
@@ -189,22 +211,12 @@ class TeacherClass extends React.Component{
                     <div className='col-sm-1'></div>
 
                 </div>
-                <br></br><br></br>
-                  
-                <br></br><br></br><br></br>
-                <hr className='yellow-hr'></hr>
-                <br></br><br></br>
-              {/* <div className='flex-row'>
-                <div className='col-md-9 feedback'>
-                  <h5>Recent Feedback:</h5>
-                    <ul className='three-columns'>{this.listFeedback()}</ul>
-                  {/* <a style={{'maxWidth': '60%', 'alignSelf': 'center', 'fontSize': '18px', 'color': 'white'}} className='btn btn-warning' onClick={() => this.setCourse(this.props.current_course)} href="/courses/current">Go Back</a>
-                  </div>
-                </div> */} */}
                 <br></br><br></br><br></br>
                 <button className='btn btn-outline-danger btn-lg' onClick={() => this.props.history.push('/daily_avgs')}>See Daily Averages</button>
-              <br></br><br></br><br></br><br></br><br></br>
-              <br></br><br></br>
+                <br></br><br></br><br></br>
+                <hr className='yellow-hr'></hr>
+                <br></br><br></br><br></br>
+                <br></br><br></br><br></br><br></br>
                 <div style={{'display': 'flex'}}>
                     <img className="cars" src='https://wisedriving.s3.amazonaws.com/1557481400.96992aba487fcea3053ff9c455f2f905.png' alt='driving'></img><img className="cars" src='https://wisedriving.s3.amazonaws.com/1557481400.96992aba487fcea3053ff9c455f2f905.png' alt='driving'></img>
                 </div>

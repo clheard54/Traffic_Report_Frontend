@@ -4247,7 +4247,7 @@ input[type="button"].btn-block {
   width:92%;
   background-color:white;
   border: 1px solid black;
-  height: 600px;
+  height: 550px;
   z-index: 0;
   margin-bottom: 0;
   padding: 0 0
@@ -4256,11 +4256,11 @@ input[type="button"].btn-block {
 
 #div2 {
   position: relative;
-  top: -590px;
+  top: -567px;
   margin: auto;
   margin-right: -1px;
   /* margin-left: -1px; */
-  height: 601px;
+  height: 551px;
   /* width: 100%; */
   background-color: transparent;
   border: 5px solid white;

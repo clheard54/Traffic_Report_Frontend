@@ -128,7 +128,6 @@ class WeekBubble extends Component {
 				<br></br>
 				{/* <button className="btn btn-outline-primary" style={{'position': 'absolute', 'left': '25%'}} onClick={this.weekBack}><h2>{back}</h2></button>
 				<button className="btn btn-outline-primary weekForward" onClick={this.weekForward}><h2>></h2></button> */}
-				<br></br>
                 </div>
                 <br></br>
 			</div>
