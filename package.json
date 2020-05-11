@@ -26,12 +26,11 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "start": "PORT=3001 react-scripts start",
-    "build": "cd client && npm install && npm run build && cd ..",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "deploy": "cp -a client/build/. public/",
-    "heroku-postbuild": "npm run build && npm run deploy"
+    "deploy": "cp -a client/build/. public/"
   },
   "engines": {
     "yarn": "1.22.0",
