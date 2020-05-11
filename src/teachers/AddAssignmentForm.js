@@ -12,12 +12,12 @@ class AddAssignmentForm extends React.Component{
             }
         }
     }
-    postAssignmnet = (event) => {
+    postAssignment = (event) => {
         event.preventDefault();
         let newHW = {
             assignment: {
                 details: `${this.state.details}. Due ${this.state.dueDate}`,
-                course_id: this.props.current_course
+                course_id: this.props.current_course.id
             }
         }
         api.posts.postAssignment(newHW)
