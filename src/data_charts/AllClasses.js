@@ -169,8 +169,9 @@ class AllClasses extends Component {
 					<br></br>
 						<div className='feedback'>
 						<h5>Week's Color Counts</h5>
-						<b style={{'color': '#34A853', 'lineHeight': '1.2rem' }}>Greens:</b> <span style={{'fontSize': 'larger'}}>{this.colorCount('green')}</span>
 						<br></br><br></br>
+						<b style={{'color': '#34A853', 'lineHeight': '1.2rem' }}>Greens:</b> <span style={{'fontSize': 'larger'}}>{this.colorCount('green')}</span>
+						<br></br>
 						<b style={{'color': 'rgb(248, 200, 54)', 'lineHeight': '1.2rem' }}>Yellows: </b><span style={{'fontSize': 'larger'}}>{this.colorCount('yellow')}</span>
 						<br></br>
 						<b style={{'color': '#EA4335', 'lineHeight': '1.2rem'}}>Reds: </b><span style={{'fontSize': 'larger'}}>{this.colorCount('red')}</span>
