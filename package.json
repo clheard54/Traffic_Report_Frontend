@@ -1,7 +1,6 @@
 {
   "name": "traffic-teacher-frontend",
   "version": "0.1.0",
-  "proxy": "process.env.PORT",
   "private": true,
   "dependencies": {
     "@popperjs/core": "^2.3.3",
@@ -27,12 +26,12 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "PORT=3001 react-scripts start",
+    "build": "cd client && npm install && npm run build && cd ..",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "deploy": "cp -a client/build/. public/",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build && npm run deploy"
   },
   "engines": {
     "yarn": "1.22.0",

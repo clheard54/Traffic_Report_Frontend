@@ -1,4 +1,4 @@
-const API_ROOT = `http://localhost:3000/api/v1`;
+const API_ROOT = `https://traffic-report-backend.herokuapp.com/api/v1`;
 
 const token = () => localStorage.getItem("token");
 
@@ -11,7 +11,7 @@ const headers = () => {
 };
 
 const login = data => {
-  return fetch(`/api/v1/login`, {
+  return fetch(`${API_ROOT}/login`, {
     method: "POST",
     headers: headers(),
     body: JSON.stringify(data)
@@ -19,7 +19,7 @@ const login = data => {
 };
 
 const getCurrentUser = () => {
-  return fetch(`/api/v1/current_user`, {
+  return fetch(`${API_ROOT}/current_user`, {
     headers: headers()
   }).then(res => {
     return res.json();
@@ -28,13 +28,13 @@ const getCurrentUser = () => {
 
 const getAssignments = () => {
   // then filter questions by course...
-  return fetch(`/api/v1/assignments`, {
+  return fetch(`${API_ROOT}/assignments`, {
     headers: headers()
   }).then(res => res.json())
 }
 
 const createTeacher = data => {
-  return fetch(`/api/v1/admin_signup`, {
+  return fetch(`${API_ROOT}/admin_signup`, {
     method: "POST",
     headers: {      
       "Content-Type": "application/json",
@@ -45,7 +45,7 @@ const createTeacher = data => {
 };
 
 const createStudent = data => {
-  return fetch(`/api/v1/student_signup`, {
+  return fetch(`${API_ROOT}/student_signup`, {
     method: "POST",
     headers: {      
       "Content-Type": "application/json",
@@ -56,7 +56,7 @@ const createStudent = data => {
 };
 
 const postResponse = (newResponse) => {
-  return fetch(`/api/v1/responses`, {
+  return fetch(`${API_ROOT}/responses`, {
     method: 'POST',
     headers: headers(),
     body: JSON.stringify(newResponse)
@@ -65,7 +65,7 @@ const postResponse = (newResponse) => {
 }
 
 const postQuestion = (newQuestion) => {
-  return fetch(`/api/v1/questions`, {
+  return fetch(`${API_ROOT}/questions`, {
     method: 'POST',
     headers: headers(),
     body: JSON.stringify(newQuestion)
@@ -74,7 +74,7 @@ const postQuestion = (newQuestion) => {
 }
 
 const postCpq = (newCpq) => {
-  return fetch(`/api/v1/cpqs`, {
+  return fetch(`${API_ROOT}/cpqs`, {
     method: 'POST',
     headers: headers(),
     body: JSON.stringify(newCpq)
@@ -83,7 +83,7 @@ const postCpq = (newCpq) => {
 }
 
 const postAssignment = (newHW) => {
-  return fetch(`/api/v1/assignments`, {
+  return fetch(`${API_ROOT}/assignments`, {
     method: 'POST',
     headers: headers(),
     body: JSON.stringify(newHW)
@@ -92,7 +92,7 @@ const postAssignment = (newHW) => {
 }
 
 const getResponses = () => {
-  return fetch(`/api/v1/responses`, {
+  return fetch(`${API_ROOT}/responses`, {
     headers: headers()
   })
   .then(resp => resp.json())
@@ -100,28 +100,28 @@ const getResponses = () => {
 }
 
 const getQuestions = () => {
-  return fetch(`/api/v1/questions`, {
+  return fetch(`${API_ROOT}/questions`, {
     headers: headers()
   })
   .then(resp => resp.json())
 }
 
 const getCPQs = () => {
-  return fetch(`/api/v1/cpqs`, {
+  return fetch(`${API_ROOT}/cpqs`, {
     headers: headers()
   })
   .then(resp => resp.json())
 }
 
 const getTeachersResponses = () => {
-  return fetch(`/api/v1/responses`, {
+  return fetch(`${API_ROOT}/responses`, {
     headers: headers()
   })
   .then(resp => resp.json())
   }
 
 const deleteQuestion = (id) => {
-  return fetch(`/api/v1/questions/${id}`, {
+  return fetch(`${API_ROOT}/questions/${id}`, {
     method: 'DELETE',
     headers: headers()
   })
@@ -129,21 +129,21 @@ const deleteQuestion = (id) => {
 }
 
 const getCourses = () => {
-  return fetch(`/api/v1/courses`, {
+  return fetch(`${API_ROOT}/courses`, {
     headers: headers()
   })
   .then(resp => resp.json())
 }
 
 const findCoursesStudent = () => {
-  return fetch(`/api/v1/courses_students`, {
+  return fetch(`${API_ROOT}/courses_students`, {
     headers: headers()
   })
   .then(resp => resp.json())
 }
 
 const addStudentClass = (newClass) => {
-  return fetch(`/api/v1/courses_students`, {
+  return fetch(`${API_ROOT}/courses_students`, {
     method: 'POST',
     headers: headers(),
     body: JSON.stringify(newClass)
