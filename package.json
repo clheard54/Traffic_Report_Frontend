@@ -28,7 +28,7 @@
   },
   "scripts": {
     "start": "PORT=3001 react-scripts start",
-    "build": "react-scripts build && cd client && npm install && npm build && cd ..",
+    "build": "react-scripts build && cd client && npm build && cd ..",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "cp -a client/build/. public/",
