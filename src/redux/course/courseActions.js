@@ -78,7 +78,7 @@ export const setUserCourses = (user) => {
 export const postCourse = (newCourse) => {
   return (dispatch) => {
     dispatch(fetchCoursesRequest());
-    fetch("http://localhost:3000/api/v1/courses", {
+    fetch("/courses", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

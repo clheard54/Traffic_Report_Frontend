@@ -1,6 +1,7 @@
 {
   "name": "traffic-teacher-frontend",
   "version": "0.1.0",
+  "proxy": "http://localhost:3001",
   "private": true,
   "dependencies": {
     "@popperjs/core": "^2.3.3",
@@ -27,9 +28,16 @@
   },
   "scripts": {
     "start": "PORT=3001 react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && cd client && npm install && npm build && cd ..",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "cp -a client/build/. public/",
+    "postinstall": "npm build && npm deploy && echo 'Client built!'"
+  },
+  "engines": {
+    "yarn": "1.22.0",
+    "npm": "6.14.4",
+    "node": "13.7.0"
   },
   "eslintConfig": {
     "extends": "react-app"
