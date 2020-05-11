@@ -1,68 +1,101 @@
+https://traffic-report-app.herokuapp.com/
+# Red Light, Green Light: A "Traffic Report" for Teachers to Track Students' Understanding.
+## About
+Before becoming a software developer, I served as a high school math teacher for many years. One fall, I decided to try an experiment: I'd ask my students to move a magnet into one of three columns as they left the classroom each day. A magnet in the GREEN column would signify feeling good about the day's lesson, comfortable with what we'd learned and ready to move on. Placement in the YELLOW column represented some hesitation and lingering uncertainty about the material. And RED denoted total confusion or frustation and a desire to recap or review.
+The kids were into it -  and I was thrilled to be able to get daily check-ins of a sort. But by week 3 of school, all the magnets had disappeared. **sigh
+
+Enter Traffic Report. This website aims to gather data from students about their fluctuating levels of understanding in order to provide teachers with useful data. Graphical representations of the data allow teachers to visualize trends, track a student's progress, and adjust lessons accordingly. Students and teachers alike can also keep track of assignments, announcements, and questions relating to each of their courses.
+
+## Features
+An extension for a school's online learning platform, Traffic Report not only serves as a place for students to check their nightly homework, keep up with class announcements, and ask questions in real-time; it also prompts them to click Red, Yellow, or Green to signify their understanding of, and comfort with, the current material. 
+Teachers can track this data -- looking at weekly averages, noting when many students seem confused, and keeping an eye on any students who may consistently be answering 'Red'.  
+
+## Try it Yourself
+Traffic Report is hosted live on Heroku.com at this link: [https://traffic-report-app.herokuapp.com/](https://traffic-report-app.herokuapp.com/). Head on over and check it out!
+
+## Video Tutorial 
+Coming Soon!
+
+## Slides and Images 
+<b>Teacher Home Page:</b>
+<br /> <br>
+<img src="" width="650">
+<br><br>
+<b>Student Profile:</b>
+<br />
+<img src="./images/" width="650">
+<br><br>
+<b>Student's View of a Course Page</b>
+<br />
+<img src="./images/" width=650">
+<br><br> 
+<b>Teacher's Class View:</b>
+<br />
+<img src="./images/" width="650">
+<br><br> 
+<b>Data Visualization: Averages:</b>
+<br />
+<img src="./images/" width="650">
+<br><br> 
+<b>Data Visualization: Daily Totals:</b>
+<br />
+<img src="./images/" width="650">
+<br><br> 
+
+## Installing Locally
+ - If you'd like to clone down this project repository to your local computer, you can do so by forking it, then hitting the "Clone or download" button. Copy the SSH link, and open up your computer's Terminal. Inside, type "git clone <the link you've just copied>". 
+ ```
+   git clone <example: git@github.com:.../Traffic_Report_Frontend.git></example:>
+  ```
+ - You'll also need to fork and clone down the <a href="[Backend](https://github.com/clheard54/Traffic-Report-Backend)">backend</a> repo for this project. You can find the link here: [Backend](https://github.com/clheard54/Traffic-Report-Backend). Follow the same steps as above.
+
+ - Back in your terminal, type "bundle install".
+  ```
+   bundle install
+  ```
+ - Then, from the root directory, run "rake db:create" and "rake:db:migrate" to create the database locally.
+  ```
+   rake db:create && db:migrate
+  ```
+ - Lastly, run "rake db:seed". Now you're ready to go!
+  ```
+   rake db:seed
+  ```
+
+To open the app, you'll have to start up a local server. In your terminal, navigate to the backend api directory and then type "rails s".
+ ```
+ rails s
+ ```
+- Since you've already forked and cloned down the [Frontend](https://github.com/clheard54/Traffic_Report_Frontend), you can navigate straight to its root directory in your termail and type the following commands:
+ ```
+npm install
+npm start
+ ```
+- Sign up for a new account, start exploring, and enjoy!
+
+## Technologies Used 
+- Ruby on Rails (API)
+- ActiveRecord, Postgresql
+- JavaScript 
+- React & Redux
+
+## Authors
+Created by Clarion Heard.
+
+## Contributing 
+Contributions are welcome. Submit a pull request!
+
+## Acknowledgements
+
+## License 
+This project is licensed under the GNU GPL (https://www.gnu.org/licenses/gpl-3.0.en.html)
+    Copyright (C) <2020>  <Clarion Heard>
+    This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
