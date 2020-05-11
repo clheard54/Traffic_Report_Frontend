@@ -27,11 +27,13 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "react-scripts start",
+    "start": "serve -s build",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "deploy": "cp -a client/build/. public/"
+    "deploy": "cp -a client/build/. public/",
+    "heroku-postbuild": "npm run build"
   },
   "engines": {
     "yarn": "1.22.0",
