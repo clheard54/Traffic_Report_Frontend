@@ -1,4 +1,4 @@
-const API_ROOT = `https://traffic-teacher-api.herokuapp.com/api/v1/`;
+const API_ROOT = `https://traffic-teacher-api.herokuapp.com/api/v1`;
 
 const token = () => localStorage.getItem("token");
 
