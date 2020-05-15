@@ -107,4 +107,8 @@ This project is licensed under the GNU GPL (https://www.gnu.org/licenses/gpl-3.0
     You should have received a copy of the GNU General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
+<<<<<<< HEAD
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+=======
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+>>>>>>> 4c15810e6896878bbe7538b9ffecf44b7a7cc9d4
