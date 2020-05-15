@@ -3,7 +3,6 @@ import CanvasJSReact from '../assets/canvasjs.react';
 import '@popperjs/core'
 import { connect } from 'react-redux';
 import * as moment from 'moment'
-import LoaderHOC_ from '../HOCs/LoaderHOC'
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 const back = '<'
@@ -192,4 +191,4 @@ const mapStateToProps = state => {
 }
 
 
-export default LoaderHOC_(connect(mapStateToProps)(AllClasses))
+export default connect(mapStateToProps)(AllClasses)
