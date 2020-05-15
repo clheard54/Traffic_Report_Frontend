@@ -25,13 +25,15 @@ class AddAssignmentForm extends React.Component{
     }
 
     handleChange = (event) => {
-        this.setState({
+        let newState = {
             assignment: {
+                ...this.state.assignment,
                 [event.target.name]: event.target.value
             }
-        })
+        }
+        this.setState(newState)
     }
-
+    
     render(){
         return (
             <div>

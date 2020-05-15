@@ -17,25 +17,38 @@ Traffic Report is hosted live on Heroku.com at this link: [https://traffic-repor
 Coming Soon!
 
 ## Slides and Images 
-<b>Welcome to Stellar:</b>
+<b>Welcome to Traffic Report:</b>
 <br /> <br>
 <img src="./images/homepage.png" width="650">
 <br><br>
-<b>User Calendar w/ Option to Add Events:</b>
+<b>Teacher Profile:</b>
 <br />
-<img src="./images/calendar.png" width="650">
+<img src="./images/teacherhome.png" width="650">
 <br><br>
-<b>My Events Page:</b>
+<b>Teacher Class Page:</b>
 <br />
-<img src="./images/myevents.png" width=650">
+<img src="./images/teacherclass.png" width=650">
 <br><br> 
-<b>Moon Phase Example:</b>
+<b>Data Graph: Daily Breakdown</b>
 <br />
-<img src="./images/moon.png" width="650">
+<img src="./images/weekly-breakdown.png" width="650">
 <br><br> 
-<b>Constellation Detail:</b>
+<b>Data Graph: Daily Averages</b>
 <br />
-<img src="./images/constellation.png" width="650">
+<img src="./images/dailyavgs.png" width="650">
+<br><br> 
+<b>Weekly Responses (teacher view)</b>
+<br />
+<img src="./images/graphs.png" width="650">
+<br><br> 
+<b>Student Profile</b>
+<br />
+<img src="./images/studenthome.png" width="650">
+<br><br> 
+<b>Student Class Page</b>
+<br />
+<img src="./images/studentcalc.png" width="650">
+<img src="./images/studentdata.png" width="650">
 <br><br> 
 
 ## Installing Locally
