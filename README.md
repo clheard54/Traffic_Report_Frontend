@@ -14,7 +14,8 @@ Teachers can track this data -- looking at weekly averages, noting when many stu
 Traffic Report is hosted live on Heroku.com at this link: [https://traffic-report-app.herokuapp.com/](https://traffic-report-app.herokuapp.com/). Head on over and check it out!
 
 ## Video Tutorial 
-Coming Soon!
+<a href="https://www.youtube.com/watch?v=W-tj60tg65k"><img src="./images/youtube.png" alt="Check out the video demo!" width="350"></a>
+<br/>
 
 ## Slides and Images 
 <b>Welcome to Traffic Report:</b>

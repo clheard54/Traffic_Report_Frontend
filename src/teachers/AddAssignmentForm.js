@@ -16,7 +16,7 @@ class AddAssignmentForm extends React.Component{
         event.preventDefault();
         let newHW = {
             assignment: {
-                details: `${this.state.details}. Due ${this.state.dueDate}`,
+                details: `${this.state.assignment.details}. Due ${this.state.assignment.dueDate}`,
                 course_id: this.props.current_course.id
             }
         }
