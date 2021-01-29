@@ -11,7 +11,7 @@
     "fitty": "^2.3.0",
     "highcharts": "^8.0.4",
     "highcharts-react-official": "^3.0.0",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "react": "^16.13.1",
